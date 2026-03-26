@@ -298,7 +298,7 @@ body {
 /* ─── Días ─── */
 .dias-strip {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 5px;
   margin-bottom: 22px;
 }
@@ -876,53 +876,51 @@ body {
     return null;
   }
 
-  /* ─── Build días Lun-Vie ─── */
+  /* ─── Build días: próximos 7 días desde hoy ─── */
   function buildDias() {
     const grid  = document.getElementById('gridDias');
     const hoyD  = ahoraVE();
     const hoyS  = hoyVE();
-    const DOW   = ['Lun','Mar','Mié','Jue','Vie'];
+    const DOW   = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 
-    // lunes de esta semana
-    const dow = hoyD.getDay(); // 0=dom
-    const diffLun = dow === 0 ? -6 : 1 - dow;
-
-    let defaultFecha = hoyS;
-    // Si hoy es sáb/dom → empujar al lunes
-    if (dow === 6) {
-      const lu = new Date(hoyD); lu.setDate(hoyD.getDate() + 2);
-      defaultFecha = `${lu.getFullYear()}-${String(lu.getMonth()+1).padStart(2,'0')}-${String(lu.getDate()).padStart(2,'0')}`;
-    } else if (dow === 0) {
-      const lu = new Date(hoyD); lu.setDate(hoyD.getDate() + 1);
-      defaultFecha = `${lu.getFullYear()}-${String(lu.getMonth()+1).padStart(2,'0')}-${String(lu.getDate()).padStart(2,'0')}`;
+    // Si hoy es domingo, arrancar desde mañana (lunes)
+    if (hoyD.getDay() === 0) {
+      hoyD.setDate(hoyD.getDate() + 1);
     }
 
-    for (let i = 0; i < 5; i++) {
+    let agregados = 0;
+    let offset    = 0;
+    let primerFecha = null;
+
+    while (agregados < 7) {
       const d = new Date(hoyD);
-      d.setDate(hoyD.getDate() + diffLun + i);
+      d.setDate(hoyD.getDate() + offset);
+      offset++;
+
+      if (d.getDay() === 0) continue; // saltar domingos
+
       const y  = d.getFullYear();
       const mo = String(d.getMonth()+1).padStart(2,'0');
       const dd = String(d.getDate()).padStart(2,'0');
       const fs = `${y}-${mo}-${dd}`;
-
-      const past  = fs < hoyS;
       const esHoy = fs === hoyS;
 
+      if (!primerFecha) primerFecha = fs;
+
       const el = document.createElement('div');
-      el.className = 'dia-cell' + (past ? ' dia-past' : '') + (fs === defaultFecha ? ' dia-active' : '');
+      el.className = 'dia-cell' + (esHoy ? ' dia-active' : '');
       el.dataset.fecha = fs;
       el.innerHTML = `
-        <span class="dia-dow">${DOW[i]}</span>
+        <span class="dia-dow">${DOW[d.getDay()]}</span>
         <span class="dia-num">${parseInt(dd)}</span>
         ${esHoy ? '<span class="dia-hoy-mark"></span>' : ''}
       `;
-      if (!past) {
-        el.addEventListener('click', () => elegirDia(fs, el));
-      }
+      el.addEventListener('click', () => elegirDia(fs, el));
       grid.appendChild(el);
+      agregados++;
     }
 
-    fechaSel = defaultFecha;
+    fechaSel = hoyS;
   }
 
   function elegirDia(fs, el) {
