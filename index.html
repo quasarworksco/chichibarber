@@ -28,8 +28,6 @@
   --wa:      #25D366;
 }
 
-html { font-size: 16px; }
-
 body {
   min-height: 100vh;
   background: var(--black);
@@ -38,9 +36,7 @@ body {
   align-items: center;
   padding: 0 0 48px;
   font-family: 'Barlow', sans-serif;
-  font-weight: 400;
   color: var(--white);
-  /* Subtle grid texture */
   background-image:
     linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
@@ -56,12 +52,6 @@ body {
   padding: 28px 24px 0;
   display: flex;
   flex-direction: column;
-  animation: slideDown 0.5s ease both;
-}
-
-@keyframes slideDown {
-  from { opacity:0; transform: translateY(-10px); }
-  to   { opacity:1; transform: translateY(0); }
 }
 
 .masthead-top {
@@ -69,12 +59,6 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
-}
-
-.brand {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
 }
 
 .brand-eyebrow {
@@ -96,35 +80,20 @@ body {
   line-height: 1;
 }
 
-.brand-name em {
-  color: var(--gold);
-  font-style: normal;
-}
+.brand-name em { color: var(--gold); font-style: normal; }
 
-/* Scissors icon */
 .scissors-icon {
   width: 40px; height: 40px;
   background: var(--dim);
   border: 1px solid rgba(201,168,76,0.25);
   display: flex; align-items: center; justify-content: center;
   font-size: 18px;
-  position: relative;
-  flex-shrink: 0;
 }
 
-.scissors-icon::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border: 1px solid rgba(201,168,76,0.1);
-}
-
-/* Gold rule */
 .gold-rule {
   width: 100%;
   height: 1px;
   background: linear-gradient(90deg, var(--gold), rgba(201,168,76,0.1));
-  margin-bottom: 0;
 }
 
 /* ─────────────────────────────────────────
@@ -139,67 +108,19 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
-  animation: slideDown 0.55s ease both;
   margin-bottom: 2px;
 }
 
-.status-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  position: relative;
-}
+.status-dot { width: 7px; height: 7px; border-radius: 50%; }
+.status-dot.verde { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.status-dot.dorado { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
 
-.status-dot.verde  { background: var(--green); box-shadow: 0 0 8px var(--green); }
-.status-dot.dorado { background: var(--gold);  box-shadow: 0 0 8px var(--gold); }
-
-.status-dot::after {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  animation: ripple 2s ease-out infinite;
-}
-
-.status-dot.verde::after  { border: 1px solid var(--green); }
-.status-dot.dorado::after { border: 1px solid var(--gold); }
-
-@keyframes ripple {
-  0%   { transform: scale(1); opacity: 0.7; }
-  100% { transform: scale(2.5); opacity: 0; }
-}
-
-.status-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  flex: 1;
-  min-width: 0;
-}
-
-.status-kicker {
-  font-size: 0.55rem;
-  font-weight: 600;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.status-main {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.status-main.verde  { color: var(--green); }
+.status-text { display: flex; flex-direction: column; flex: 1; }
+.status-kicker { font-size: 0.55rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); }
+.status-main { font-family: 'Barlow Condensed'; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; }
+.status-main.verde { color: var(--green); }
 .status-main.dorado { color: var(--gold); }
 
-/* Botón actualizar */
 .btn-refresh {
   background: transparent;
   border: 1px solid var(--line);
@@ -207,24 +128,6 @@ body {
   width: 30px; height: 30px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
-  flex-shrink: 0;
-  padding: 0;
-}
-
-.btn-refresh:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-  background: var(--dim);
-}
-
-.btn-refresh.spinning svg {
-  animation: spinOnce 0.6s ease both;
-}
-
-@keyframes spinOnce {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
 }
 
 /* ─────────────────────────────────────────
@@ -235,525 +138,65 @@ body {
   max-width: 480px;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-top: none;
   padding: 24px 20px 28px;
-  animation: fadeUp 0.6s ease both;
-  position: relative;
 }
 
-@keyframes fadeUp {
-  from { opacity:0; transform: translateY(12px); }
-  to   { opacity:1; transform: translateY(0); }
-}
+.sec { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.sec-label { font-family: 'Barlow Condensed'; font-size: 0.62rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+.sec-line { flex: 1; height: 1px; background: var(--line); }
 
-/* ─── Section headers ─── */
-.sec {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.sec-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-  white-space: nowrap;
-}
-
-.sec-line {
-  flex: 1;
-  height: 1px;
-  background: var(--line);
-}
-
-/* ─── Input nombre ─── */
 .input-nombre {
   width: 100%;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-left: 2px solid transparent;
   padding: 13px 14px;
   color: var(--white);
-  font-family: 'Barlow', sans-serif;
-  font-size: 0.93rem;
-  font-weight: 500;
+  font-family: 'Barlow';
+  margin-bottom: 22px;
   outline: none;
-  transition: border-color 0.2s, background 0.2s;
-  margin-bottom: 22px;
-  letter-spacing: 0.3px;
 }
 
-.input-nombre::placeholder { color: rgba(245,245,240,0.22); font-weight: 300; }
-
-.input-nombre:focus {
-  border-left-color: var(--gold);
-  border-color: rgba(201,168,76,0.3);
-  background: rgba(201,168,76,0.04);
-}
-
-/* ─── Días ─── */
-.dias-strip {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  margin-bottom: 22px;
-}
-
+.dias-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 22px; }
 .dia-cell {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 4px 8px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  cursor: pointer;
-  transition: all 0.15s;
-  gap: 3px;
-  position: relative;
-  user-select: none;
+  display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px;
+  background: var(--surface); border: 1px solid var(--line); cursor: pointer;
 }
+.dia-cell.dia-active { background: var(--gold); border-color: var(--gold); color: black; }
+.dia-dow { font-size: 0.58rem; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+.dia-num { font-size: 1.3rem; font-weight: 900; font-family: 'Barlow Condensed'; }
+.dia-active .dia-dow, .dia-active .dia-num { color: black; }
 
-.dia-cell::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--gold);
-  transform: scaleX(0);
-  transition: transform 0.2s;
-}
-
-.dia-cell:hover:not(.dia-past)::after { transform: scaleX(1); }
-.dia-cell:hover:not(.dia-past) { border-color: rgba(201,168,76,0.3); }
-
-.dia-cell.dia-active {
-  background: var(--gold);
-  border-color: var(--gold);
-}
-
-.dia-cell.dia-active::after { display: none; }
-
-.dia-cell.dia-past {
-  opacity: 0.25;
-  cursor: not-allowed;
-}
-
-.dia-dow {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  line-height: 1;
-}
-
-.dia-cell.dia-active .dia-dow { color: rgba(0,0,0,0.55); }
-
-.dia-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 900;
-  color: var(--white);
-  line-height: 1;
-}
-
-.dia-cell.dia-active .dia-num { color: var(--black); }
-.dia-cell.dia-past .dia-num { color: var(--muted); }
-
-.dia-hoy-mark {
-  width: 4px; height: 4px;
-  background: var(--gold);
-  border-radius: 50%;
-}
-
-.dia-cell.dia-active .dia-hoy-mark { background: var(--black); }
-
-/* ─── Grid de horas ─── */
-.horas-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
-  margin-bottom: 20px;
-}
-
+.horas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 20px; }
 .hora-cell {
-  padding: 13px 4px 11px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.15s;
-  position: relative;
-  overflow: hidden;
-  animation: cellIn 0.3s ease both;
+  padding: 13px 4px 11px; background: var(--surface); border: 1px solid var(--line);
+  text-align: center; cursor: pointer; position: relative;
 }
+.hora-cell.hora-selected { background: var(--gold); border-color: var(--gold); }
+.hora-cell.hora-selected .hora-time { color: black; }
+.hora-cell.hora-ocupado { background: rgba(192,57,43,0.15); border-color: rgba(231,76,60,0.3); cursor: not-allowed; opacity: 0.7; }
+.hora-time { font-family: 'Barlow Condensed'; font-weight: 800; font-size: 0.95rem; }
 
-@keyframes cellIn {
-  from { opacity:0; transform: scale(0.96); }
-  to   { opacity:1; transform: scale(1); }
-}
-
-.hora-cell:hover:not(.hora-ocupado):not(.hora-almuerzo):not(.hora-selected) {
-  border-color: rgba(201,168,76,0.45);
-  background: rgba(201,168,76,0.06);
-}
-
-.hora-cell.hora-selected {
-  background: var(--gold);
-  border-color: var(--gold);
-  box-shadow: 0 0 0 1px rgba(201,168,76,0.3) inset;
-}
-
-/* Rojo para ocupado */
-.hora-cell.hora-ocupado {
-  background: rgba(192,57,43,0.08);
-  border-color: rgba(231,76,60,0.25);
-  cursor: not-allowed;
-}
-
-.hora-cell.hora-ocupado::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--red), var(--red2));
-}
-
-.hora-cell.hora-almuerzo {
-  background: rgba(192,57,43,0.08);
-  border-color: rgba(231,76,60,0.25);
-  cursor: not-allowed;
-}
-
-.hora-cell.hora-almuerzo::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--red), var(--red2));
-}
-
-.hora-time {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: var(--white);
-  display: block;
-  line-height: 1;
-}
-
-.hora-cell.hora-selected .hora-time { color: var(--black); }
-.hora-cell.hora-ocupado .hora-time {
-  color: rgba(231,76,60,0.5);
-  text-decoration: line-through;
-  text-decoration-color: rgba(231,76,60,0.3);
-}
-.hora-cell.hora-almuerzo .hora-time {
-  color: rgba(231,76,60,0.5);
-  text-decoration: line-through;
-  text-decoration-color: rgba(231,76,60,0.3);
-}
-
-.hora-tag {
-  display: block;
-  font-size: 0.52rem;
-  font-weight: 600;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  margin-top: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding: 0 2px;
-}
-
-.hora-cell.hora-ocupado .hora-tag { color: rgba(231,76,60,0.5); }
-.hora-cell.hora-almuerzo .hora-tag { color: rgba(231,76,60,0.5); }
-
-.cargando-horas {
-  grid-column: span 3;
-  text-align: center;
-  padding: 24px 0;
-  color: var(--muted);
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-}
-
-/* Leyenda */
-.leyenda {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 18px;
-  flex-wrap: wrap;
-}
-
-.ley-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.ley-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.ley-dot.libre   { background: rgba(245,245,240,0.3); }
-.ley-dot.ocupado { background: var(--red2); }
-.ley-dot.breack  { background: rgba(245,245,240,0.1); }
-
-/* ─── Botón confirmar ─── */
 .btn-confirmar {
-  width: 100%;
-  padding: 16px;
-  background: var(--gold);
-  color: var(--black);
-  border: none;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
+  width: 100%; padding: 16px; background: var(--gold); color: black; border: none;
+  font-family: 'Barlow Condensed'; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; cursor: pointer;
 }
-
-.btn-confirmar::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  transition: left 0.4s;
-}
-
-.btn-confirmar:not(:disabled):hover::before { left: 100%; }
-.btn-confirmar:not(:disabled):hover { background: var(--gold2); }
-
-.btn-confirmar:disabled {
-  background: var(--surface);
-  color: rgba(245,245,240,0.2);
-  cursor: not-allowed;
-}
-
-/* ─── WhatsApp ─── */
-.btn-wa {
-  display: none;
-  width: 100%;
-  padding: 15px;
-  background: transparent;
-  border: 1px solid var(--wa);
-  color: var(--wa);
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  margin-top: 8px;
-  text-decoration: none;
-  text-align: center;
-}
-
-.btn-wa.visible { display: flex; animation: fadeUp 0.3s ease both; }
-.btn-wa:hover { background: rgba(37,211,102,0.08); }
-
-/* ─── Mensaje estado ─── */
-.msg {
-  margin-top: 10px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  text-align: center;
-  min-height: 14px;
-  transition: all 0.2s;
-  padding: 0;
-}
-
-.msg.visible { padding: 10px 12px; }
-.msg.ok    { background: rgba(31,168,90,0.08);  color: #2ecc71; border-left: 2px solid #2ecc71; }
-.msg.error { background: rgba(192,57,43,0.08);  color: #e74c3c; border-left: 2px solid #e74c3c; }
-.msg.info  { background: rgba(201,168,76,0.06); color: var(--gold); border-left: 2px solid var(--gold); }
-
-.spinner-inline {
-  display: inline-block;
-  width: 11px; height: 11px;
-  border: 2px solid rgba(0,0,0,0.2);
-  border-top-color: var(--black);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  vertical-align: middle;
-  margin-right: 6px;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
+.btn-confirmar:disabled { background: var(--surface); color: rgba(255,255,255,0.1); cursor: not-allowed; }
 
 /* ─────────────────────────────────────────
    AGENDA CARD
 ───────────────────────────────────────── */
 .agenda-card {
-  width: 100%;
-  max-width: 480px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-top: 2px solid var(--gold);
-  margin-top: 6px;
-  animation: fadeUp 0.7s ease both;
+  width: 100%; max-width: 480px; background: var(--panel);
+  border: 1px solid var(--line); border-top: 2px solid var(--gold); margin-top: 6px;
 }
-
-.agenda-header {
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--line);
-}
-
-.agenda-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-.agenda-count {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  padding: 2px 10px;
-}
-
-.agenda-list { padding: 4px 0; max-height: 280px; overflow-y: auto; }
-.agenda-list::-webkit-scrollbar { width: 3px; }
-.agenda-list::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); }
-
-.agenda-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 20px;
-  border-bottom: 1px solid var(--line);
-  transition: background 0.12s;
-  animation: fadeUp 0.3s ease both;
-}
-
-.agenda-row:last-child { border-bottom: none; }
-.agenda-row:hover { background: rgba(255,255,255,0.02); }
-
-.agenda-idx {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: rgba(201,168,76,0.3);
-  width: 14px;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.agenda-hora {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: var(--gold);
-  background: var(--dim);
-  border: 1px solid rgba(201,168,76,0.15);
-  padding: 3px 8px;
-  flex-shrink: 0;
-  min-width: 52px;
-  text-align: center;
-}
-
-.agenda-nombre {
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: rgba(245,245,240,0.8);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.agenda-empty {
-  padding: 24px 20px;
-  text-align: center;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(245,245,240,0.15);
-}
-
-.agenda-loading {
-  padding: 24px 20px;
-  text-align: center;
-  font-size: 0.72rem;
-  color: var(--muted);
-}
-
-.spinner-gold {
-  display: inline-block;
-  width: 10px; height: 10px;
-  border: 2px solid rgba(201,168,76,0.15);
-  border-top-color: var(--gold);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  vertical-align: middle;
-  margin-right: 6px;
-}
-
-/* ─── Footer ─── */
-.footer-strip {
-  width: 100%;
-  max-width: 480px;
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.footer-brand {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(245,245,240,0.1);
-}
-
-.footer-dot {
-  width: 3px; height: 3px;
-  background: rgba(201,168,76,0.2);
-  border-radius: 50%;
-}
+.agenda-header { padding: 14px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.agenda-title { font-size: 0.62rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+.agenda-row { display: flex; padding: 10px 20px; gap: 15px; border-bottom: 1px solid var(--line); align-items: center; }
+.agenda-hora { font-weight: 800; color: var(--gold); background: var(--dim); padding: 3px 8px; font-size: 0.8rem; }
 </style>
 </head>
 <body>
 
-<!-- MASTHEAD -->
 <div class="masthead">
   <div class="masthead-top">
     <div class="brand">
@@ -765,397 +208,192 @@ body {
   <div class="gold-rule"></div>
 </div>
 
-<!-- STATUS BAR -->
 <div class="status-bar">
   <div class="status-dot verde" id="statusDot"></div>
   <div class="status-text">
     <span class="status-kicker">Estado del barbero</span>
     <span class="status-main verde" id="statusMain">Sincronizando...</span>
   </div>
-  <button class="btn-refresh" id="btnRefresh" title="Actualizar" onclick="actualizar()">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="23 4 23 10 17 10"></polyline>
-      <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-    </svg>
-  </button>
+  <button class="btn-refresh" onclick="fetchCSV()">🔄</button>
 </div>
 
-<!-- MAIN CARD -->
 <div class="card">
-
-  <!-- Nombre -->
   <div class="sec"><span class="sec-label">Cliente</span><div class="sec-line"></div></div>
-  <input type="text" id="nombreCli" class="input-nombre" placeholder="Nombre y apellido" maxlength="60" autocomplete="off">
-
-  <!-- Días -->
+  <input type="text" id="nombreCli" class="input-nombre" placeholder="Nombre y apellido">
+  
   <div class="sec"><span class="sec-label">Día</span><div class="sec-line"></div></div>
   <div class="dias-strip" id="gridDias"></div>
-
-  <!-- Horarios -->
+  
   <div class="sec"><span class="sec-label">Horario</span><div class="sec-line"></div></div>
-
-  <div class="leyenda">
-    <div class="ley-item"><span class="ley-dot libre"></span>Disponible</div>
-    <div class="ley-item"><span class="ley-dot ocupado"></span>Ocupado</div>
-    <div class="ley-item"><span class="ley-dot breack"></span>Descanso</div>
-  </div>
-
-  <div class="horas-grid" id="gridHoras">
-    <div class="cargando-horas">Cargando...</div>
-  </div>
-
-  <!-- Confirmar -->
-  <button class="btn-confirmar" id="btnConfirmar" disabled onclick="enviarCita()">
-    Confirmar Reserva
-  </button>
-
-  <a id="btnWa" class="btn-wa" href="#" target="_blank">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-    </svg>
-    Enviar por WhatsApp
-  </a>
-
-  <div class="msg" id="msgEstado"></div>
-
+  <div class="horas-grid" id="gridHoras"></div>
+  
+  <button class="btn-confirmar" id="btnConfirmar" disabled onclick="enviarCita()">Confirmar Reserva</button>
 </div>
 
-<!-- AGENDA CARD -->
 <div class="agenda-card">
   <div class="agenda-header">
     <span class="agenda-title">Agenda confirmada</span>
-    <span class="agenda-count" id="agendaCount">—</span>
+    <span id="agendaCount" style="font-size: 0.7rem; font-weight: 700; color: var(--muted);"></span>
   </div>
-  <div class="agenda-list" id="agendaList">
-    <div class="agenda-loading"><span class="spinner-gold"></span>Cargando...</div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<div class="footer-strip">
-  <span class="footer-brand">Chichi Barber · Reservas Online</span>
-  <span class="footer-dot"></span>
+  <div id="agendaList"></div>
 </div>
 
 <script>
-  /* ─── Config ─── */
-
   const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?output=csv";
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9MV6DAPhWpax-uPzvCfutxJ01Mg3MZjTnVYaEbIhKyFebkaeYseURZJnLugxOGTGI/exec";
   const TURNOS = ["11 AM","12 PM","1 PM","2 PM","3 PM","4 PM","5 PM","6 PM","7 PM","8 PM","9 PM","10 PM","11 PM"];
-  const WA_NUM     = "584246783781";
-  const ALMUERZO   = "2 PM";
 
-  let baseDatos  = [];   // todas las citas del CSV
-  let fechaSel   = "";
-  let horaSel    = "";
-
-  /* ─── Hora Venezuela (GMT-4) sin depender del TZ del dispositivo ─── */
-  function ahoraVE() {
-    const u = new Date();
-    return new Date(u.getTime() + u.getTimezoneOffset() * 60000 - 4 * 3600000);
-  }
+  let baseDatos = [];
+  let fechaSel = "";
+  let horaSel = "";
 
   function hoyVE() {
-    const d = ahoraVE();
+    const d = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60000 - 4 * 3600000);
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   }
 
-  /* ─── Normalizar fecha del CSV ─── */
+  // Normalizador específico para formato Año-Mes-Día
   function normFecha(str) {
-    if (!str) return null;
-    str = str.trim();
-    // Formato Google Sheets: M/D/YYYY o M/D/YYYY H:MM:SS
-    const m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-    if (m) {
-      // Usar noon UTC para evitar problemas de zona
-      const d = new Date(`${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}T12:00:00Z`);
-      const ve = new Date(d.getTime() - 4 * 3600000);
-      return `${ve.getUTCFullYear()}-${String(ve.getUTCMonth()+1).padStart(2,'0')}-${String(ve.getUTCDate()).padStart(2,'0')}`;
-    }
-    if (str.match(/^\d{4}-\d{2}-\d{2}/)) return str.slice(0, 10);
-    return null;
-  }
+    if (!str) return "";
+    const limpio = str.trim().replace(/"/g, '');
+    const partes = limpio.split(/[\/\-]/);
+    if (partes.length < 3) return "";
 
-  /* ─── Build días: próximos 7 días desde hoy ─── */
-  function buildDias() {
-    const grid  = document.getElementById('gridDias');
-    const hoyD  = ahoraVE();
-    const hoyS  = hoyVE();
-    const DOW   = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-
-    // Si hoy es domingo, arrancar desde mañana (lunes)
-    if (hoyD.getDay() === 0) {
-      hoyD.setDate(hoyD.getDate() + 1);
-    }
-
-    let agregados = 0;
-    let offset    = 0;
-    let primerFecha = null;
-
-    while (agregados < 7) {
-      const d = new Date(hoyD);
-      d.setDate(hoyD.getDate() + offset);
-      offset++;
-
-      if (d.getDay() === 0) continue; // saltar domingos
-
-      const y  = d.getFullYear();
-      const mo = String(d.getMonth()+1).padStart(2,'0');
-      const dd = String(d.getDate()).padStart(2,'0');
-      const fs = `${y}-${mo}-${dd}`;
-      const esHoy = fs === hoyS;
-
-      if (!primerFecha) primerFecha = fs;
-
-      const el = document.createElement('div');
-      el.className = 'dia-cell' + (esHoy ? ' dia-active' : '');
-      el.dataset.fecha = fs;
-      el.innerHTML = `
-        <span class="dia-dow">${DOW[d.getDay()]}</span>
-        <span class="dia-num">${parseInt(dd)}</span>
-        ${esHoy ? '<span class="dia-hoy-mark"></span>' : ''}
-      `;
-      el.addEventListener('click', () => elegirDia(fs, el));
-      grid.appendChild(el);
-      agregados++;
-    }
-
-    fechaSel = hoyS;
-  }
-
-  function elegirDia(fs, el) {
-    document.querySelectorAll('.dia-cell').forEach(b => b.classList.remove('dia-active'));
-    el.classList.add('dia-active');
-    fechaSel = fs;
-    horaSel  = "";
-    document.getElementById('btnConfirmar').disabled = true;
-    document.getElementById('btnWa').classList.remove('visible');
-    setMsg("", "");
-    renderHoras();
-    renderAgenda();
-  }
-
-  /* ─── Fetch CSV ─── */
-  async function fetchCSV() {
-    const r = await fetch(CSV_URL + "&t=" + Date.now());
-    const t = await r.text();
-    const filas = t.split('\n').slice(1);
-    baseDatos = [];
-    for (const f of filas) {
-      if (!f.trim()) continue;
-      // Parse CSV respetando comillas
-      const cols = parseLine(f);
-      const hora   = (cols[0] || "").trim();
-      const nombre = (cols[1] || "").trim();
-      const fecha  = normFecha((cols[2] || "").trim());
-      if (hora && nombre && fecha) baseDatos.push({ hora, nombre, fecha });
-    }
-  }
-
-  function parseLine(line) {
-    const cols = []; let cur = ''; let q = false;
-    for (const c of line) {
-      if (c === '"') { q = !q; }
-      else if (c === ',' && !q) { cols.push(cur); cur = ''; }
-      else cur += c;
-    }
-    cols.push(cur);
-    return cols;
-  }
-
-  /* ─── Status banner ─── */
-  function updateStatus() {
-    const dot  = document.getElementById('statusDot');
-    const main = document.getElementById('statusMain');
-    const ve   = ahoraVE();
-    const hoyS = hoyVE();
-
-    let h = ve.getHours();
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12 || 12;
-    const horaTexto = `${h} ${ampm}`;
-
-    const cita = baseDatos.find(b => b.fecha === hoyS && b.hora === horaTexto);
-    if (cita) {
-      dot.className  = 'status-dot dorado';
-      main.className = 'status-main dorado';
-      main.textContent = `Atendiendo a: ${cita.nombre.toUpperCase()}`;
+    let y, m, d;
+    // Si el primer segmento tiene 4 dígitos, asumimos YYYY-MM-DD
+    if (partes[0].length === 4) {
+      y = partes[0];
+      m = partes[1].padStart(2, '0');
+      d = partes[2].padStart(2, '0');
     } else {
-      dot.className  = 'status-dot verde';
-      main.className = 'status-main verde';
-      main.textContent = 'Disponible en este momento';
+      // Si no, asumimos DD-MM-YYYY
+      y = partes[2];
+      m = partes[1].padStart(2, '0');
+      d = partes[0].padStart(2, '0');
+    }
+    return `${y}-${m}-${d}`;
+  }
+
+  async function fetchCSV() {
+    try {
+      const r = await fetch(CSV_URL + "&t=" + Date.now());
+      const t = await r.text();
+      const filas = t.split(/\r?\n/).slice(1);
+      
+      baseDatos = filas.map(f => {
+        const c = f.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        if (c.length < 3) return null;
+        return { 
+          hora: c[0].replace(/"/g,'').trim(), 
+          nombre: c[1].replace(/"/g,'').trim(), 
+          fecha: normFecha(c[2]) 
+        };
+      }).filter(x => x !== null && x.hora);
+
+      updateStatus(); 
+      renderHoras(); 
+      renderAgenda();
+    } catch(e) { console.error("Error CSV", e); }
+  }
+
+  function buildDias() {
+    const grid = document.getElementById('gridDias');
+    grid.innerHTML = "";
+    const hoyS = hoyVE();
+    fechaSel = hoyS;
+    for(let i=0; i<7; i++){
+      const d = new Date(); d.setDate(d.getDate() + i);
+      if(d.getDay() === 0) continue;
+      const fs = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      const el = document.createElement('div');
+      el.className = 'dia-cell' + (fs === hoyS ? ' dia-active' : '');
+      el.innerHTML = `<span class="dia-dow">${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][d.getDay()]}</span><span class="dia-num">${d.getDate()}</span>`;
+      el.onclick = () => {
+        document.querySelectorAll('.dia-cell').forEach(c => c.classList.remove('dia-active'));
+        el.classList.add('dia-active'); 
+        fechaSel = fs; horaSel = ""; 
+        renderHoras(); renderAgenda();
+      };
+      grid.appendChild(el);
     }
   }
 
-  /* ─── Render horas ─── */
   function renderHoras() {
-    const grid  = document.getElementById('gridHoras');
-    grid.innerHTML = "";
+    const grid = document.getElementById('gridHoras'); grid.innerHTML = "";
     const ocupHoy = baseDatos.filter(b => b.fecha === fechaSel);
-    let delay = 0;
-
-    for (const t of TURNOS) {
-      const cita      = ocupHoy.find(o => o.hora === t);
-      const almuerzo  = t === ALMUERZO;
-      const ocupado   = !!cita || almuerzo;
-
+    TURNOS.forEach(t => {
+      const cita = ocupHoy.find(o => o.hora === t);
       const el = document.createElement('div');
-      el.style.animationDelay = delay + 'ms';
-      delay += 18;
-
-      if (almuerzo) {
-        el.className = 'hora-cell hora-almuerzo';
-        el.innerHTML = `<span class="hora-time">${t}</span><span class="hora-tag">Descanso</span>`;
-      } else if (cita) {
-        el.className = 'hora-cell hora-ocupado';
-        el.innerHTML = `<span class="hora-time">${t}</span><span class="hora-tag">${cita.nombre}</span>`;
+      el.className = 'hora-cell' + (cita ? ' hora-ocupado' : '');
+      el.innerHTML = `<span class="hora-time">${t}</span>`;
+      if(!cita) {
+        el.onclick = () => {
+          document.querySelectorAll('.hora-cell').forEach(c => c.classList.remove('hora-selected'));
+          el.classList.add('hora-selected'); horaSel = t; validar();
+        };
       } else {
-        el.className = 'hora-cell';
-        el.innerHTML = `<span class="hora-time">${t}</span>`;
-        el.addEventListener('click', () => elegirHora(t, el));
+        el.innerHTML += `<br><span style="font-size:9px; color:var(--gold); display:block; margin-top:2px;">${cita.nombre}</span>`;
       }
       grid.appendChild(el);
-    }
-  }
-
-  function elegirHora(hora, el) {
-    document.querySelectorAll('.hora-cell').forEach(b => b.classList.remove('hora-selected'));
-    el.classList.add('hora-selected');
-    horaSel = hora;
-    validar();
-    setMsg("", "");
-  }
-
-  function validar() {
-    const n = document.getElementById('nombreCli').value.trim();
-    document.getElementById('btnConfirmar').disabled = !(n.length >= 2 && horaSel);
-  }
-
-  /* ─── Render agenda ─── */
-  function renderAgenda() {
-    const list  = document.getElementById('agendaList');
-    const count = document.getElementById('agendaCount');
-    const citas = baseDatos
-      .filter(b => b.fecha === fechaSel)
-      .sort((a, b) => horaNum(a.hora) - horaNum(b.hora));
-
-    count.textContent = citas.length > 0
-      ? `${citas.length} turno${citas.length > 1 ? 's' : ''}`
-      : '0 turnos';
-
-    if (!citas.length) {
-      list.innerHTML = '<div class="agenda-empty">Sin citas registradas</div>';
-      return;
-    }
-
-    list.innerHTML = '';
-    citas.forEach((c, i) => {
-      const row = document.createElement('div');
-      row.className = 'agenda-row';
-      row.style.animationDelay = (i * 35) + 'ms';
-      row.innerHTML = `
-        <span class="agenda-idx">${i+1}</span>
-        <span class="agenda-hora">${c.hora}</span>
-        <span class="agenda-nombre">${c.nombre}</span>
-      `;
-      list.appendChild(row);
     });
   }
 
-  function horaNum(h) {
-    const p = h.trim().split(' ');
-    let n = parseInt(p[0]);
-    const ap = (p[1] || '').toUpperCase();
-    if (ap === 'PM' && n !== 12) n += 12;
-    if (ap === 'AM' && n === 12) n = 0;
-    return n;
+  function renderAgenda() {
+    const list = document.getElementById('agendaList'); list.innerHTML = "";
+    const citas = baseDatos.filter(b => b.fecha === fechaSel);
+    document.getElementById('agendaCount').textContent = citas.length + " turnos";
+    if(citas.length === 0) {
+      list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--muted); font-size:12px;">SIN CITAS</div>';
+    }
+    citas.forEach(c => {
+      list.innerHTML += `<div class="agenda-row"><span class="agenda-hora">${c.hora}</span><span>${c.nombre}</span></div>`;
+    });
   }
 
-  /* ─── Actualizar (botón refresh) ─── */
-  async function actualizar() {
-    const btn = document.getElementById('btnRefresh');
-    btn.classList.add('spinning');
-    try {
-      await fetchCSV();
-      updateStatus();
-      renderHoras();
-      renderAgenda();
-    } catch(e) {}
-    setTimeout(() => btn.classList.remove('spinning'), 650);
+  function updateStatus() {
+    const main = document.getElementById('statusMain');
+    const dot = document.getElementById('statusDot');
+    const d = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60000 - 4 * 3600000);
+    let h = d.getHours();
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    const horaTxt = `${h} ${ampm}`;
+    const cita = baseDatos.find(b => b.hora === horaTxt && b.fecha === hoyVE());
+    if(cita) {
+      main.textContent = `Atendiendo a: ${cita.nombre.toUpperCase()}`;
+      main.className = 'status-main dorado'; dot.className = 'status-dot dorado';
+    } else {
+      main.textContent = 'Disponible ahora';
+      main.className = 'status-main verde'; dot.className = 'status-dot verde';
+    }
   }
 
-  /* ─── Enviar cita ─── */
+  function validar() {
+    document.getElementById('btnConfirmar').disabled = !(document.getElementById('nombreCli').value.trim().length > 2 && horaSel);
+  }
+
   async function enviarCita() {
     const nombre = document.getElementById('nombreCli').value.trim();
-    if (!nombre || !horaSel || !fechaSel) return;
-
-    // Verificación frontend
-    if (baseDatos.some(b => b.fecha === fechaSel && b.hora === horaSel)) {
-      setMsg("⚠️ Esa hora ya fue reservada. Elige otra.", "error");
-      setTimeout(() => actualizar(), 1500);
-      return;
-    }
-
     const btn = document.getElementById('btnConfirmar');
-    btn.innerHTML = '<span class="spinner-inline"></span>Registrando...';
-    btn.disabled = true;
-    setMsg("Enviando reserva...", "info");
-
+    btn.disabled = true; btn.textContent = "REGISTRANDO...";
+    const params = new URLSearchParams();
+    params.append('nombre', nombre); params.append('hora', horaSel); params.append('fecha', fechaSel);
     try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hora: horaSel, nombre, fecha: fechaSel })
-      });
-
-      // Actualizar cache local
-      baseDatos.push({ hora: horaSel, nombre, fecha: fechaSel });
-
-      setMsg("✅ ¡Turno registrado exitosamente!", "ok");
-      btn.textContent = "✅ Confirmado";
-
-      renderHoras();
-      renderAgenda();
-      mostrarWA(nombre, horaSel, fechaSel);
-
-    } catch (err) {
-      setMsg("❌ Error de conexión. Intenta nuevamente.", "error");
-      btn.textContent = "Confirmar Reserva";
-      btn.disabled = false;
-    }
+      await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: params });
+      setTimeout(() => {
+        const [y, m, d] = fechaSel.split('-');
+        const txt = `¡Hola Chichi Barber! 💈 Reservé mi turno:\n\n👤 ${nombre}\n📅 ${d}/${m}/${y}\n🕐 ${horaSel}`;
+        window.open(`https://wa.me/584246783781?text=${encodeURIComponent(txt)}`, '_blank');
+        location.reload();
+      }, 800);
+    } catch(e) { btn.disabled = false; btn.textContent = "Confirmar Reserva"; }
   }
 
-  function mostrarWA(nombre, hora, fecha) {
-    const [y, m, d] = fecha.split('-');
-    const txt = `¡Hola Chichi Barber! 💈 Reservé mi turno:\n\n👤 ${nombre}\n📅 ${d}/${m}/${y}\n🕐 ${hora}\n\n¡Allí estaré!`;
-    const wa = document.getElementById('btnWa');
-    wa.href = `https://wa.me/${WA_NUM}?text=${encodeURIComponent(txt)}`;
-    wa.classList.add('visible');
-  }
-
-  function setMsg(texto, tipo) {
-    const el = document.getElementById('msgEstado');
-    el.className = tipo ? `msg ${tipo} visible` : 'msg';
-    el.textContent = texto;
-  }
-
-  /* ─── Init ─── */
-  async function init() {
-    buildDias();
-    try {
-      await fetchCSV();
-      updateStatus();
-    } catch(e) {}
-    renderHoras();
-    renderAgenda();
-    // Auto-refresh cada 30s
-    setInterval(actualizar, 30000);
-  }
-
-  document.getElementById('nombreCli').addEventListener('input', validar);
-  init();
+  document.getElementById('nombreCli').oninput = validar;
+  buildDias(); 
+  fetchCSV();
+  setInterval(fetchCSV, 30000);
 </script>
+
 </body>
 </html>
