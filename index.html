@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chichi Barber — Reservas</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Bebas+Neue&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ─────────────────────────────────────────
    RESET & VARIABLES
@@ -12,21 +12,28 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --black:   #060606;
-  --ink:     #0e0e0e;
-  --panel:   #141414;
-  --surface: #1c1c1c;
-  --line:    rgba(255,255,255,0.07);
+  --black:   #030303;
+  --ink:     #080808;
+  --panel:   #0f0f0f;
+  --surface: #161616;
+  --surface2:#1d1d1d;
+  --line:    rgba(255,255,255,0.06);
+  --line2:   rgba(201,168,76,0.15);
   --gold:    #c9a84c;
   --gold2:   #f0cc72;
-  --dim:     rgba(201,168,76,0.12);
+  --gold3:   #a07830;
+  --dim:     rgba(201,168,76,0.08);
+  --dim2:    rgba(201,168,76,0.15);
   --red:     #c0392b;
   --red2:    #e74c3c;
   --green:   #1fa85a;
   --white:   #f5f5f0;
-  --muted:   rgba(245,245,240,0.35);
+  --muted:   rgba(245,245,240,0.3);
   --wa:      #25D366;
+  --glow:    rgba(201,168,76,0.12);
 }
+
+html { scroll-behavior: smooth; }
 
 body {
   min-height: 100vh;
@@ -34,66 +41,198 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 0 48px;
+  padding: 0 0 80px;
   font-family: 'Barlow', sans-serif;
   color: var(--white);
-  background-image:
-    linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+  overflow-x: hidden;
+  position: relative;
 }
 
 /* ─────────────────────────────────────────
-   MASTHEAD
+   ANIMATED BACKGROUND
 ───────────────────────────────────────── */
-.masthead {
+.bg-noise {
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.025) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-radial {
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: breathe 8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+}
+
+/* Corner ornaments */
+.corner-ornament {
+  position: fixed;
+  width: 120px; height: 120px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.15;
+}
+.corner-ornament.tl { top: 0; left: 0; }
+.corner-ornament.tr { top: 0; right: 0; transform: scaleX(-1); }
+
+/* ─────────────────────────────────────────
+   CONTENT WRAPPER
+───────────────────────────────────────── */
+.content-wrap {
+  position: relative;
+  z-index: 2;
   width: 100%;
-  max-width: 480px;
-  padding: 28px 24px 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
 }
 
-.masthead-top {
+/* ─────────────────────────────────────────
+   HERO / MASTHEAD
+───────────────────────────────────────── */
+.hero {
+  width: 100%;
+  max-width: 480px;
+  padding: 48px 0 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  animation: heroIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-badge {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.brand-eyebrow {
+.badge-line {
+  width: 32px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.badge-line.right { background: linear-gradient(90deg, var(--gold), transparent); }
+
+.badge-text {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 4px;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 5px;
   text-transform: uppercase;
   color: var(--gold);
 }
 
-.brand-name {
-  font-family: 'Barlow Condensed', sans-serif;
+.hero-scissors {
   font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: 2px;
+  display: block;
+  margin-bottom: 16px;
+  animation: scissorsFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
+}
+
+@keyframes scissorsFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(5deg); }
+}
+
+.hero-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 12vw, 5.5rem);
+  letter-spacing: 8px;
   text-transform: uppercase;
-  color: var(--white);
-  line-height: 1;
+  line-height: 0.9;
+  text-align: center;
+  background: linear-gradient(135deg, #f0cc72 0%, #c9a84c 40%, #f0cc72 60%, #a07830 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 4px 30px rgba(201,168,76,0.25));
+  position: relative;
 }
 
-.brand-name em { color: var(--gold); font-style: normal; }
-
-.scissors-icon {
-  width: 40px; height: 40px;
-  background: var(--dim);
-  border: 1px solid rgba(201,168,76,0.25);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
+.hero-name::after {
+  content: 'CHICHI BARBER';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #f0cc72 0%, #c9a84c 40%, #f0cc72 60%, #a07830 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: blur(20px);
+  opacity: 0.3;
+  z-index: -1;
 }
 
-.gold-rule {
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.hero-divider {
   width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.hero-div-line {
+  flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, var(--gold), rgba(201,168,76,0.1));
+  background: linear-gradient(90deg, transparent, var(--gold2), transparent);
+  opacity: 0.4;
+}
+
+.hero-div-diamond {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  box-shadow: 0 0 12px var(--gold);
+  animation: diamondPulse 2s ease-in-out infinite;
+}
+
+@keyframes diamondPulse {
+  0%, 100% { box-shadow: 0 0 8px var(--gold), 0 0 16px rgba(201,168,76,0.3); }
+  50% { box-shadow: 0 0 16px var(--gold), 0 0 32px rgba(201,168,76,0.5); }
 }
 
 /* ─────────────────────────────────────────
@@ -103,31 +242,89 @@ body {
   width: 100%;
   max-width: 480px;
   background: var(--ink);
-  border-left: 2px solid var(--gold);
-  padding: 12px 20px;
+  border: 1px solid var(--line2);
+  border-left: 3px solid var(--gold);
+  padding: 14px 20px;
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 2px;
+  gap: 16px;
+  margin-bottom: 3px;
+  position: relative;
+  overflow: hidden;
+  animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
 }
 
-.status-dot { width: 7px; height: 7px; border-radius: 50%; }
-.status-dot.verde { background: var(--green); box-shadow: 0 0 8px var(--green); }
-.status-dot.dorado { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.status-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(201,168,76,0.04), transparent);
+  pointer-events: none;
+}
+
+.status-shimmer {
+  position: absolute;
+  top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.05), transparent);
+  animation: shimmerSlide 4s ease-in-out infinite;
+}
+
+@keyframes shimmerSlide {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+.status-dot { 
+  width: 8px; height: 8px; 
+  border-radius: 50%; 
+  flex-shrink: 0;
+  position: relative;
+}
+
+.status-dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  animation: dotRipple 2s ease-out infinite;
+}
+
+.status-dot.verde { background: var(--green); box-shadow: 0 0 10px var(--green); }
+.status-dot.verde::after { border: 1px solid var(--green); }
+.status-dot.dorado { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+.status-dot.dorado::after { border: 1px solid var(--gold); }
+
+@keyframes dotRipple {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
 
 .status-text { display: flex; flex-direction: column; flex: 1; }
-.status-kicker { font-size: 0.55rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); }
-.status-main { font-family: 'Barlow Condensed'; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; }
-.status-main.verde { color: var(--green); }
-.status-main.dorado { color: var(--gold); }
+.status-kicker { font-size: 0.5rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.status-main { font-family: 'Barlow Condensed'; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; transition: all 0.5s ease; }
+.status-main.verde { color: var(--green); text-shadow: 0 0 20px rgba(31,168,90,0.4); }
+.status-main.dorado { color: var(--gold); text-shadow: 0 0 20px rgba(201,168,76,0.4); }
 
 .btn-refresh {
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--muted);
-  width: 30px; height: 30px;
+  background: var(--surface);
+  border: 1px solid var(--line2);
+  color: var(--gold);
+  width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.btn-refresh:hover {
+  background: var(--dim2);
+  border-color: var(--gold);
+  transform: rotate(180deg);
 }
 
 /* ─────────────────────────────────────────
@@ -137,106 +334,659 @@ body {
   width: 100%;
   max-width: 480px;
   background: var(--panel);
-  border: 1px solid var(--line);
-  padding: 24px 20px 28px;
+  border: 1px solid var(--line2);
+  padding: 28px 22px 32px;
+  position: relative;
+  overflow: hidden;
+  animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
 }
 
-.sec { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.sec-label { font-family: 'Barlow Condensed'; font-size: 0.62rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
-.sec-line { flex: 1; height: 1px; background: var(--line); }
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold2), var(--gold), transparent);
+  animation: topGlow 3s ease-in-out infinite;
+}
+
+@keyframes topGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle at bottom right, rgba(201,168,76,0.05), transparent 70%);
+  pointer-events: none;
+}
+
+/* Card corner decorations */
+.card-corner {
+  position: absolute;
+  width: 20px; height: 20px;
+  pointer-events: none;
+}
+.card-corner.tl { top: 8px; left: 8px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+.card-corner.tr { top: 8px; right: 8px; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+.card-corner.bl { bottom: 8px; left: 8px; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+.card-corner.br { bottom: 8px; right: 8px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+
+/* ─────────────────────────────────────────
+   SECTION HEADERS
+───────────────────────────────────────── */
+.sec { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.sec-icon { color: var(--gold); font-size: 0.7rem; }
+.sec-label { 
+  font-family: 'Barlow Condensed'; 
+  font-size: 0.58rem; 
+  font-weight: 800; 
+  letter-spacing: 4px; 
+  text-transform: uppercase; 
+  color: var(--gold);
+  white-space: nowrap;
+}
+.sec-line { 
+  flex: 1; 
+  height: 1px; 
+  background: linear-gradient(90deg, var(--gold), transparent);
+  opacity: 0.3;
+}
+.sec-diamond {
+  width: 4px; height: 4px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+/* ─────────────────────────────────────────
+   INPUT
+───────────────────────────────────────── */
+.input-wrap {
+  position: relative;
+  margin-bottom: 28px;
+}
 
 .input-nombre {
   width: 100%;
   background: var(--surface);
-  border: 1px solid var(--line);
-  padding: 13px 14px;
+  border: 1px solid var(--line2);
+  border-bottom: 2px solid rgba(201,168,76,0.2);
+  padding: 14px 16px 14px 42px;
   color: var(--white);
   font-family: 'Barlow';
-  margin-bottom: 22px;
+  font-size: 0.9rem;
   outline: none;
+  transition: all 0.4s ease;
+  letter-spacing: 0.5px;
 }
 
-.dias-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 22px; }
-.dia-cell {
-  display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px;
-  background: var(--surface); border: 1px solid var(--line); cursor: pointer;
+.input-nombre::placeholder { color: var(--muted); font-style: italic; }
+
+.input-nombre:focus {
+  border-color: var(--gold);
+  border-bottom-color: var(--gold);
+  background: rgba(201,168,76,0.04);
+  box-shadow: 0 4px 24px rgba(201,168,76,0.08), inset 0 0 0 1px rgba(201,168,76,0.1);
 }
-.dia-cell.dia-active { background: var(--gold); border-color: var(--gold); color: black; }
-.dia-dow { font-size: 0.58rem; text-transform: uppercase; font-weight: 700; color: var(--muted); }
-.dia-num { font-size: 1.3rem; font-weight: 900; font-family: 'Barlow Condensed'; }
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  opacity: 0.5;
+  font-size: 14px;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.input-nombre:focus + .input-icon,
+.input-wrap:focus-within .input-icon { opacity: 1; }
+
+.input-line {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.input-nombre:focus ~ .input-line { width: 100%; }
+
+/* ─────────────────────────────────────────
+   DAYS STRIP
+───────────────────────────────────────── */
+.dias-strip { 
+  display: grid; 
+  grid-template-columns: repeat(7, 1fr); 
+  gap: 6px; 
+  margin-bottom: 28px; 
+}
+
+.dia-cell {
+  display: flex; flex-direction: column; align-items: center; 
+  padding: 12px 4px 10px;
+  background: var(--surface); 
+  border: 1px solid var(--line); 
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.dia-cell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 50%, rgba(201,168,76,0.05));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.dia-cell:not(.dia-active):hover {
+  border-color: rgba(201,168,76,0.4);
+  transform: translateY(-2px);
+  background: var(--surface2);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 0 1px rgba(201,168,76,0.1);
+}
+
+.dia-cell:not(.dia-active):hover::before { opacity: 1; }
+
+.dia-cell.dia-active { 
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border-color: var(--gold2); 
+  color: black; 
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(201,168,76,0.35), 0 0 0 1px rgba(240,204,114,0.3);
+}
+
+.dia-dow { 
+  font-size: 0.5rem; 
+  text-transform: uppercase; 
+  font-weight: 800; 
+  color: var(--muted); 
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  transition: color 0.3s;
+}
+
+.dia-num { 
+  font-size: 1.3rem; 
+  font-weight: 900; 
+  font-family: 'Bebas Neue'; 
+  letter-spacing: 1px;
+  line-height: 1;
+  transition: color 0.3s;
+}
+
 .dia-active .dia-dow, .dia-active .dia-num { color: black; }
 
-.horas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 20px; }
-.hora-cell {
-  padding: 13px 4px 11px; background: var(--surface); border: 1px solid var(--line);
-  text-align: center; cursor: pointer; position: relative;
+/* ─────────────────────────────────────────
+   HOURS GRID
+───────────────────────────────────────── */
+.horas-grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 6px; 
+  margin-bottom: 24px; 
 }
-.hora-cell.hora-selected { background: var(--gold); border-color: var(--gold); }
-.hora-cell.hora-selected .hora-time { color: black; }
-.hora-cell.hora-ocupado { background: rgba(192,57,43,0.15); border-color: rgba(231,76,60,0.3); cursor: not-allowed; opacity: 0.7; }
-.hora-time { font-family: 'Barlow Condensed'; font-weight: 800; font-size: 0.95rem; }
 
-.btn-confirmar {
-  width: 100%; padding: 16px; background: var(--gold); color: black; border: none;
-  font-family: 'Barlow Condensed'; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; cursor: pointer;
+.hora-cell {
+  padding: 14px 4px 12px; 
+  background: var(--surface); 
+  border: 1px solid var(--line);
+  text-align: center; 
+  cursor: pointer; 
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
-.btn-confirmar:disabled { background: var(--surface); color: rgba(255,255,255,0.1); cursor: not-allowed; }
+
+.hora-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.hora-cell:not(.hora-ocupado):hover {
+  border-color: rgba(201,168,76,0.5);
+  background: var(--surface2);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3), 0 0 12px rgba(201,168,76,0.1);
+}
+
+.hora-cell:not(.hora-ocupado):hover::after { opacity: 1; }
+
+.hora-cell.hora-selected { 
+  background: linear-gradient(135deg, var(--gold3), var(--gold), var(--gold2));
+  border-color: var(--gold2); 
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(201,168,76,0.35), 0 0 0 1px rgba(240,204,114,0.2);
+}
+
+.hora-cell.hora-selected .hora-time { color: black; }
+
+.hora-cell.hora-ocupado { 
+  background: rgba(192,57,43,0.08); 
+  border-color: rgba(231,76,60,0.2); 
+  cursor: not-allowed; 
+  opacity: 0.6; 
+}
+
+.hora-time { 
+  font-family: 'Bebas Neue'; 
+  font-weight: 400; 
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.hora-nombre {
+  font-size: 0.55rem; 
+  color: var(--gold); 
+  display: block; 
+  margin-top: 3px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  padding: 0 4px;
+}
+
+/* ─────────────────────────────────────────
+   CONFIRM BUTTON
+───────────────────────────────────────── */
+.btn-confirmar {
+  width: 100%; 
+  padding: 18px; 
+  background: linear-gradient(135deg, var(--gold3), var(--gold), var(--gold2));
+  color: black; 
+  border: none;
+  font-family: 'Bebas Neue'; 
+  font-size: 1.1rem;
+  font-weight: 400; 
+  letter-spacing: 5px; 
+  text-transform: uppercase; 
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-confirmar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-confirmar:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(201,168,76,0.4), 0 0 0 1px rgba(240,204,114,0.3);
+  background: linear-gradient(135deg, var(--gold), var(--gold2), var(--gold));
+}
+
+.btn-confirmar:not(:disabled):hover::before { left: 100%; }
+
+.btn-confirmar:not(:disabled):active { transform: translateY(0px); }
+
+.btn-confirmar:disabled { 
+  background: var(--surface); 
+  color: rgba(255,255,255,0.12); 
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-wa-ready { 
+  background: linear-gradient(135deg, #128c3d, var(--wa), #43d480) !important; 
+  color: white !important; 
+  animation: waPulse 2s ease-in-out infinite;
+  letter-spacing: 3px !important;
+}
+
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 0 0 0px rgba(37, 211, 102, 0.4), 0 8px 24px rgba(37,211,102,0.25); }
+  50% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0), 0 8px 24px rgba(37,211,102,0.4); }
+}
 
 /* ─────────────────────────────────────────
    AGENDA CARD
 ───────────────────────────────────────── */
 .agenda-card {
-  width: 100%; max-width: 480px; background: var(--panel);
-  border: 1px solid var(--line); border-top: 2px solid var(--gold); margin-top: 6px;
+  width: 100%; 
+  max-width: 480px; 
+  background: var(--panel);
+  border: 1px solid var(--line2); 
+  margin-top: 4px;
+  overflow: hidden;
+  animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+  position: relative;
 }
-.agenda-header { padding: 14px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); }
-.agenda-title { font-size: 0.62rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
-.agenda-row { display: flex; padding: 10px 20px; gap: 15px; border-bottom: 1px solid var(--line); align-items: center; }
-.agenda-hora { font-weight: 800; color: var(--gold); background: var(--dim); padding: 3px 8px; font-size: 0.8rem; }
+
+.agenda-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold3), var(--gold), var(--gold3), transparent);
+  opacity: 0.7;
+}
+
+.agenda-header { 
+  padding: 16px 22px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  border-bottom: 1px solid var(--line); 
+  background: rgba(201,168,76,0.02);
+}
+
+.agenda-title-wrap { display: flex; align-items: center; gap: 10px; }
+.agenda-title-icon { color: var(--gold); font-size: 12px; }
+.agenda-title { 
+  font-family: 'Barlow Condensed';
+  font-size: 0.58rem; 
+  font-weight: 800; 
+  letter-spacing: 4px; 
+  text-transform: uppercase; 
+  color: var(--gold); 
+}
+
+.agenda-count-badge {
+  background: var(--dim2);
+  border: 1px solid var(--line2);
+  padding: 3px 10px;
+  font-size: 0.6rem; 
+  font-weight: 800; 
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-family: 'Barlow Condensed';
+}
+
+.agenda-row { 
+  display: flex; 
+  padding: 12px 22px; 
+  gap: 16px; 
+  border-bottom: 1px solid var(--line); 
+  align-items: center; 
+  transition: background 0.2s;
+  animation: rowSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.agenda-row:hover { background: rgba(201,168,76,0.03); }
+
+@keyframes rowSlide {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.agenda-hora { 
+  font-family: 'Bebas Neue';
+  font-weight: 400; 
+  color: var(--black); 
+  background: linear-gradient(135deg, var(--gold3), var(--gold));
+  padding: 4px 10px; 
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.agenda-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: 0.3px;
+}
+
+.agenda-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.3;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.agenda-empty {
+  padding: 28px;
+  text-align: center;
+  color: var(--muted);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+}
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+.footer {
+  width: 100%;
+  max-width: 480px;
+  padding: 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}
+
+.footer-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.footer-div { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--line), transparent); }
+
+.footer-diamond {
+  width: 3px; height: 3px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  opacity: 0.4;
+}
+
+.footer-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────
+   LOADING SPINNER
+───────────────────────────────────────── */
+.spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(201,168,76,0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─────────────────────────────────────────
+   TOAST NOTIFICATION
+───────────────────────────────────────── */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-80px);
+  background: var(--panel);
+  border: 1px solid var(--gold);
+  border-left: 3px solid var(--gold);
+  padding: 12px 20px;
+  font-family: 'Barlow Condensed';
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  z-index: 1000;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media (max-width: 380px) {
+  .hero-name { font-size: 3.2rem; }
+  .dias-strip { gap: 4px; }
+  .horas-grid { gap: 4px; }
+}
 </style>
 </head>
 <body>
 
-<div class="masthead">
-  <div class="masthead-top">
-    <div class="brand">
-      <span class="brand-eyebrow">Agenda tu turno</span>
-      <span class="brand-name">Chichi <em>Barber</em></span>
+<div class="bg-noise"></div>
+<div class="bg-grid"></div>
+<div class="bg-radial"></div>
+
+<!-- SVG Corner ornaments -->
+<svg class="corner-ornament tl" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 60 L60 0" stroke="#c9a84c" stroke-width="0.5"/>
+  <path d="M0 30 L30 0" stroke="#c9a84c" stroke-width="0.5"/>
+  <path d="M0 90 L90 0" stroke="#c9a84c" stroke-width="0.5"/>
+  <path d="M0 10 L10 0" stroke="#c9a84c" stroke-width="1"/>
+  <circle cx="0" cy="0" r="3" fill="#c9a84c"/>
+</svg>
+<svg class="corner-ornament tr" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 60 L60 0" stroke="#c9a84c" stroke-width="0.5"/>
+  <path d="M0 30 L30 0" stroke="#c9a84c" stroke-width="0.5"/>
+  <path d="M0 90 L90 0" stroke="#c9a84c" stroke-width="0.5"/>
+  <path d="M0 10 L10 0" stroke="#c9a84c" stroke-width="1"/>
+  <circle cx="0" cy="0" r="3" fill="#c9a84c"/>
+</svg>
+
+<div id="toast" class="toast">✦ Reserva registrada exitosamente</div>
+
+<div class="content-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">
+      <div class="badge-line"></div>
+      <span class="badge-text">Agenda tu turno</span>
+      <div class="badge-line right"></div>
     </div>
-    <div class="scissors-icon">✂️</div>
+    <span class="hero-scissors">✂️</span>
+    <h1 class="hero-name">Chichi Barber</h1>
+    <p class="hero-sub">Barbería de Lujo · El Arte del Estilo</p>
+    <div class="hero-divider">
+      <div class="hero-div-line"></div>
+      <div class="hero-div-diamond"></div>
+      <div class="hero-div-line"></div>
+    </div>
   </div>
-  <div class="gold-rule"></div>
-</div>
 
-<div class="status-bar">
-  <div class="status-dot verde" id="statusDot"></div>
-  <div class="status-text">
-    <span class="status-kicker">Estado del barbero</span>
-    <span class="status-main verde" id="statusMain">Sincronizando...</span>
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-shimmer"></div>
+    <div class="status-dot verde" id="statusDot"></div>
+    <div class="status-text">
+      <span class="status-kicker">Estado del barbero</span>
+      <span class="status-main verde" id="statusMain"><span class="spinner"></span>Sincronizando...</span>
+    </div>
+    <button class="btn-refresh" onclick="fetchCSV()" title="Actualizar">🔄</button>
   </div>
-  <button class="btn-refresh" onclick="fetchCSV()">🔄</button>
-</div>
 
-<div class="card">
-  <div class="sec"><span class="sec-label">Cliente</span><div class="sec-line"></div></div>
-  <input type="text" id="nombreCli" class="input-nombre" placeholder="Nombre y apellido">
-  
-  <div class="sec"><span class="sec-label">Día</span><div class="sec-line"></div></div>
-  <div class="dias-strip" id="gridDias"></div>
-  
-  <div class="sec"><span class="sec-label">Horario</span><div class="sec-line"></div></div>
-  <div class="horas-grid" id="gridHoras"></div>
-  
-  <button class="btn-confirmar" id="btnConfirmar" disabled onclick="enviarCita()">Confirmar Reserva</button>
-</div>
+  <!-- MAIN CARD -->
+  <div class="card">
+    <div class="card-corner tl"></div>
+    <div class="card-corner tr"></div>
+    <div class="card-corner bl"></div>
+    <div class="card-corner br"></div>
 
-<div class="agenda-card">
-  <div class="agenda-header">
-    <span class="agenda-title">Agenda confirmada</span>
-    <span id="agendaCount" style="font-size: 0.7rem; font-weight: 700; color: var(--muted);"></span>
+    <div class="sec">
+      <span class="sec-icon">◆</span>
+      <span class="sec-label">Cliente</span>
+      <div class="sec-line"></div>
+      <div class="sec-diamond"></div>
+    </div>
+    <div class="input-wrap">
+      <input type="text" id="nombreCli" class="input-nombre" placeholder="Nombre y apellido" autocomplete="off">
+      <span class="input-icon">👤</span>
+      <div class="input-line"></div>
+    </div>
+
+    <div class="sec">
+      <span class="sec-icon">◆</span>
+      <span class="sec-label">Día</span>
+      <div class="sec-line"></div>
+      <div class="sec-diamond"></div>
+    </div>
+    <div class="dias-strip" id="gridDias"></div>
+
+    <div class="sec">
+      <span class="sec-icon">◆</span>
+      <span class="sec-label">Horario</span>
+      <div class="sec-line"></div>
+      <div class="sec-diamond"></div>
+    </div>
+    <div class="horas-grid" id="gridHoras"></div>
+
+    <button class="btn-confirmar" id="btnConfirmar" disabled onclick="enviarCita()">Confirmar Reserva</button>
   </div>
-  <div id="agendaList"></div>
-</div>
+
+  <!-- AGENDA CARD -->
+  <div class="agenda-card">
+    <div class="agenda-header">
+      <div class="agenda-title-wrap">
+        <span class="agenda-title-icon">📋</span>
+        <span class="agenda-title">Agenda confirmada</span>
+      </div>
+      <div class="agenda-count-badge" id="agendaCount">0 turnos</div>
+    </div>
+    <div id="agendaList"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-line">
+      <div class="footer-div"></div>
+      <div class="footer-diamond"></div>
+      <div class="footer-div"></div>
+    </div>
+    <p class="footer-text">Chichi Barber · Reservas Online</p>
+  </div>
+
+</div><!-- /content-wrap -->
 
 <script>
   const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?output=csv";
@@ -246,31 +996,28 @@ body {
   let baseDatos = [];
   let fechaSel = "";
   let horaSel = "";
+  let registradoExitoso = false;
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
 
   function hoyVE() {
     const d = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60000 - 4 * 3600000);
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   }
 
-  // Normalizador específico para formato Año-Mes-Día
   function normFecha(str) {
     if (!str) return "";
     const limpio = str.trim().replace(/"/g, '');
     const partes = limpio.split(/[\/\-]/);
     if (partes.length < 3) return "";
-
     let y, m, d;
-    // Si el primer segmento tiene 4 dígitos, asumimos YYYY-MM-DD
-    if (partes[0].length === 4) {
-      y = partes[0];
-      m = partes[1].padStart(2, '0');
-      d = partes[2].padStart(2, '0');
-    } else {
-      // Si no, asumimos DD-MM-YYYY
-      y = partes[2];
-      m = partes[1].padStart(2, '0');
-      d = partes[0].padStart(2, '0');
-    }
+    if (partes[0].length === 4) { y = partes[0]; m = partes[1].padStart(2, '0'); d = partes[2].padStart(2, '0'); }
+    else { y = partes[2]; m = partes[1].padStart(2, '0'); d = partes[0].padStart(2, '0'); }
     return `${y}-${m}-${d}`;
   }
 
@@ -279,40 +1026,30 @@ body {
       const r = await fetch(CSV_URL + "&t=" + Date.now());
       const t = await r.text();
       const filas = t.split(/\r?\n/).slice(1);
-      
       baseDatos = filas.map(f => {
         const c = f.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
         if (c.length < 3) return null;
-        return { 
-          hora: c[0].replace(/"/g,'').trim(), 
-          nombre: c[1].replace(/"/g,'').trim(), 
-          fecha: normFecha(c[2]) 
-        };
+        return { hora: c[0].replace(/"/g,'').trim(), nombre: c[1].replace(/"/g,'').trim(), fecha: normFecha(c[2]) };
       }).filter(x => x !== null && x.hora);
-
-      updateStatus(); 
-      renderHoras(); 
-      renderAgenda();
+      updateStatus(); renderHoras(); renderAgenda();
     } catch(e) { console.error("Error CSV", e); }
   }
 
   function buildDias() {
-    const grid = document.getElementById('gridDias');
-    grid.innerHTML = "";
-    const hoyS = hoyVE();
-    fechaSel = hoyS;
+    const grid = document.getElementById('gridDias'); grid.innerHTML = "";
+    const hoyS = hoyVE(); fechaSel = hoyS;
     for(let i=0; i<7; i++){
       const d = new Date(); d.setDate(d.getDate() + i);
       if(d.getDay() === 0) continue;
       const fs = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
       const el = document.createElement('div');
       el.className = 'dia-cell' + (fs === hoyS ? ' dia-active' : '');
+      el.style.animationDelay = (i * 0.05) + 's';
       el.innerHTML = `<span class="dia-dow">${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][d.getDay()]}</span><span class="dia-num">${d.getDate()}</span>`;
       el.onclick = () => {
+        if(registradoExitoso) return;
         document.querySelectorAll('.dia-cell').forEach(c => c.classList.remove('dia-active'));
-        el.classList.add('dia-active'); 
-        fechaSel = fs; horaSel = ""; 
-        renderHoras(); renderAgenda();
+        el.classList.add('dia-active'); fechaSel = fs; horaSel = ""; renderHoras(); renderAgenda();
       };
       grid.appendChild(el);
     }
@@ -321,18 +1058,20 @@ body {
   function renderHoras() {
     const grid = document.getElementById('gridHoras'); grid.innerHTML = "";
     const ocupHoy = baseDatos.filter(b => b.fecha === fechaSel);
-    TURNOS.forEach(t => {
+    TURNOS.forEach((t, i) => {
       const cita = ocupHoy.find(o => o.hora === t);
       const el = document.createElement('div');
       el.className = 'hora-cell' + (cita ? ' hora-ocupado' : '');
-      el.innerHTML = `<span class="hora-time">${t}</span>`;
-      if(!cita) {
+      el.style.animationDelay = (i * 0.04) + 's';
+      if (cita) {
+        el.innerHTML = `<span class="hora-time">${t}</span><span class="hora-nombre">${cita.nombre}</span>`;
+      } else {
+        el.innerHTML = `<span class="hora-time">${t}</span>`;
         el.onclick = () => {
+          if(registradoExitoso) return;
           document.querySelectorAll('.hora-cell').forEach(c => c.classList.remove('hora-selected'));
           el.classList.add('hora-selected'); horaSel = t; validar();
         };
-      } else {
-        el.innerHTML += `<br><span style="font-size:9px; color:var(--gold); display:block; margin-top:2px;">${cita.nombre}</span>`;
       }
       grid.appendChild(el);
     });
@@ -341,12 +1080,18 @@ body {
   function renderAgenda() {
     const list = document.getElementById('agendaList'); list.innerHTML = "";
     const citas = baseDatos.filter(b => b.fecha === fechaSel);
-    document.getElementById('agendaCount').textContent = citas.length + " turnos";
+    const badge = document.getElementById('agendaCount');
+    badge.textContent = citas.length + (citas.length === 1 ? " turno" : " turnos");
     if(citas.length === 0) {
-      list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--muted); font-size:12px;">SIN CITAS</div>';
+      list.innerHTML = '<div class="agenda-empty">Sin citas para este día</div>';
+      return;
     }
-    citas.forEach(c => {
-      list.innerHTML += `<div class="agenda-row"><span class="agenda-hora">${c.hora}</span><span>${c.nombre}</span></div>`;
+    citas.forEach((c, i) => {
+      const row = document.createElement('div');
+      row.className = 'agenda-row';
+      row.style.animationDelay = (i * 0.06) + 's';
+      row.innerHTML = `<span class="agenda-hora">${c.hora}</span><span class="agenda-name">${c.nombre}</span><div class="agenda-dot"></div>`;
+      list.appendChild(row);
     });
   }
 
@@ -355,44 +1100,58 @@ body {
     const dot = document.getElementById('statusDot');
     const d = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60000 - 4 * 3600000);
     let h = d.getHours();
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12 || 12;
+    const ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
     const horaTxt = `${h} ${ampm}`;
     const cita = baseDatos.find(b => b.hora === horaTxt && b.fecha === hoyVE());
     if(cita) {
       main.textContent = `Atendiendo a: ${cita.nombre.toUpperCase()}`;
-      main.className = 'status-main dorado'; dot.className = 'status-dot dorado';
+      main.className = 'status-main dorado';
+      dot.className = 'status-dot dorado';
     } else {
       main.textContent = 'Disponible ahora';
-      main.className = 'status-main verde'; dot.className = 'status-dot verde';
+      main.className = 'status-main verde';
+      dot.className = 'status-dot verde';
     }
   }
 
   function validar() {
+    if(registradoExitoso) return;
     document.getElementById('btnConfirmar').disabled = !(document.getElementById('nombreCli').value.trim().length > 2 && horaSel);
   }
 
   async function enviarCita() {
     const nombre = document.getElementById('nombreCli').value.trim();
     const btn = document.getElementById('btnConfirmar');
-    btn.disabled = true; btn.textContent = "REGISTRANDO...";
+
+    if(registradoExitoso) {
+      const [y, m, d] = fechaSel.split('-');
+      const txt = `¡Hola Chichi Barber! 💈 Reservé mi turno:\n\n👤 ${nombre}\n📅 ${d}/${m}/${y}\n🕐 ${horaSel}`;
+      window.open(`https://wa.me/584246783781?text=${encodeURIComponent(txt)}`, '_blank');
+      location.reload();
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>REGISTRANDO...';
     const params = new URLSearchParams();
     params.append('nombre', nombre); params.append('hora', horaSel); params.append('fecha', fechaSel);
+
     try {
       await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: params });
-      setTimeout(() => {
-        const [y, m, d] = fechaSel.split('-');
-        const txt = `¡Hola Chichi Barber! 💈 Reservé mi turno:\n\n👤 ${nombre}\n📅 ${d}/${m}/${y}\n🕐 ${horaSel}`;
-        window.open(`https://wa.me/584246783781?text=${encodeURIComponent(txt)}`, '_blank');
-        location.reload();
-      }, 800);
-    } catch(e) { btn.disabled = false; btn.textContent = "Confirmar Reserva"; }
+      registradoExitoso = true;
+      btn.disabled = false;
+      btn.className = "btn-confirmar btn-wa-ready";
+      btn.textContent = "✅ ENVIAR POR WHATSAPP";
+      document.getElementById('nombreCli').disabled = true;
+      showToast('✦ Reserva registrada exitosamente');
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = "Confirmar Reserva";
+    }
   }
 
   document.getElementById('nombreCli').oninput = validar;
-  buildDias(); 
-  fetchCSV();
-  setInterval(fetchCSV, 30000);
+  buildDias(); fetchCSV(); setInterval(fetchCSV, 30000);
 </script>
 
 </body>
