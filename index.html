@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chichi Barber — Reservas</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:  #0a0a0a;
+    --dark:   #1a1a1a;
+    --gold:   #c9a84c;
+    --gold2:  #e8c96d;
+    --red:    #c0392b;
+    --green:  #27ae60;
+    --white:  #ffffff;
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    font-family: 'DM Sans', sans-serif;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.05) 0%, transparent 60%);
+  }
+
+  .card {
+    background: var(--dark);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 440px;
+    padding: 0 0 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* ── BANNER "EN ATENCIÓN" ── */
+  #bannerAtencion {
+    width: 100%;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.4s ease;
+  }
+
+  #bannerAtencion.disponible {
+    background: rgba(39,174,96,0.08);
+  }
+
+  #bannerAtencion.atendiendo {
+    background: rgba(201,168,76,0.09);
+  }
+
+  .banner-pulse {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .banner-pulse::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    animation: pulse 1.8s ease-out infinite;
+  }
+
+  .disponible .banner-pulse {
+    background: var(--green);
+  }
+  .disponible .banner-pulse::after {
+    border: 1.5px solid var(--green);
+  }
+
+  .atendiendo .banner-pulse {
+    background: var(--gold);
+  }
+  .atendiendo .banner-pulse::after {
+    border: 1.5px solid var(--gold);
+  }
+
+  @keyframes pulse {
+    0%   { transform: scale(1);   opacity: 0.8; }
+    70%  { transform: scale(2.2); opacity: 0;   }
+    100% { transform: scale(1);   opacity: 0;   }
+  }
+
+  .banner-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .banner-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .disponible .banner-label { color: var(--green); }
+  .atendiendo .banner-label { color: var(--gold);  }
+
+  .banner-nombre {
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .disponible .banner-nombre { color: rgba(255,255,255,0.6); font-style: italic; font-weight: 400; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; }
+  .atendiendo .banner-nombre { color: var(--white); }
+
+  /* ── Header ── */
+  .header {
+    padding: 28px 32px 0;
+  }
+
+  .icon-wrap {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 20px;
+    box-shadow: 0 6px 20px rgba(201,168,76,0.3);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--white);
+    text-align: center;
+    letter-spacing: -0.5px;
+  }
+
+  h1 span {
+    display: block;
+    font-size: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    color: var(--gold);
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .divider {
+    width: 36px; height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    border-radius: 2px;
+    margin: 14px auto 22px;
+  }
+
+  /* ── Body ── */
+  .body {
+    padding: 0 32px;
+  }
+
+  .input-wrap {
+    position: relative;
+    margin-bottom: 22px;
+  }
+
+  .input-wrap svg {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.35;
+  }
+
+  #nombreCliente {
+    width: 100%;
+    padding: 13px 14px 13px 42px;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: var(--white);
+    font-size: 0.93rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  #nombreCliente::placeholder { color: rgba(255,255,255,0.28); }
+  #nombreCliente:focus {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.06);
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 11px;
+  }
+
+  /* ── Grid horas ── */
+  #contenedorHoras {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  .hora-btn {
+    padding: 14px 10px 12px;
+    border: 1.5px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 0.87rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(.4,0,.2,1);
+    background: rgba(255,255,255,0.03);
+    color: rgba(255,255,255,0.72);
+    user-select: none;
+    animation: fadeUp 0.25s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(5px); }
+    to   { opacity:1; transform:translateY(0);   }
+  }
+
+  .hora-btn:hover:not(.ocupado):not(.seleccionado) {
+    border-color: rgba(201,168,76,0.45);
+    background: rgba(201,168,76,0.07);
+    color: var(--white);
+    transform: translateY(-1px);
+  }
+
+  .hora-btn.seleccionado {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: var(--black);
+    border-color: transparent;
+    font-weight: 700;
+    box-shadow: 0 4px 18px rgba(201,168,76,0.38);
+    transform: translateY(-1px);
+  }
+
+  /* Ocupado = rojo */
+  .hora-btn.ocupado {
+    background: rgba(192,57,43,0.1);
+    border-color: rgba(192,57,43,0.22);
+    color: rgba(192,57,43,0.5);
+    cursor: not-allowed;
+  }
+
+  .hora-btn.ocupado .hora-text { text-decoration: line-through; }
+
+  .hora-btn.ocupado .tag {
+    display: block;
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(192,57,43,0.55);
+    margin-top: 3px;
+  }
+
+  /* Almuerzo = neutro */
+  .hora-btn.almuerzo {
+    background: rgba(255,255,255,0.02);
+    border-color: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.18);
+    cursor: not-allowed;
+  }
+
+  .hora-btn.almuerzo .tag { color: rgba(255,255,255,0.18); }
+
+  .cargando {
+    grid-column: span 2;
+    text-align: center;
+    color: rgba(255,255,255,0.28);
+    font-size: 0.87rem;
+    padding: 24px 0;
+  }
+
+  /* ── Botón ── */
+  #btnReservar {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: var(--black);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.93rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    letter-spacing: 0.4px;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.28);
+  }
+
+  #btnReservar:disabled {
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.22);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  #btnReservar:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(201,168,76,0.42);
+  }
+
+  /* ── Mensaje ── */
+  #msgEstado {
+    margin-top: 13px;
+    min-height: 16px;
+    font-size: 0.86rem;
+    text-align: center;
+    border-radius: 10px;
+    transition: all 0.25s;
+    padding: 0;
+  }
+
+  #msgEstado.visible { padding: 11px 14px; }
+
+  #msgEstado.ok    { background: rgba(39,174,96,0.1);  color: #2ecc71; border: 1px solid rgba(39,174,96,0.2); }
+  #msgEstado.error { background: rgba(192,57,43,0.12); color: #e74c3c; border: 1px solid rgba(192,57,43,0.25); }
+  #msgEstado.info  { background: rgba(201,168,76,0.08);color: var(--gold); border: 1px solid rgba(201,168,76,0.15); }
+
+  .spinner {
+    display: inline-block;
+    width: 13px; height: 13px;
+    border: 2px solid rgba(0,0,0,0.25);
+    border-top-color: var(--black);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  .footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- BANNER EN ATENCIÓN -->
+  <div id="bannerAtencion" class="disponible">
+    <div class="banner-pulse"></div>
+    <div class="banner-texto">
+      <span class="banner-label" id="bannerLabel">En este momento</span>
+      <span class="banner-nombre" id="bannerNombre">Cargando...</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="icon-wrap">✂️</div>
+    <h1>
+      <span>Agenda tu turno</span>
+      Chichi Barber
+    </h1>
+    <div class="divider"></div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <div class="input-wrap">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#c9a84c" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+      </svg>
+      <input type="text" id="nombreCliente" placeholder="Tu nombre y apellido" maxlength="60" autocomplete="off">
+    </div>
+
+    <div class="section-label">Horarios disponibles — hoy</div>
+
+    <div id="contenedorHoras">
+      <div class="cargando">Cargando turnos…</div>
+    </div>
+
+    <button id="btnReservar" onclick="enviarDatos()" disabled>Confirmar Turno</button>
+
+    <div id="msgEstado"></div>
+
+    <div class="footer">Chichi Barber &nbsp;·&nbsp; Reservas online</div>
+  </div>
+
+</div>
+
+<script>
+  const URL_SCRIPT = "https://script.google.com/macros/s/AKfycby9MV6DAPhWpax-uPzvCfutxJ01Mg3MZjTnVYaEbIhKyFebkaeYseURZJnLugxOGTGI/exec";
+  let horaSeleccionada = "";
+
+  // ── Callback JSONP ──
+  function respuestaGoogle(data) {
+    actualizarBanner(data.atendiendoAhora);
+    renderHorarios(data.agenda);
+  }
+
+  // ── Banner superior ──
+  function actualizarBanner(nombreActual) {
+    const banner = document.getElementById('bannerAtencion');
+    const label  = document.getElementById('bannerLabel');
+    const nombre = document.getElementById('bannerNombre');
+
+    if (nombreActual) {
+      banner.className = "atendiendo";
+      label.textContent  = "En este momento se está atendiendo a";
+      nombre.textContent = nombreActual;
+    } else {
+      banner.className = "disponible";
+      label.textContent  = "En este momento";
+      nombre.textContent = "CITA DISPONIBLE";
+    }
+  }
+
+  // ── Render de horarios ──
+  function renderHorarios(agenda) {
+    const box = document.getElementById('contenedorHoras');
+    box.innerHTML = "";
+
+    let delay = 0;
+    for (let hora in agenda) {
+      const info       = agenda[hora];
+      const esAlmuerzo = info.motivo === "almuerzo";
+      const div        = document.createElement('div');
+      div.style.animationDelay = delay + "ms";
+      delay += 30;
+
+      if (info.ocupado) {
+        div.className = "hora-btn ocupado" + (esAlmuerzo ? " almuerzo" : "");
+        div.innerHTML = `
+          <span class="hora-text">${hora}</span>
+          <span class="tag">${esAlmuerzo ? "Almuerzo" : "Reservado"}</span>
+        `;
+      } else {
+        div.className = "hora-btn";
+        div.innerHTML = `<span class="hora-text">${hora}</span>`;
+        div.onclick = () => seleccionarHora(hora, div);
+      }
+
+      box.appendChild(div);
+    }
+  }
+
+  function seleccionarHora(hora, el) {
+    document.querySelectorAll('.hora-btn').forEach(b => b.classList.remove('seleccionado'));
+    el.classList.add('seleccionado');
+    horaSeleccionada = hora;
+    document.getElementById('btnReservar').disabled = false;
+    setMsg("", "");
+  }
+
+  function cargar() {
+    const s = document.createElement('script');
+    s.src = URL_SCRIPT + "?callback=respuestaGoogle&t=" + Date.now();
+    document.body.appendChild(s);
+  }
+
+  // ── Envío ──
+  async function enviarDatos() {
+    const nombre = document.getElementById('nombreCliente').value.trim();
+    if (!nombre)           { setMsg("⚠️ Por favor ingresa tu nombre.", "error"); return; }
+    if (!horaSeleccionada) { setMsg("⚠️ Selecciona un horario.", "error"); return; }
+
+    const btn = document.getElementById('btnReservar');
+    btn.innerHTML = '<span class="spinner"></span>Confirmando...';
+    btn.disabled = true;
+    setMsg("Enviando tu reserva...", "info");
+
+    try {
+      await fetch(URL_SCRIPT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ hora: horaSeleccionada, nombre: nombre })
+      });
+
+      setMsg("✅ ¡Turno registrado! Actualizando...", "ok");
+      setTimeout(() => window.location.reload(), 2000);
+
+    } catch (err) {
+      setMsg("❌ Error de conexión. Intenta nuevamente.", "error");
+      btn.innerHTML = "Confirmar Turno";
+      btn.disabled = false;
+    }
+  }
+
+  function setMsg(texto, tipo) {
+    const el = document.getElementById('msgEstado');
+    el.className = tipo ? tipo + " visible" : "";
+    el.innerText = texto;
+  }
+
+  window.onload = cargar;
+</script>
+
+</body>
+</html>
