@@ -22,6 +22,7 @@
     min-height: 100vh;
     background: var(--black);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 24px 16px;
@@ -51,7 +52,7 @@
     background: linear-gradient(90deg, transparent, var(--gold), transparent);
   }
 
-  /* ── BANNER "EN ATENCIÓN" ── */
+  /* ── BANNER ── */
   #bannerAtencion {
     width: 100%;
     padding: 16px 24px;
@@ -62,13 +63,8 @@
     transition: all 0.4s ease;
   }
 
-  #bannerAtencion.disponible {
-    background: rgba(39,174,96,0.08);
-  }
-
-  #bannerAtencion.atendiendo {
-    background: rgba(201,168,76,0.09);
-  }
+  #bannerAtencion.disponible { background: rgba(39,174,96,0.08); }
+  #bannerAtencion.atendiendo { background: rgba(201,168,76,0.09); }
 
   .banner-pulse {
     width: 10px; height: 10px;
@@ -85,19 +81,10 @@
     animation: pulse 1.8s ease-out infinite;
   }
 
-  .disponible .banner-pulse {
-    background: var(--green);
-  }
-  .disponible .banner-pulse::after {
-    border: 1.5px solid var(--green);
-  }
-
-  .atendiendo .banner-pulse {
-    background: var(--gold);
-  }
-  .atendiendo .banner-pulse::after {
-    border: 1.5px solid var(--gold);
-  }
+  .disponible .banner-pulse { background: var(--green); }
+  .disponible .banner-pulse::after { border: 1.5px solid var(--green); }
+  .atendiendo .banner-pulse { background: var(--gold); }
+  .atendiendo .banner-pulse::after { border: 1.5px solid var(--gold); }
 
   @keyframes pulse {
     0%   { transform: scale(1);   opacity: 0.8; }
@@ -105,11 +92,7 @@
     100% { transform: scale(1);   opacity: 0;   }
   }
 
-  .banner-texto {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
+  .banner-texto { display: flex; flex-direction: column; gap: 1px; }
 
   .banner-label {
     font-size: 0.65rem;
@@ -119,21 +102,14 @@
   }
 
   .disponible .banner-label { color: var(--green); }
-  .atendiendo .banner-label { color: var(--gold);  }
+  .atendiendo .banner-label { color: var(--gold); }
 
-  .banner-nombre {
-    font-size: 1rem;
-    font-weight: 600;
-    font-family: 'Playfair Display', serif;
-  }
-
+  .banner-nombre { font-size: 1rem; font-weight: 600; font-family: 'Playfair Display', serif; }
   .disponible .banner-nombre { color: rgba(255,255,255,0.6); font-style: italic; font-weight: 400; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; }
   .atendiendo .banner-nombre { color: var(--white); }
 
   /* ── Header ── */
-  .header {
-    padding: 28px 32px 0;
-  }
+  .header { padding: 28px 32px 0; }
 
   .icon-wrap {
     width: 48px; height: 48px;
@@ -172,15 +148,9 @@
     margin: 14px auto 22px;
   }
 
-  /* ── Body ── */
-  .body {
-    padding: 0 32px;
-  }
+  .body { padding: 0 32px; }
 
-  .input-wrap {
-    position: relative;
-    margin-bottom: 22px;
-  }
+  .input-wrap { position: relative; margin-bottom: 22px; }
 
   .input-wrap svg {
     position: absolute;
@@ -203,10 +173,7 @@
   }
 
   #nombreCliente::placeholder { color: rgba(255,255,255,0.28); }
-  #nombreCliente:focus {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.06);
-  }
+  #nombreCliente:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
 
   .section-label {
     font-size: 0.68rem;
@@ -217,7 +184,6 @@
     margin-bottom: 11px;
   }
 
-  /* ── Grid horas ── */
   #contenedorHoras {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -242,7 +208,7 @@
 
   @keyframes fadeUp {
     from { opacity:0; transform:translateY(5px); }
-    to   { opacity:1; transform:translateY(0);   }
+    to   { opacity:1; transform:translateY(0); }
   }
 
   .hora-btn:hover:not(.ocupado):not(.seleccionado) {
@@ -261,7 +227,6 @@
     transform: translateY(-1px);
   }
 
-  /* Ocupado = rojo */
   .hora-btn.ocupado {
     background: rgba(192,57,43,0.1);
     border-color: rgba(192,57,43,0.22);
@@ -280,7 +245,6 @@
     margin-top: 3px;
   }
 
-  /* Almuerzo = neutro */
   .hora-btn.almuerzo {
     background: rgba(255,255,255,0.02);
     border-color: rgba(255,255,255,0.04);
@@ -299,7 +263,6 @@
     padding: 24px 0;
   }
 
-  /* ── Botón ── */
   #btnReservar {
     width: 100%;
     padding: 15px;
@@ -328,7 +291,6 @@
     box-shadow: 0 8px 28px rgba(201,168,76,0.42);
   }
 
-  /* ── Mensaje ── */
   #msgEstado {
     margin-top: 13px;
     min-height: 16px;
@@ -340,10 +302,9 @@
   }
 
   #msgEstado.visible { padding: 11px 14px; }
-
   #msgEstado.ok    { background: rgba(39,174,96,0.1);  color: #2ecc71; border: 1px solid rgba(39,174,96,0.2); }
   #msgEstado.error { background: rgba(192,57,43,0.12); color: #e74c3c; border: 1px solid rgba(192,57,43,0.25); }
-  #msgEstado.info  { background: rgba(201,168,76,0.08);color: var(--gold); border: 1px solid rgba(201,168,76,0.15); }
+  #msgEstado.info  { background: rgba(201,168,76,0.08); color: var(--gold); border: 1px solid rgba(201,168,76,0.15); }
 
   .spinner {
     display: inline-block;
@@ -356,7 +317,7 @@
     margin-right: 6px;
   }
 
-  @keyframes spin { to { transform:rotate(360deg); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   .footer {
     margin-top: 20px;
@@ -366,13 +327,143 @@
     letter-spacing: 1.5px;
     text-transform: uppercase;
   }
+
+  /* ── LISTA DE CITAS ── */
+  .citas-card {
+    background: var(--dark);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 440px;
+    margin-top: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    position: relative;
+  }
+
+  .citas-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .citas-header {
+    padding: 18px 24px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .citas-titulo {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .citas-badge {
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .citas-lista {
+    list-style: none;
+    padding: 8px 0;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+
+  .citas-lista::-webkit-scrollbar { width: 4px; }
+  .citas-lista::-webkit-scrollbar-track { background: transparent; }
+  .citas-lista::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 4px; }
+
+  .cita-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    animation: fadeUp 0.3s ease both;
+    transition: background 0.15s;
+  }
+
+  .cita-item:last-child { border-bottom: none; }
+  .cita-item:hover { background: rgba(255,255,255,0.02); }
+
+  .cita-num {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: rgba(201,168,76,0.4);
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .cita-hora {
+    background: rgba(201,168,76,0.1);
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(201,168,76,0.18);
+    flex-shrink: 0;
+    min-width: 54px;
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+
+  .cita-nombre {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .citas-vacio {
+    padding: 28px 24px;
+    text-align: center;
+    color: rgba(255,255,255,0.2);
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+
+  .citas-cargando {
+    padding: 28px 24px;
+    text-align: center;
+    color: rgba(255,255,255,0.25);
+    font-size: 0.85rem;
+  }
+
+  .spinner-gold {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid rgba(201,168,76,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 7px;
+  }
 </style>
 </head>
 <body>
 
+<!-- CARD PRINCIPAL -->
 <div class="card">
 
-  <!-- BANNER EN ATENCIÓN -->
   <div id="bannerAtencion" class="disponible">
     <div class="banner-pulse"></div>
     <div class="banner-texto">
@@ -381,7 +472,6 @@
     </div>
   </div>
 
-  <!-- HEADER -->
   <div class="header">
     <div class="icon-wrap">✂️</div>
     <h1>
@@ -391,7 +481,6 @@
     <div class="divider"></div>
   </div>
 
-  <!-- BODY -->
   <div class="body">
 
     <div class="input-wrap">
@@ -416,8 +505,21 @@
 
 </div>
 
+<!-- CARD LISTA DE CITAS DEL DÍA -->
+<div class="citas-card">
+  <div class="citas-header">
+    <span class="citas-titulo">📋 Citas del día</span>
+    <span class="citas-badge" id="citasBadge">—</span>
+  </div>
+  <div id="contenedorCitas">
+    <div class="citas-cargando"><span class="spinner-gold"></span>Cargando citas...</div>
+  </div>
+</div>
+
 <script>
   const URL_SCRIPT = "https://script.google.com/macros/s/AKfycby9MV6DAPhWpax-uPzvCfutxJ01Mg3MZjTnVYaEbIhKyFebkaeYseURZJnLugxOGTGI/exec";
+  const CSV_URL    = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?output=csv";
+
   let horaSeleccionada = "";
 
   // ── Callback JSONP ──
@@ -426,28 +528,24 @@
     renderHorarios(data.agenda);
   }
 
-  // ── Banner superior ──
   function actualizarBanner(nombreActual) {
     const banner = document.getElementById('bannerAtencion');
     const label  = document.getElementById('bannerLabel');
     const nombre = document.getElementById('bannerNombre');
-
     if (nombreActual) {
-      banner.className = "atendiendo";
+      banner.className   = "atendiendo";
       label.textContent  = "En este momento se está atendiendo a";
       nombre.textContent = nombreActual;
     } else {
-      banner.className = "disponible";
+      banner.className   = "disponible";
       label.textContent  = "En este momento";
       nombre.textContent = "CITA DISPONIBLE";
     }
   }
 
-  // ── Render de horarios ──
   function renderHorarios(agenda) {
     const box = document.getElementById('contenedorHoras');
     box.innerHTML = "";
-
     let delay = 0;
     for (let hora in agenda) {
       const info       = agenda[hora];
@@ -467,7 +565,6 @@
         div.innerHTML = `<span class="hora-text">${hora}</span>`;
         div.onclick = () => seleccionarHora(hora, div);
       }
-
       box.appendChild(div);
     }
   }
@@ -484,6 +581,116 @@
     const s = document.createElement('script');
     s.src = URL_SCRIPT + "?callback=respuestaGoogle&t=" + Date.now();
     document.body.appendChild(s);
+  }
+
+  // ── Carga lista de citas desde CSV público ──
+  async function cargarCitasDelDia() {
+    try {
+      const res  = await fetch(CSV_URL + "&t=" + Date.now());
+      const text = await res.text();
+      const filas = parsearCSV(text);
+
+      const hoy = fechaHoy();
+
+      const citasHoy = [];
+      // fila 0 = encabezado, desde fila 1 son datos
+      for (let i = 1; i < filas.length; i++) {
+        const fila = filas[i];
+        if (fila.length < 3) continue;
+        const hora   = fila[0].trim();
+        const nombre = fila[1].trim();
+        const fecha  = fila[2].trim();
+        if (!hora || !nombre || !fecha) continue;
+        if (extraerFecha(fecha) === hoy) {
+          citasHoy.push({ hora, nombre });
+        }
+      }
+
+      // Ordenar cronológicamente
+      citasHoy.sort((a, b) => horaANumero(a.hora) - horaANumero(b.hora));
+
+      renderCitas(citasHoy);
+
+    } catch (err) {
+      document.getElementById('contenedorCitas').innerHTML =
+        '<div class="citas-vacio">No se pudo cargar la lista.</div>';
+    }
+  }
+
+  function parsearCSV(text) {
+    const filas = [];
+    const lineas = text.split('\n');
+    for (const linea of lineas) {
+      if (!linea.trim()) continue;
+      const cols = [];
+      let cur = '', enComillas = false;
+      for (let i = 0; i < linea.length; i++) {
+        const c = linea[i];
+        if (c === '"') { enComillas = !enComillas; }
+        else if (c === ',' && !enComillas) { cols.push(cur); cur = ''; }
+        else { cur += c; }
+      }
+      cols.push(cur);
+      filas.push(cols);
+    }
+    return filas;
+  }
+
+  // Fecha de hoy en GMT-4 como "YYYY-MM-DD"
+  function fechaHoy() {
+    const ahora = new Date();
+    const local = new Date(ahora.getTime() + (-4 * 60 - ahora.getTimezoneOffset()) * 60000);
+    return local.toISOString().slice(0, 10);
+  }
+
+  // Extrae "YYYY-MM-DD" de un string de fecha variado
+  function extraerFecha(str) {
+    const d = new Date(str);
+    if (!isNaN(d)) {
+      const local = new Date(d.getTime() + (-4 * 60 - d.getTimezoneOffset()) * 60000);
+      return local.toISOString().slice(0, 10);
+    }
+    return str.slice(0, 10);
+  }
+
+  function horaANumero(hora) {
+    const partes = hora.trim().split(' ');
+    let h = parseInt(partes[0]);
+    const ampm = (partes[1] || '').toUpperCase();
+    if (ampm === 'PM' && h !== 12) h += 12;
+    if (ampm === 'AM' && h === 12) h = 0;
+    return h;
+  }
+
+  function renderCitas(citas) {
+    const contenedor = document.getElementById('contenedorCitas');
+    const badge      = document.getElementById('citasBadge');
+
+    badge.textContent = citas.length > 0
+      ? citas.length + " turno" + (citas.length !== 1 ? "s" : "")
+      : "Sin turnos";
+
+    if (citas.length === 0) {
+      contenedor.innerHTML = '<div class="citas-vacio">No hay citas registradas para hoy.</div>';
+      return;
+    }
+
+    const ul = document.createElement('ul');
+    ul.className = 'citas-lista';
+    citas.forEach((c, i) => {
+      const li = document.createElement('li');
+      li.className = 'cita-item';
+      li.style.animationDelay = (i * 40) + 'ms';
+      li.innerHTML = `
+        <span class="cita-num">${i + 1}</span>
+        <span class="cita-hora">${c.hora}</span>
+        <span class="cita-nombre">${c.nombre}</span>
+      `;
+      ul.appendChild(li);
+    });
+
+    contenedor.innerHTML = '';
+    contenedor.appendChild(ul);
   }
 
   // ── Envío ──
@@ -504,10 +711,8 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ hora: horaSeleccionada, nombre: nombre })
       });
-
       setMsg("✅ ¡Turno registrado! Actualizando...", "ok");
       setTimeout(() => window.location.reload(), 2000);
-
     } catch (err) {
       setMsg("❌ Error de conexión. Intenta nuevamente.", "error");
       btn.innerHTML = "Confirmar Turno";
@@ -521,7 +726,10 @@
     el.innerText = texto;
   }
 
-  window.onload = cargar;
+  window.onload = () => {
+    cargar();
+    cargarCitasDelDia();
+  };
 </script>
 
 </body>
