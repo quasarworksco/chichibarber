@@ -14,8 +14,11 @@
     --gold:   #c9a84c;
     --gold2:  #e8c96d;
     --red:    #c0392b;
+    --red2:   #e74c3c;
     --green:  #27ae60;
     --white:  #ffffff;
+    --wa:     #25D366;
+    --wa2:    #1ebe5d;
   }
 
   body {
@@ -211,7 +214,7 @@
     to   { opacity:1; transform:translateY(0); }
   }
 
-  .hora-btn:hover:not(.ocupado):not(.seleccionado) {
+  .hora-btn:hover:not(.ocupado):not(.almuerzo):not(.seleccionado) {
     border-color: rgba(201,168,76,0.45);
     background: rgba(201,168,76,0.07);
     color: var(--white);
@@ -227,24 +230,40 @@
     transform: translateY(-1px);
   }
 
+  /* ── OCUPADO: rojo vivo y llamativo ── */
   .hora-btn.ocupado {
-    background: rgba(192,57,43,0.1);
-    border-color: rgba(192,57,43,0.22);
-    color: rgba(192,57,43,0.5);
+    background: rgba(192,57,43,0.18);
+    border-color: rgba(231,76,60,0.5);
+    color: rgba(231,76,60,0.9);
     cursor: not-allowed;
+    box-shadow: 0 0 10px rgba(192,57,43,0.15);
   }
 
-  .hora-btn.ocupado .hora-text { text-decoration: line-through; }
+  .hora-btn.ocupado .hora-text {
+    text-decoration: line-through;
+    text-decoration-color: rgba(231,76,60,0.6);
+  }
 
   .hora-btn.ocupado .tag {
     display: block;
     font-size: 0.6rem;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: rgba(192,57,43,0.55);
+    color: rgba(231,76,60,0.7);
     margin-top: 3px;
   }
 
+  /* ── Barra roja al tope del botón ocupado ── */
+  .hora-btn.ocupado::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), var(--red2));
+    border-radius: 2px 2px 0 0;
+    margin: -14px -10px 8px;
+  }
+
+  /* Almuerzo = gris neutro */
   .hora-btn.almuerzo {
     background: rgba(255,255,255,0.02);
     border-color: rgba(255,255,255,0.04);
@@ -263,6 +282,34 @@
     padding: 24px 0;
   }
 
+  /* ── Leyenda de colores ── */
+  .leyenda {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.5px;
+  }
+
+  .leyenda-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .leyenda-dot.libre    { background: rgba(255,255,255,0.25); }
+  .leyenda-dot.ocupado  { background: var(--red2); }
+  .leyenda-dot.almuerzo { background: rgba(255,255,255,0.1); }
+
+  /* ── Botón confirmar ── */
   #btnReservar {
     width: 100%;
     padding: 15px;
@@ -291,6 +338,43 @@
     box-shadow: 0 8px 28px rgba(201,168,76,0.42);
   }
 
+  /* ── Botón WhatsApp ── */
+  #btnWhatsapp {
+    display: none;
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--wa), var(--wa2));
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.93rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    letter-spacing: 0.4px;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.28);
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 10px;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  #btnWhatsapp.visible {
+    display: flex;
+    animation: fadeUp 0.35s ease both;
+  }
+
+  #btnWhatsapp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(37,211,102,0.42);
+  }
+
+  #btnWhatsapp svg { flex-shrink: 0; }
+
+  /* ── Mensaje estado ── */
   #msgEstado {
     margin-top: 13px;
     min-height: 16px;
@@ -492,11 +576,26 @@
 
     <div class="section-label">Horarios disponibles — hoy</div>
 
+    <!-- Leyenda -->
+    <div class="leyenda">
+      <div class="leyenda-item"><span class="leyenda-dot libre"></span>Disponible</div>
+      <div class="leyenda-item"><span class="leyenda-dot ocupado"></span>Ocupado</div>
+      <div class="leyenda-item"><span class="leyenda-dot almuerzo"></span>Almuerzo</div>
+    </div>
+
     <div id="contenedorHoras">
       <div class="cargando">Cargando turnos…</div>
     </div>
 
     <button id="btnReservar" onclick="enviarDatos()" disabled>Confirmar Turno</button>
+
+    <!-- Botón WhatsApp (aparece tras confirmar) -->
+    <a id="btnWhatsapp" href="#" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Enviar cita por WhatsApp
+    </a>
 
     <div id="msgEstado"></div>
 
@@ -517,10 +616,13 @@
 </div>
 
 <script>
-  const URL_SCRIPT = "https://script.google.com/macros/s/AKfycby9MV6DAPhWpax-uPzvCfutxJ01Mg3MZjTnVYaEbIhKyFebkaeYseURZJnLugxOGTGI/exec";
-  const CSV_URL    = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?output=csv";
+  const URL_SCRIPT  = "https://script.google.com/macros/s/AKfycby9MV6DAPhWpax-uPzvCfutxJ01Mg3MZjTnVYaEbIhKyFebkaeYseURZJnLugxOGTGI/exec";
+  const CSV_URL     = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?output=csv";
+  const WA_NUMERO   = "584246783781";
 
   let horaSeleccionada = "";
+  // Guardamos aquí las horas ocupadas al cargar, para validación frontend
+  let horasOcupadas = new Set();
 
   // ── Callback JSONP ──
   function respuestaGoogle(data) {
@@ -546,6 +648,8 @@
   function renderHorarios(agenda) {
     const box = document.getElementById('contenedorHoras');
     box.innerHTML = "";
+    horasOcupadas.clear();
+
     let delay = 0;
     for (let hora in agenda) {
       const info       = agenda[hora];
@@ -555,6 +659,7 @@
       delay += 30;
 
       if (info.ocupado) {
+        horasOcupadas.add(hora); // registrar para validación frontend
         div.className = "hora-btn ocupado" + (esAlmuerzo ? " almuerzo" : "");
         div.innerHTML = `
           <span class="hora-text">${hora}</span>
@@ -583,17 +688,15 @@
     document.body.appendChild(s);
   }
 
-  // ── Carga lista de citas desde CSV público ──
+  // ── Carga lista de citas desde CSV ──
   async function cargarCitasDelDia() {
     try {
       const res  = await fetch(CSV_URL + "&t=" + Date.now());
       const text = await res.text();
       const filas = parsearCSV(text);
-
-      const hoy = fechaHoy();
+      const hoy   = fechaHoy();
 
       const citasHoy = [];
-      // fila 0 = encabezado, desde fila 1 son datos
       for (let i = 1; i < filas.length; i++) {
         const fila = filas[i];
         if (fila.length < 3) continue;
@@ -601,16 +704,11 @@
         const nombre = fila[1].trim();
         const fecha  = fila[2].trim();
         if (!hora || !nombre || !fecha) continue;
-        if (extraerFecha(fecha) === hoy) {
-          citasHoy.push({ hora, nombre });
-        }
+        if (extraerFecha(fecha) === hoy) citasHoy.push({ hora, nombre });
       }
 
-      // Ordenar cronológicamente
       citasHoy.sort((a, b) => horaANumero(a.hora) - horaANumero(b.hora));
-
       renderCitas(citasHoy);
-
     } catch (err) {
       document.getElementById('contenedorCitas').innerHTML =
         '<div class="citas-vacio">No se pudo cargar la lista.</div>';
@@ -619,8 +717,7 @@
 
   function parsearCSV(text) {
     const filas = [];
-    const lineas = text.split('\n');
-    for (const linea of lineas) {
+    for (const linea of text.split('\n')) {
       if (!linea.trim()) continue;
       const cols = [];
       let cur = '', enComillas = false;
@@ -636,14 +733,12 @@
     return filas;
   }
 
-  // Fecha de hoy en GMT-4 como "YYYY-MM-DD"
   function fechaHoy() {
     const ahora = new Date();
     const local = new Date(ahora.getTime() + (-4 * 60 - ahora.getTimezoneOffset()) * 60000);
     return local.toISOString().slice(0, 10);
   }
 
-  // Extrae "YYYY-MM-DD" de un string de fecha variado
   function extraerFecha(str) {
     const d = new Date(str);
     if (!isNaN(d)) {
@@ -699,6 +794,14 @@
     if (!nombre)           { setMsg("⚠️ Por favor ingresa tu nombre.", "error"); return; }
     if (!horaSeleccionada) { setMsg("⚠️ Selecciona un horario.", "error"); return; }
 
+    // Validación frontend: verificar que la hora sigue libre
+    if (horasOcupadas.has(horaSeleccionada)) {
+      setMsg("⚠️ Ese horario ya fue reservado. Elige otro.", "error");
+      // Recargar para reflejar el estado actual
+      setTimeout(() => window.location.reload(), 1800);
+      return;
+    }
+
     const btn = document.getElementById('btnReservar');
     btn.innerHTML = '<span class="spinner"></span>Confirmando...';
     btn.disabled = true;
@@ -711,13 +814,31 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ hora: horaSeleccionada, nombre: nombre })
       });
-      setMsg("✅ ¡Turno registrado! Actualizando...", "ok");
-      setTimeout(() => window.location.reload(), 2000);
+
+      // Marcar como ocupada en el frontend de inmediato
+      horasOcupadas.add(horaSeleccionada);
+
+      setMsg("✅ ¡Turno registrado exitosamente!", "ok");
+      btn.innerHTML = "✅ Turno confirmado";
+
+      // Mostrar botón WhatsApp
+      mostrarBotonWhatsapp(nombre, horaSeleccionada);
+
     } catch (err) {
       setMsg("❌ Error de conexión. Intenta nuevamente.", "error");
       btn.innerHTML = "Confirmar Turno";
       btn.disabled = false;
     }
+  }
+
+  function mostrarBotonWhatsapp(nombre, hora) {
+    const mensaje = encodeURIComponent(
+      `¡Hola Chichi Barber! 💈 Acabo de reservar mi turno:\n\n👤 Nombre: ${nombre}\n🕐 Hora: ${hora}\n📅 Fecha: hoy\n\n¡Allí estaré!`
+    );
+    const url = `https://wa.me/${WA_NUMERO}?text=${mensaje}`;
+    const btn = document.getElementById('btnWhatsapp');
+    btn.href = url;
+    btn.classList.add('visible');
   }
 
   function setMsg(texto, tipo) {
