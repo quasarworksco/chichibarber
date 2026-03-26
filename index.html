@@ -51,10 +51,10 @@
 
 <div class="card">
   <div class="status-bar">
-    <div class="pulse"></div>
+    <div class="pulse" id="dotStatus"></div>
     <div>
-      <p style="font-size: 9px; opacity: 0.5; text-transform: uppercase;">Estado de Sincronización</p>
-      <p id="statusDesc" style="font-size: 13px; font-weight: 700; color: var(--green);">Conectando con Excel...</p>
+      <p style="font-size: 9px; opacity: 0.5; text-transform: uppercase;">Estado del Barbero</p>
+      <p id="statusDesc" style="font-size: 13px; font-weight: 700; color: var(--green);">Sincronizando...</p>
     </div>
   </div>
 
@@ -78,7 +78,7 @@
 </div>
 
 <script>
-  // ENLACE ACTUALIZADO
+  // CONFIGURACIÓN DE CONEXIÓN
   const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?output=csv";
   const URL_SCRIPT = "https://script.google.com/macros/s/AKfycby9MV6DAPhWpax-uPzvCfutxJ01Mg3MZjTnVYaEbIhKyFebkaeYseURZJnLugxOGTGI/exec";
 
@@ -120,10 +120,9 @@
       
       baseDeDatos = filas.map(f => {
         const c = f.split(",");
-        let fRaw = (c[2] || "").trim().split(" ")[0]; // Quita horas si existen
-        fRaw = fRaw.replace(/\//g, "-"); // Normaliza separadores
+        let fRaw = (c[2] || "").trim().split(" ")[0]; 
+        fRaw = fRaw.replace(/\//g, "-");
 
-        // Si la fecha es D-M-YYYY, la pasamos a YYYY-MM-DD
         const p = fRaw.split("-");
         if(p.length === 3 && p[0].length <= 2) {
            fRaw = `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
@@ -137,9 +136,35 @@
       }).filter(x => x.hora);
 
       render();
-      document.getElementById('statusDesc').innerText = "Agenda Sincronizada";
+      updateStatus();
     } catch(e) {
       console.error("Error CSV:", e);
+    }
+  }
+
+  function updateStatus() {
+    const st = document.getElementById('statusDesc');
+    const dot = document.getElementById('dotStatus');
+    const ahora = new Date();
+    const hoyISO = ahora.toISOString().split('T')[0];
+    
+    // Obtener hora actual redondeada al turno (Ej: 14:58 -> 2 PM)
+    let h = ahora.getHours();
+    let ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12;
+    h = h ? h : 12; 
+    const horaActualTexto = `${h} ${ampm}`;
+
+    const citaAhora = baseDeDatos.find(b => b.fecha === hoyISO && b.hora === horaActualTexto);
+
+    if (citaAhora) {
+        st.innerText = `OCUPADO: ${citaAhora.nombre.toUpperCase()}`;
+        st.style.color = "var(--gold)";
+        dot.style.background = "var(--gold)";
+    } else {
+        st.innerText = "DISPONIBLE EN ESTE MOMENTO";
+        st.style.color = "var(--green)";
+        dot.style.background = "var(--green)";
     }
   }
 
@@ -172,7 +197,7 @@
       hCont.appendChild(b);
     });
 
-    if(!lCont.innerHTML) lCont.innerHTML = "<p style='font-size:10px; opacity:0.3; text-align:center'>Libre para hoy.</p>";
+    if(!lCont.innerHTML) lCont.innerHTML = "<p style='font-size:10px; opacity:0.3; text-align:center'>No hay citas registradas.</p>";
   }
 
   function validar() {
@@ -205,7 +230,7 @@
 
   document.getElementById('nombreCli').oninput = validar;
   init();
-  setInterval(fetchData, 60000); // Refrescar cada minuto
+  setInterval(fetchData, 60000); 
 </script>
 </body>
 </html>
