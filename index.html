@@ -3,1107 +3,209 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chichi Barber — Reservas</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Chichi Barber — Reservas Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --black:  #0a0a0a;
-    --dark:   #1a1a1a;
-    --gold:   #c9a84c;
-    --gold2:  #e8c96d;
-    --red:    #c0392b;
-    --red2:   #e74c3c;
-    --green:  #27ae60;
-    --white:  #ffffff;
-    --wa:     #25D366;
-    --wa2:    #1ebe5d;
+    --black: #080808;
+    --dark: #121212;
+    --gold: #c9a84c;
+    --border: rgba(255, 255, 255, 0.1);
+    --green: #27ae60;
   }
 
-  body {
-    min-height: 100vh;
-    background: var(--black);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 24px 16px 40px;
-    font-family: 'DM Sans', sans-serif;
-    background-image:
-      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.07) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.05) 0%, transparent 60%);
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--black); color: white; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px 15px; }
 
-  /* ── CARD ── */
-  .card {
-    background: var(--dark);
-    border: 1px solid rgba(201,168,76,0.18);
-    border-radius: 24px;
-    width: 100%;
-    max-width: 440px;
-    padding: 0 0 28px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-  }
+  .card { width: 100%; max-width: 420px; background: var(--dark); border: 1px solid var(--border); padding: 25px; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  }
+  .status-bar { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 2px; margin-bottom: 20px; border-left: 3px solid var(--gold); }
+  .pulse { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-  /* ── BANNER ── */
-  #bannerAtencion {
-    width: 100%;
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    transition: all 0.4s ease;
-  }
+  .label-sq { font-size: 10px; text-transform: uppercase; color: var(--gold); font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; display: block; }
 
-  #bannerAtencion.disponible { background: rgba(39,174,96,0.08); }
-  #bannerAtencion.atendiendo { background: rgba(201,168,76,0.09); }
+  .input-sq { width: 100%; background: #1a1a1a; border: 1px solid var(--border); padding: 14px; color: white; margin-bottom: 20px; border-radius: 2px; font-family: 'Inter'; font-size: 14px; }
+  .input-sq:focus { border-color: var(--gold); outline: none; background: #222; }
 
-  .banner-pulse {
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    position: relative;
-  }
+  .dias-grid { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
+  .dia-item { min-width: 62px; padding: 12px; background: #1a1a1a; border: 1px solid var(--border); text-align: center; cursor: pointer; transition: 0.2s; border-radius: 2px; }
+  .dia-item.active { background: var(--gold); color: black; border-color: var(--gold); }
+  .dia-item span { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+  .dia-item b { font-size: 18px; font-family: 'Oswald'; }
 
-  .banner-pulse::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    animation: pulse 1.8s ease-out infinite;
-  }
+  .horas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 25px; }
+  .hora-sq { padding: 15px 5px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: white; font-weight: 700; cursor: pointer; border-radius: 2px; font-size: 12px; transition: 0.2s; }
+  .hora-sq:hover:not(.ocupado) { border-color: var(--gold); }
+  .hora-sq.selected { background: var(--gold); color: black; border-color: var(--gold); }
+  .hora-sq.ocupado { opacity: 0.1; cursor: not-allowed; border-color: transparent; text-decoration: line-through; }
 
-  .disponible .banner-pulse { background: var(--green); }
-  .disponible .banner-pulse::after { border: 1.5px solid var(--green); }
-  .atendiendo .banner-pulse { background: var(--gold); }
-  .atendiendo .banner-pulse::after { border: 1.5px solid var(--gold); }
+  .btn-main { width: 100%; padding: 18px; background: var(--gold); color: black; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; font-family: 'Oswald'; letter-spacing: 1px; transition: 0.3s; }
+  .btn-main:disabled { background: #333; color: #666; cursor: not-allowed; }
 
-  @keyframes pulse {
-    0%   { transform: scale(1);   opacity: 0.8; }
-    70%  { transform: scale(2.2); opacity: 0; }
-    100% { transform: scale(1);   opacity: 0; }
-  }
-
-  .banner-texto { display: flex; flex-direction: column; gap: 1px; }
-
-  .banner-label {
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 1.8px;
-    text-transform: uppercase;
-  }
-
-  .disponible .banner-label { color: var(--green); }
-  .atendiendo .banner-label { color: var(--gold); }
-
-  .banner-nombre { font-size: 0.95rem; font-weight: 600; font-family: 'Playfair Display', serif; }
-  .disponible .banner-nombre { color: rgba(255,255,255,0.55); font-style: italic; font-weight: 400; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; }
-  .atendiendo .banner-nombre { color: var(--white); }
-
-  /* ── Header ── */
-  .header { padding: 22px 24px 0; }
-
-  .icon-wrap {
-    width: 44px; height: 44px;
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 14px;
-    font-size: 18px;
-    box-shadow: 0 6px 20px rgba(201,168,76,0.3);
-  }
-
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.55rem;
-    font-weight: 900;
-    color: var(--white);
-    text-align: center;
-    letter-spacing: -0.5px;
-  }
-
-  h1 span {
-    display: block;
-    font-size: 0.72rem;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 400;
-    color: var(--gold);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-
-  .divider {
-    width: 32px; height: 2px;
-    background: linear-gradient(90deg, var(--gold), var(--gold2));
-    border-radius: 2px;
-    margin: 12px auto 18px;
-  }
-
-  /* ── Body ── */
-  .body { padding: 0 20px; }
-
-  /* ── Input nombre ── */
-  .input-wrap {
-    position: relative;
-    margin-bottom: 14px;
-  }
-
-  .input-wrap svg {
-    position: absolute;
-    left: 13px; top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.35;
-    flex-shrink: 0;
-  }
-
-  .input-field {
-    width: 100%;
-    padding: 12px 12px 12px 40px;
-    background: rgba(255,255,255,0.05);
-    border: 1.5px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    color: var(--white);
-    font-size: 0.9rem;
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  .input-field::placeholder { color: rgba(255,255,255,0.28); }
-  .input-field:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
-
-  /* ── Selector de días (Lun-Vie) ── */
-  .dias-label {
-    font-size: 0.63rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 9px;
-  }
-
-  .dias-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 6px;
-    margin-bottom: 18px;
-  }
-
-  .dia-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 4px;
-    border: 1.5px solid rgba(255,255,255,0.07);
-    border-radius: 11px;
-    background: rgba(255,255,255,0.03);
-    cursor: pointer;
-    transition: all 0.18s ease;
-    user-select: none;
-    gap: 2px;
-    min-width: 0;
-  }
-
-  .dia-btn:hover:not(.dia-seleccionado):not(.dia-pasado) {
-    border-color: rgba(201,168,76,0.4);
-    background: rgba(201,168,76,0.06);
-  }
-
-  .dia-btn.dia-seleccionado {
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    border-color: transparent;
-    box-shadow: 0 3px 14px rgba(201,168,76,0.35);
-  }
-
-  .dia-btn.dia-pasado {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  .dia-letra {
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
-    line-height: 1;
-  }
-
-  .dia-btn.dia-seleccionado .dia-letra { color: rgba(0,0,0,0.6); }
-  .dia-btn.dia-pasado .dia-letra { color: rgba(255,255,255,0.3); }
-
-  .dia-num {
-    font-size: 1rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.85);
-    line-height: 1;
-  }
-
-  .dia-btn.dia-seleccionado .dia-num { color: var(--black); }
-  .dia-btn.dia-pasado .dia-num { color: rgba(255,255,255,0.4); }
-
-  .dia-hoy-dot {
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--gold);
-    display: none;
-  }
-
-  .dia-btn.dia-hoy .dia-hoy-dot { display: block; }
-  .dia-btn.dia-hoy.dia-seleccionado .dia-hoy-dot { background: var(--black); }
-
-  /* ── Section label horarios ── */
-  .section-label {
-    font-size: 0.63rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 9px;
-  }
-
-  /* ── Leyenda ── */
-  .leyenda {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-  }
-
-  .leyenda-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.38);
-  }
-
-  .leyenda-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .leyenda-dot.libre    { background: rgba(255,255,255,0.22); }
-  .leyenda-dot.ocupado  { background: var(--red2); }
-  .leyenda-dot.almuerzo { background: rgba(255,255,255,0.1); }
-
-  /* ── Grid horas ── */
-  #contenedorHoras {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 7px;
-    margin-bottom: 20px;
-  }
-
-  .hora-btn {
-    padding: 12px 6px 10px;
-    border: 1.5px solid rgba(255,255,255,0.07);
-    border-radius: 11px;
-    text-align: center;
-    font-size: 0.82rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.18s cubic-bezier(.4,0,.2,1);
-    background: rgba(255,255,255,0.03);
-    color: rgba(255,255,255,0.72);
-    user-select: none;
-    animation: fadeUp 0.22s ease both;
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(4px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-
-  .hora-btn:hover:not(.ocupado):not(.almuerzo):not(.seleccionado) {
-    border-color: rgba(201,168,76,0.45);
-    background: rgba(201,168,76,0.07);
-    color: var(--white);
-    transform: translateY(-1px);
-  }
-
-  .hora-btn.seleccionado {
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    color: var(--black);
-    border-color: transparent;
-    font-weight: 700;
-    box-shadow: 0 4px 16px rgba(201,168,76,0.38);
-    transform: translateY(-1px);
-  }
-
-  /* OCUPADO — rojo llamativo */
-  .hora-btn.ocupado {
-    background: rgba(192,57,43,0.16);
-    border-color: rgba(231,76,60,0.45);
-    color: rgba(231,76,60,0.85);
-    cursor: not-allowed;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hora-btn.ocupado::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--red), var(--red2));
-  }
-
-  .hora-btn.ocupado .hora-text {
-    text-decoration: line-through;
-    text-decoration-color: rgba(231,76,60,0.5);
-  }
-
-  .hora-btn.ocupado .tag {
-    display: block;
-    font-size: 0.55rem;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: rgba(231,76,60,0.65);
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* ALMUERZO */
-  .hora-btn.almuerzo {
-    background: rgba(255,255,255,0.02);
-    border-color: rgba(255,255,255,0.04);
-    color: rgba(255,255,255,0.18);
-    cursor: not-allowed;
-  }
-
-  .hora-btn.almuerzo .hora-text { text-decoration: none; }
-  .hora-btn.almuerzo .tag { color: rgba(255,255,255,0.15); }
-
-  .cargando {
-    grid-column: span 3;
-    text-align: center;
-    color: rgba(255,255,255,0.28);
-    font-size: 0.85rem;
-    padding: 22px 0;
-  }
-
-  /* ── Botón confirmar ── */
-  #btnReservar {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    color: var(--black);
-    border: none;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 0.93rem;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-    letter-spacing: 0.4px;
-    box-shadow: 0 4px 20px rgba(201,168,76,0.28);
-  }
-
-  #btnReservar:disabled {
-    background: rgba(255,255,255,0.07);
-    color: rgba(255,255,255,0.22);
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-
-  #btnReservar:not(:disabled):hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(201,168,76,0.42);
-  }
-
-  /* ── Botón WhatsApp ── */
-  #btnWhatsapp {
-    display: none;
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, var(--wa), var(--wa2));
-    color: var(--white);
-    border: none;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 0.93rem;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-    letter-spacing: 0.4px;
-    box-shadow: 0 4px 20px rgba(37,211,102,0.28);
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    margin-top: 10px;
-    text-decoration: none;
-    text-align: center;
-  }
-
-  #btnWhatsapp.visible { display: flex; animation: fadeUp 0.35s ease both; }
-  #btnWhatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,0.42); }
-
-  /* ── Mensaje estado ── */
-  #msgEstado {
-    margin-top: 12px;
-    min-height: 14px;
-    font-size: 0.84rem;
-    text-align: center;
-    border-radius: 10px;
-    transition: all 0.25s;
-    padding: 0;
-  }
-
-  #msgEstado.visible { padding: 10px 14px; }
-  #msgEstado.ok    { background: rgba(39,174,96,0.1);  color: #2ecc71; border: 1px solid rgba(39,174,96,0.2); }
-  #msgEstado.error { background: rgba(192,57,43,0.12); color: #e74c3c; border: 1px solid rgba(192,57,43,0.25); }
-  #msgEstado.info  { background: rgba(201,168,76,0.08); color: var(--gold); border: 1px solid rgba(201,168,76,0.15); }
-
-  .spinner {
-    display: inline-block;
-    width: 13px; height: 13px;
-    border: 2px solid rgba(0,0,0,0.25);
-    border-top-color: var(--black);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle;
-    margin-right: 6px;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .footer {
-    margin-top: 18px;
-    text-align: center;
-    font-size: 0.63rem;
-    color: rgba(255,255,255,0.13);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-  }
-
-  /* ── LISTA DE CITAS ── */
-  .citas-card {
-    background: var(--dark);
-    border: 1px solid rgba(201,168,76,0.18);
-    border-radius: 24px;
-    width: 100%;
-    max-width: 440px;
-    margin-top: 14px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    position: relative;
-  }
-
-  .citas-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  }
-
-  .citas-header {
-    padding: 16px 20px 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-
-  .citas-titulo {
-    font-size: 0.63rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-
-  .citas-badge {
-    background: rgba(201,168,76,0.12);
-    color: var(--gold);
-    font-size: 0.63rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    padding: 3px 9px;
-    border-radius: 20px;
-    border: 1px solid rgba(201,168,76,0.2);
-  }
-
-  .citas-lista {
-    list-style: none;
-    padding: 6px 0;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-
-  .citas-lista::-webkit-scrollbar { width: 4px; }
-  .citas-lista::-webkit-scrollbar-track { background: transparent; }
-  .citas-lista::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 4px; }
-
-  .cita-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    animation: fadeUp 0.3s ease both;
-    transition: background 0.15s;
-  }
-
-  .cita-item:last-child { border-bottom: none; }
-  .cita-item:hover { background: rgba(255,255,255,0.02); }
-
-  .cita-num { font-size: 0.62rem; font-weight: 700; color: rgba(201,168,76,0.38); width: 16px; text-align: center; flex-shrink: 0; }
-
-  .cita-hora {
-    background: rgba(201,168,76,0.1);
-    color: var(--gold);
-    font-size: 0.73rem;
-    font-weight: 700;
-    padding: 3px 9px;
-    border-radius: 7px;
-    border: 1px solid rgba(201,168,76,0.18);
-    flex-shrink: 0;
-    min-width: 52px;
-    text-align: center;
-  }
-
-  .cita-nombre { font-size: 0.88rem; font-weight: 500; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  .citas-vacio { padding: 26px 20px; text-align: center; color: rgba(255,255,255,0.2); font-size: 0.83rem; font-style: italic; }
-  .citas-cargando { padding: 26px 20px; text-align: center; color: rgba(255,255,255,0.25); font-size: 0.83rem; }
-
-  .spinner-gold {
-    display: inline-block;
-    width: 11px; height: 11px;
-    border: 2px solid rgba(201,168,76,0.2);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle;
-    margin-right: 7px;
-  }
+  .citas-hoy { margin-top: 25px; border-top: 1px solid var(--border); padding-top: 15px; }
+  .cita-row { display: flex; justify-content: space-between; font-size: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
 </style>
 </head>
 <body>
 
-<!-- CARD PRINCIPAL -->
 <div class="card">
-
-  <div id="bannerAtencion" class="disponible">
-    <div class="banner-pulse"></div>
-    <div class="banner-texto">
-      <span class="banner-label" id="bannerLabel">En este momento</span>
-      <span class="banner-nombre" id="bannerNombre">Cargando...</span>
+  <div class="status-bar">
+    <div class="pulse"></div>
+    <div>
+      <p style="font-size: 9px; opacity: 0.5; text-transform: uppercase;">Estado de Sincronización</p>
+      <p id="statusDesc" style="font-size: 13px; font-weight: 700; color: var(--green);">Conectando con Excel...</p>
     </div>
   </div>
 
-  <div class="header">
-    <div class="icon-wrap">✂️</div>
-    <h1>
-      <span>Agenda tu turno</span>
-      Chichi Barber
-    </h1>
-    <div class="divider"></div>
-  </div>
+  <h2 style="font-family: 'Oswald'; text-align: center; margin-bottom: 25px; letter-spacing: 2px;">CHICHI BARBER</h2>
 
-  <div class="body">
+  <label class="label-sq">Nombre del Cliente</label>
+  <input type="text" id="nombreCli" class="input-sq" placeholder="ESCRIBE AQUÍ...">
 
-    <!-- Nombre -->
-    <div class="input-wrap">
-      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#c9a84c" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-      </svg>
-      <input type="text" id="nombreCliente" class="input-field" placeholder="Tu nombre y apellido" maxlength="60" autocomplete="off">
-    </div>
+  <label class="label-sq">Selecciona el día</label>
+  <div class="dias-grid" id="gridDias"></div>
 
-    <!-- Selector días Lun-Vie -->
-    <div class="dias-label">Selecciona el día</div>
-    <div class="dias-grid" id="diasGrid"></div>
+  <label class="label-sq">Horas disponibles</label>
+  <div class="horas-grid" id="gridHoras"></div>
 
-    <!-- Horarios -->
-    <div class="section-label" id="labelHorarios">Horarios disponibles</div>
+  <button id="btnConfirmar" class="btn-main" disabled onclick="enviarCita()">Confirmar Reserva</button>
 
-    <div class="leyenda">
-      <div class="leyenda-item"><span class="leyenda-dot libre"></span>Disponible</div>
-      <div class="leyenda-item"><span class="leyenda-dot ocupado"></span>Ocupado</div>
-      <div class="leyenda-item"><span class="leyenda-dot almuerzo"></span>Almuerzo</div>
-    </div>
-
-    <div id="contenedorHoras">
-      <div class="cargando">Cargando turnos…</div>
-    </div>
-
-    <button id="btnReservar" onclick="enviarDatos()" disabled>Confirmar Turno</button>
-
-    <a id="btnWhatsapp" href="#" target="_blank">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="white">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-      Enviar cita por WhatsApp
-    </a>
-
-    <div id="msgEstado"></div>
-
-    <div class="footer">Chichi Barber &nbsp;·&nbsp; Reservas online</div>
-  </div>
-
-</div>
-
-<!-- CARD LISTA DE CITAS DEL DÍA -->
-<div class="citas-card">
-  <div class="citas-header">
-    <span class="citas-titulo">📋 Citas del día</span>
-    <span class="citas-badge" id="citasBadge">—</span>
-  </div>
-  <div id="contenedorCitas">
-    <div class="citas-cargando"><span class="spinner-gold"></span>Cargando citas...</div>
+  <div class="citas-hoy">
+    <label class="label-sq">Agenda confirmada</label>
+    <div id="listaCitas"></div>
   </div>
 </div>
 
 <script>
+  // ENLACE ACTUALIZADO
+  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?output=csv";
   const URL_SCRIPT = "https://script.google.com/macros/s/AKfycby9MV6DAPhWpax-uPzvCfutxJ01Mg3MZjTnVYaEbIhKyFebkaeYseURZJnLugxOGTGI/exec";
-  const CSV_URL    = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?gid=0&single=true&output=csv";
-  const WA_NUMERO  = "584246783781";
 
-  let horaSeleccionada = "";
-  let horasOcupadas    = new Set();
-  let fechaActiva      = "";   // "YYYY-MM-DD"
-  let todasLasCitas    = [];
+  let baseDeDatos = [];
+  let fechaSel = "";
+  let horaSel = "";
 
-  // ─────────────────────────────────────────────
-  // FECHA EN VENEZUELA (GMT-4) — SIN ambigüedad UTC
-  // Nunca usamos new Date("YYYY-MM-DD") porque lo
-  // interpreta en UTC y da un día menos en GMT-4.
-  // ─────────────────────────────────────────────
+  function init() {
+    const cont = document.getElementById('gridDias');
+    const diasSemana = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const hoy = new Date();
+    
+    for(let i=0; i<7; i++) {
+      let d = new Date();
+      d.setDate(hoy.getDate() + i);
+      let iso = d.toISOString().split('T')[0];
+      if(i===0) fechaSel = iso;
 
-  // Devuelve el objeto Date actual en hora Venezuela
-  function ahoraVE() {
-    // Obtiene el offset real del dispositivo y lo ajusta a GMT-4
-    const ahora = new Date();
-    const utcMs = ahora.getTime() + ahora.getTimezoneOffset() * 60000;
-    return new Date(utcMs + (-4 * 3600000)); // GMT-4 Venezuela
-  }
-
-  // "YYYY-MM-DD" del día actual en Venezuela
-  function hoyVE() {
-    const d = ahoraVE();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${dd}`;
-  }
-
-  // Construye Date a medianoche Venezuela para un "YYYY-MM-DD"
-  // sin riesgo de conversión UTC
-  function fechaVEdesdeStr(str) {
-    const [y, m, d] = str.split('-').map(Number);
-    // Crear en hora local del dispositivo no importa; usamos solo año/mes/día
-    return { y, m, d };
-  }
-
-  // ─────────────────────────────────────────────
-  // Normaliza cualquier string de fecha a "YYYY-MM-DD" Venezuela
-  // ─────────────────────────────────────────────
-  function normalizarFecha(str) {
-    if (!str || !str.trim()) return null;
-    str = str.trim();
-
-    // Formato Google Sheets exportado en inglés: "M/D/YYYY H:MM:SS" o "M/D/YYYY"
-    const matchUS = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-    if (matchUS) {
-      const mes = String(matchUS[1]).padStart(2, '0');
-      const dia = String(matchUS[2]).padStart(2, '0');
-      const ano = matchUS[3];
-      // Construir fecha en UTC noon para evitar problemas de zona
-      const d = new Date(`${ano}-${mes}-${dia}T12:00:00Z`);
-      if (!isNaN(d)) {
-        // Convertir ese timestamp UTC a hora Venezuela para obtener la fecha correcta
-        const ve = new Date(d.getTime() - 4 * 3600000); // UTC-4
-        return `${ve.getUTCFullYear()}-${String(ve.getUTCMonth()+1).padStart(2,'0')}-${String(ve.getUTCDate()).padStart(2,'0')}`;
-      }
+      let el = document.createElement('div');
+      el.className = `dia-item ${i===0 ? 'active' : ''}`;
+      el.innerHTML = `<span>${diasSemana[d.getDay()]}</span><b>${d.getDate()}</b>`;
+      el.onclick = () => {
+        document.querySelectorAll('.dia-item').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        fechaSel = iso;
+        horaSel = "";
+        render();
+      };
+      cont.appendChild(el);
     }
-
-    // Formato ISO "YYYY-MM-DDTHH:MM:SSZ" o similar
-    if (str.match(/^\d{4}-\d{2}-\d{2}/)) {
-      // Tomar solo la parte de fecha y asumir Venezuela
-      return str.slice(0, 10);
-    }
-
-    return null;
+    fetchData();
   }
 
-  // ─────────────────────────────────────────────
-  // SELECTOR DE DÍAS: Lun-Vie de la semana actual
-  // ─────────────────────────────────────────────
-  function initDias() {
-    const grid = document.getElementById('diasGrid');
-    const hoy  = ahoraVE();
-    const hoyStr = hoyVE();
-
-    // Encontrar el lunes de esta semana
-    const diaSemana = hoy.getDay(); // 0=Dom, 1=Lun ... 6=Sab
-    // Diferencia para llegar al lunes (si hoy es domingo = 0, lunes fue hace 6 días)
-    const diffLunes = diaSemana === 0 ? -6 : 1 - diaSemana;
-
-    const DIAS_NOMBRE = ['Lun','Mar','Mié','Jue','Vie'];
-
-    // Generar Lun a Vie
-    for (let i = 0; i < 5; i++) {
-      const diff = diffLunes + i;
-      const fecha = new Date(hoy);
-      fecha.setDate(hoy.getDate() + diff);
-
-      const y  = fecha.getFullYear();
-      const m  = String(fecha.getMonth() + 1).padStart(2, '0');
-      const d  = String(fecha.getDate()).padStart(2, '0');
-      const fechaStr = `${y}-${m}-${d}`;
-
-      const esPasado  = fechaStr < hoyStr;
-      const esHoy     = fechaStr === hoyStr;
-
-      const btn = document.createElement('div');
-      btn.className = 'dia-btn' +
-        (esHoy     ? ' dia-hoy'       : '') +
-        (esPasado  ? ' dia-pasado'    : '');
-
-      btn.innerHTML = `
-        <span class="dia-letra">${DIAS_NOMBRE[i]}</span>
-        <span class="dia-num">${parseInt(d)}</span>
-        <span class="dia-hoy-dot"></span>
-      `;
-
-      if (!esPasado) {
-        btn.addEventListener('click', () => seleccionarDia(fechaStr, btn));
-      }
-
-      btn.dataset.fecha = fechaStr;
-      grid.appendChild(btn);
-    }
-
-    // Seleccionar hoy por defecto (o el primer día hábil si hoy es fin de semana)
-    let diaDefault = hoyStr;
-    if (hoy.getDay() === 6) { // sábado → seleccionar viernes
-      const v = new Date(hoy); v.setDate(hoy.getDate() - 1);
-      diaDefault = `${v.getFullYear()}-${String(v.getMonth()+1).padStart(2,'0')}-${String(v.getDate()).padStart(2,'0')}`;
-    } else if (hoy.getDay() === 0) { // domingo → seleccionar lunes
-      const lu = new Date(hoy); lu.setDate(hoy.getDate() + 1);
-      diaDefault = `${lu.getFullYear()}-${String(lu.getMonth()+1).padStart(2,'0')}-${String(lu.getDate()).padStart(2,'0')}`;
-    }
-
-    // Activar el botón del día por defecto
-    const btnDefault = grid.querySelector(`[data-fecha="${diaDefault}"]`);
-    if (btnDefault) seleccionarDia(diaDefault, btnDefault);
-  }
-
-  function seleccionarDia(fechaStr, btn) {
-    document.querySelectorAll('.dia-btn').forEach(b => b.classList.remove('dia-seleccionado'));
-    btn.classList.add('dia-seleccionado');
-    fechaActiva = fechaStr;
-    horaSeleccionada = "";
-    document.getElementById('btnReservar').disabled = true;
-    document.getElementById('btnWhatsapp').classList.remove('visible');
-    setMsg("", "");
-    actualizarLabelHorarios();
-    renderHorariosConFecha();
-    renderCitasDelDia();
-  }
-
-  function actualizarLabelHorarios() {
-    const hoyStr = hoyVE();
-    const label  = document.getElementById('labelHorarios');
-    const DIAS   = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-    const [y, m, d] = fechaActiva.split('-').map(Number);
-    // Obtener día de semana sin problema UTC: usar noon UTC
-    const fecha = new Date(`${fechaActiva}T12:00:00Z`);
-    const nombreDia = DIAS[fecha.getUTCDay()];
-
-    if (fechaActiva === hoyStr) {
-      label.textContent = `Horarios disponibles — hoy`;
-    } else {
-      label.textContent = `Horarios — ${nombreDia} ${d}/${m}/${y}`;
-    }
-  }
-
-  // ── JSONP: horarios de hoy desde Apps Script ──
-  function respuestaGoogle(data) {
-    actualizarBanner(data.atendiendoAhora);
-    const hoyStr = hoyVE();
-    if (fechaActiva === hoyStr) {
-      renderHorariosDesdeAgenda(data.agenda);
-    }
-  }
-
-  function actualizarBanner(nombreActual) {
-    const banner = document.getElementById('bannerAtencion');
-    const label  = document.getElementById('bannerLabel');
-    const nombre = document.getElementById('bannerNombre');
-    if (nombreActual) {
-      banner.className   = "atendiendo";
-      label.textContent  = "En este momento se está atendiendo a";
-      nombre.textContent = nombreActual;
-    } else {
-      banner.className   = "disponible";
-      label.textContent  = "En este momento";
-      nombre.textContent = "CITA DISPONIBLE";
-    }
-  }
-
-  // ── Agenda vacía 11 AM → 11 PM ──
-  function agendaVacia() {
-    const agenda = {};
-    for (let h = 11; h <= 23; h++) {
-      let label;
-      if (h < 12)        label = h + " AM";
-      else if (h === 12) label = "12 PM";
-      else               label = (h - 12) + " PM";
-      agenda[label] = { ocupado: false, nombre: "" };
-    }
-    agenda["2 PM"] = { ocupado: true, motivo: "almuerzo", nombre: "" };
-    return agenda;
-  }
-
-  function renderHorariosDesdeAgenda(agenda) {
-    horasOcupadas.clear();
-    for (let hora in agenda) {
-      if (agenda[hora].ocupado && agenda[hora].motivo !== "almuerzo") {
-        horasOcupadas.add(hora);
-      }
-    }
-    renderGrid(agenda);
-  }
-
-  function renderHorariosConFecha() {
-    const agenda = agendaVacia();
-    for (const cita of todasLasCitas) {
-      if (cita.fecha === fechaActiva && agenda[cita.hora] !== undefined) {
-        agenda[cita.hora].ocupado = true;
-        agenda[cita.hora].nombre  = cita.nombre;
-      }
-    }
-    horasOcupadas.clear();
-    for (let hora in agenda) {
-      if (agenda[hora].ocupado && agenda[hora].motivo !== "almuerzo") {
-        horasOcupadas.add(hora);
-      }
-    }
-    renderGrid(agenda);
-  }
-
-  function renderGrid(agenda) {
-    const box = document.getElementById('contenedorHoras');
-    box.innerHTML = "";
-    let delay = 0;
-    for (let hora in agenda) {
-      const info       = agenda[hora];
-      const esAlmuerzo = info.motivo === "almuerzo";
-      const div        = document.createElement('div');
-      div.style.animationDelay = delay + "ms";
-      delay += 25;
-
-      if (info.ocupado) {
-        div.className = "hora-btn ocupado" + (esAlmuerzo ? " almuerzo" : "");
-        div.innerHTML = `
-          <span class="hora-text">${hora}</span>
-          <span class="tag">${esAlmuerzo ? "Almuerzo" : (info.nombre || "Reservado")}</span>
-        `;
-      } else {
-        div.className = "hora-btn";
-        div.innerHTML = `<span class="hora-text">${hora}</span>`;
-        div.onclick = () => seleccionarHora(hora, div);
-      }
-      box.appendChild(div);
-    }
-  }
-
-  function seleccionarHora(hora, el) {
-    document.querySelectorAll('.hora-btn').forEach(b => b.classList.remove('seleccionado'));
-    el.classList.add('seleccionado');
-    horaSeleccionada = hora;
-    document.getElementById('btnReservar').disabled = false;
-    setMsg("", "");
-  }
-
-  // ── JSONP loader ──
-  function cargarScriptHoy() {
-    const s = document.createElement('script');
-    s.src = URL_SCRIPT + "?callback=respuestaGoogle&t=" + Date.now();
-    document.body.appendChild(s);
-  }
-
-  // ── CSV completo ──
-  async function cargarCSV() {
+  async function fetchData() {
     try {
-      const res  = await fetch(CSV_URL + "&t=" + Date.now());
-      const text = await res.text();
-      const filas = parsearCSV(text);
-      todasLasCitas = [];
+      const r = await fetch(CSV_URL + "&cache=" + new Date().getTime());
+      const t = await r.text();
+      const filas = t.split("\n").slice(1);
+      
+      baseDeDatos = filas.map(f => {
+        const c = f.split(",");
+        let fRaw = (c[2] || "").trim().split(" ")[0]; // Quita horas si existen
+        fRaw = fRaw.replace(/\//g, "-"); // Normaliza separadores
 
-      for (let i = 1; i < filas.length; i++) {
-        const fila = filas[i];
-        if (!fila || fila.length < 3) continue;
-        const horaRaw   = fila[0] ? fila[0].trim() : "";
-        const nombreRaw = fila[1] ? fila[1].trim() : "";
-        const fechaRaw  = fila[2] ? fila[2].trim() : "";
-        if (!horaRaw || !nombreRaw || !fechaRaw) continue;
-        const fechaNorm = normalizarFecha(fechaRaw);
-        if (fechaNorm) todasLasCitas.push({ hora: horaRaw, nombre: nombreRaw, fecha: fechaNorm });
+        // Si la fecha es D-M-YYYY, la pasamos a YYYY-MM-DD
+        const p = fRaw.split("-");
+        if(p.length === 3 && p[0].length <= 2) {
+           fRaw = `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
+        }
+        
+        return { 
+          hora: (c[0] || "").trim(), 
+          nombre: (c[1] || "").trim(), 
+          fecha: fRaw 
+        };
+      }).filter(x => x.hora);
+
+      render();
+      document.getElementById('statusDesc').innerText = "Agenda Sincronizada";
+    } catch(e) {
+      console.error("Error CSV:", e);
+    }
+  }
+
+  function render() {
+    const hCont = document.getElementById('gridHoras');
+    const lCont = document.getElementById('listaCitas');
+    hCont.innerHTML = "";
+    lCont.innerHTML = "";
+
+    const turnos = ["11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM"];
+    const ocupados = baseDeDatos.filter(b => b.fecha === fechaSel);
+
+    turnos.forEach(t => {
+      const cita = ocupados.find(o => o.hora === t);
+      const b = document.createElement('button');
+      b.className = `hora-sq ${cita ? 'ocupado' : ''}`;
+      b.innerText = t;
+
+      if(!cita) {
+        b.onclick = () => {
+          document.querySelectorAll('.hora-sq').forEach(x => x.classList.remove('selected'));
+          b.classList.add('selected');
+          horaSel = t;
+          validar();
+        };
+      } else {
+        b.disabled = true;
+        lCont.innerHTML += `<div class="cita-row"><b style="color:var(--gold)">${t}</b><span>${cita.nombre}</span></div>`;
       }
-
-      // Para hoy, el JSONP ya habrá renderizado horarios; solo actualizar lista
-      // Para otros días seleccionados, actualizar horarios también
-      const hoyStr = hoyVE();
-      if (fechaActiva !== hoyStr) renderHorariosConFecha();
-      renderCitasDelDia();
-
-    } catch (err) {
-      document.getElementById('contenedorCitas').innerHTML =
-        '<div class="citas-vacio">No se pudo cargar la lista.</div>';
-    }
-  }
-
-  function parsearCSV(text) {
-    const filas = [];
-    for (const linea of text.split('\n')) {
-      if (!linea.trim()) continue;
-      const cols = [];
-      let cur = '', enComillas = false;
-      for (let i = 0; i < linea.length; i++) {
-        const c = linea[i];
-        if (c === '"') { enComillas = !enComillas; }
-        else if (c === ',' && !enComillas) { cols.push(cur); cur = ''; }
-        else { cur += c; }
-      }
-      cols.push(cur);
-      filas.push(cols);
-    }
-    return filas;
-  }
-
-  function horaANumero(hora) {
-    const p = hora.trim().split(' ');
-    let h = parseInt(p[0]);
-    const ap = (p[1] || '').toUpperCase();
-    if (ap === 'PM' && h !== 12) h += 12;
-    if (ap === 'AM' && h === 12) h = 0;
-    return h;
-  }
-
-  function renderCitasDelDia() {
-    const contenedor = document.getElementById('contenedorCitas');
-    const badge      = document.getElementById('citasBadge');
-
-    const citasHoy = todasLasCitas
-      .filter(c => c.fecha === fechaActiva)
-      .sort((a, b) => horaANumero(a.hora) - horaANumero(b.hora));
-
-    badge.textContent = citasHoy.length > 0
-      ? citasHoy.length + " turno" + (citasHoy.length !== 1 ? "s" : "")
-      : "Sin turnos";
-
-    if (citasHoy.length === 0) {
-      contenedor.innerHTML = '<div class="citas-vacio">No hay citas registradas para este día.</div>';
-      return;
-    }
-
-    const ul = document.createElement('ul');
-    ul.className = 'citas-lista';
-    citasHoy.forEach((c, i) => {
-      const li = document.createElement('li');
-      li.className = 'cita-item';
-      li.style.animationDelay = (i * 35) + 'ms';
-      li.innerHTML = `
-        <span class="cita-num">${i + 1}</span>
-        <span class="cita-hora">${c.hora}</span>
-        <span class="cita-nombre">${c.nombre}</span>
-      `;
-      ul.appendChild(li);
+      hCont.appendChild(b);
     });
 
-    contenedor.innerHTML = '';
-    contenedor.appendChild(ul);
+    if(!lCont.innerHTML) lCont.innerHTML = "<p style='font-size:10px; opacity:0.3; text-align:center'>Libre para hoy.</p>";
   }
 
-  // ── Envío ──
-  async function enviarDatos() {
-    const nombre = document.getElementById('nombreCliente').value.trim();
-    if (!nombre)           { setMsg("⚠️ Por favor ingresa tu nombre.", "error"); return; }
-    if (!horaSeleccionada) { setMsg("⚠️ Selecciona un horario.", "error"); return; }
-    if (!fechaActiva)      { setMsg("⚠️ Selecciona una fecha.", "error"); return; }
+  function validar() {
+    const n = document.getElementById('nombreCli').value;
+    document.getElementById('btnConfirmar').disabled = !(n.length > 2 && horaSel);
+  }
 
-    if (horasOcupadas.has(horaSeleccionada)) {
-      setMsg("⚠️ Ese horario ya está reservado. Elige otro.", "error");
-      setTimeout(() => location.reload(), 1800);
-      return;
-    }
-
-    const btn = document.getElementById('btnReservar');
-    btn.innerHTML = '<span class="spinner"></span>Confirmando...';
+  function enviarCita() {
+    const btn = document.getElementById('btnConfirmar');
+    const nombre = document.getElementById('nombreCli').value;
+    btn.innerText = "REGISTRANDO...";
     btn.disabled = true;
-    setMsg("Enviando tu reserva...", "info");
 
-    try {
-      await fetch(URL_SCRIPT, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hora: horaSeleccionada, nombre: nombre, fecha: fechaActiva })
-      });
+    const datos = new FormData();
+    datos.append('nombre', nombre);
+    datos.append('hora', horaSel);
+    datos.append('fecha', fechaSel);
 
-      horasOcupadas.add(horaSeleccionada);
-      todasLasCitas.push({ hora: horaSeleccionada, nombre: nombre, fecha: fechaActiva });
-
-      setMsg("✅ ¡Turno registrado exitosamente!", "ok");
-      btn.innerHTML = "✅ Turno confirmado";
-      mostrarBotonWhatsapp(nombre, horaSeleccionada, fechaActiva);
-      renderCitasDelDia();
-
-    } catch (err) {
-      setMsg("❌ Error de conexión. Intenta nuevamente.", "error");
-      btn.innerHTML = "Confirmar Turno";
-      btn.disabled = false;
-    }
+    fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: datos })
+    .then(() => {
+        btn.innerText = "¡RESERVADO!";
+        btn.style.background = "var(--green)";
+        setTimeout(() => {
+            const wa = `https://wa.me/584246783781?text=Confirmo cita: ${nombre} - ${fechaSel} a las ${horaSel}`;
+            window.open(wa, '_blank');
+            location.reload();
+        }, 1200);
+    });
   }
 
-  function mostrarBotonWhatsapp(nombre, hora, fecha) {
-    const [y, m, d] = fecha.split('-');
-    const fechaTexto = `${d}/${m}/${y}`;
-    const mensaje = encodeURIComponent(
-      `¡Hola Chichi Barber! 💈 Acabo de reservar mi turno:\n\n👤 Nombre: ${nombre}\n📅 Fecha: ${fechaTexto}\n🕐 Hora: ${hora}\n\n¡Allí estaré!`
-    );
-    const btnWa = document.getElementById('btnWhatsapp');
-    btnWa.href = `https://wa.me/${WA_NUMERO}?text=${mensaje}`;
-    btnWa.classList.add('visible');
-  }
-
-  function setMsg(texto, tipo) {
-    const el = document.getElementById('msgEstado');
-    el.className = tipo ? tipo + " visible" : "";
-    el.innerText = texto;
-  }
-
-  // ── Init ──
-  window.onload = () => {
-    initDias();        // construye Lun-Vie y selecciona hoy
-    cargarScriptHoy(); // horarios de hoy vía JSONP
-    cargarCSV();       // citas completas del CSV
-  };
+  document.getElementById('nombreCli').oninput = validar;
+  init();
+  setInterval(fetchData, 60000); // Refrescar cada minuto
 </script>
-
 </body>
 </html>
