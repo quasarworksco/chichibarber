@@ -27,21 +27,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 24px 16px;
+    justify-content: flex-start;
+    padding: 24px 16px 40px;
     font-family: 'DM Sans', sans-serif;
     background-image:
       radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.07) 0%, transparent 60%),
       radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.05) 0%, transparent 60%);
   }
 
+  /* ── CARD ── */
   .card {
     background: var(--dark);
     border: 1px solid rgba(201,168,76,0.18);
     border-radius: 24px;
     width: 100%;
     max-width: 440px;
-    padding: 0 0 32px;
+    padding: 0 0 28px;
     position: relative;
     overflow: hidden;
     box-shadow: 0 30px 80px rgba(0,0,0,0.6);
@@ -58,10 +59,10 @@
   /* ── BANNER ── */
   #bannerAtencion {
     width: 100%;
-    padding: 16px 24px;
+    padding: 14px 20px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     border-bottom: 1px solid rgba(255,255,255,0.06);
     transition: all 0.4s ease;
   }
@@ -70,7 +71,7 @@
   #bannerAtencion.atendiendo { background: rgba(201,168,76,0.09); }
 
   .banner-pulse {
-    width: 10px; height: 10px;
+    width: 9px; height: 9px;
     border-radius: 50%;
     flex-shrink: 0;
     position: relative;
@@ -91,36 +92,42 @@
 
   @keyframes pulse {
     0%   { transform: scale(1);   opacity: 0.8; }
-    70%  { transform: scale(2.2); opacity: 0;   }
-    100% { transform: scale(1);   opacity: 0;   }
+    70%  { transform: scale(2.2); opacity: 0; }
+    100% { transform: scale(1);   opacity: 0; }
   }
 
   .banner-texto { display: flex; flex-direction: column; gap: 1px; }
 
-  .banner-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+  .banner-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+  }
+
   .disponible .banner-label { color: var(--green); }
   .atendiendo .banner-label { color: var(--gold); }
 
-  .banner-nombre { font-size: 1rem; font-weight: 600; font-family: 'Playfair Display', serif; }
-  .disponible .banner-nombre { color: rgba(255,255,255,0.6); font-style: italic; font-weight: 400; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; }
+  .banner-nombre { font-size: 0.95rem; font-weight: 600; font-family: 'Playfair Display', serif; }
+  .disponible .banner-nombre { color: rgba(255,255,255,0.55); font-style: italic; font-weight: 400; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; }
   .atendiendo .banner-nombre { color: var(--white); }
 
   /* ── Header ── */
-  .header { padding: 28px 32px 0; }
+  .header { padding: 22px 24px 0; }
 
   .icon-wrap {
-    width: 48px; height: 48px;
+    width: 44px; height: 44px;
     background: linear-gradient(135deg, var(--gold), var(--gold2));
-    border-radius: 13px;
+    border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 16px;
-    font-size: 20px;
+    margin: 0 auto 14px;
+    font-size: 18px;
     box-shadow: 0 6px 20px rgba(201,168,76,0.3);
   }
 
   h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.7rem;
+    font-size: 1.55rem;
     font-weight: 900;
     color: var(--white);
     text-align: center;
@@ -129,42 +136,47 @@
 
   h1 span {
     display: block;
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     font-family: 'DM Sans', sans-serif;
     font-weight: 400;
     color: var(--gold);
-    letter-spacing: 3.5px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 4px;
   }
 
   .divider {
-    width: 36px; height: 2px;
+    width: 32px; height: 2px;
     background: linear-gradient(90deg, var(--gold), var(--gold2));
     border-radius: 2px;
-    margin: 14px auto 22px;
+    margin: 12px auto 18px;
   }
 
-  .body { padding: 0 32px; }
+  /* ── Body ── */
+  .body { padding: 0 20px; }
 
   /* ── Input nombre ── */
-  .input-wrap { position: relative; margin-bottom: 16px; }
+  .input-wrap {
+    position: relative;
+    margin-bottom: 14px;
+  }
 
   .input-wrap svg {
     position: absolute;
-    left: 14px; top: 50%;
+    left: 13px; top: 50%;
     transform: translateY(-50%);
     opacity: 0.35;
+    flex-shrink: 0;
   }
 
   .input-field {
     width: 100%;
-    padding: 13px 14px 13px 42px;
+    padding: 12px 12px 12px 40px;
     background: rgba(255,255,255,0.05);
     border: 1.5px solid rgba(255,255,255,0.1);
     border-radius: 12px;
     color: var(--white);
-    font-size: 0.93rem;
+    font-size: 0.9rem;
     font-family: 'DM Sans', sans-serif;
     outline: none;
     transition: border-color 0.2s, background 0.2s;
@@ -173,112 +185,150 @@
   .input-field::placeholder { color: rgba(255,255,255,0.28); }
   .input-field:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
 
-  /* ── Selector de fecha ── */
-  .fecha-wrap {
-    position: relative;
-    margin-bottom: 22px;
-  }
-
-  .fecha-wrap svg {
-    position: absolute;
-    left: 14px; top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.35;
-    pointer-events: none;
-  }
-
-  #fechaSeleccionada {
-    width: 100%;
-    padding: 13px 14px 13px 42px;
-    background: rgba(255,255,255,0.05);
-    border: 1.5px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    color: var(--white);
-    font-size: 0.93rem;
-    font-family: 'DM Sans', sans-serif;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-    cursor: pointer;
-    /* Fix color picker en navegadores oscuros */
-    color-scheme: dark;
-  }
-
-  #fechaSeleccionada:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
-
-  .fecha-badge {
-    display: inline-block;
-    margin-bottom: 8px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 20px;
-    padding: 3px 10px;
-  }
-
-  .section-label {
-    font-size: 0.68rem;
+  /* ── Selector de días (Lun-Vie) ── */
+  .dias-label {
+    font-size: 0.63rem;
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 11px;
+    margin-bottom: 9px;
+  }
+
+  .dias-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+
+  .dia-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 4px;
+    border: 1.5px solid rgba(255,255,255,0.07);
+    border-radius: 11px;
+    background: rgba(255,255,255,0.03);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    user-select: none;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .dia-btn:hover:not(.dia-seleccionado):not(.dia-pasado) {
+    border-color: rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.06);
+  }
+
+  .dia-btn.dia-seleccionado {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border-color: transparent;
+    box-shadow: 0 3px 14px rgba(201,168,76,0.35);
+  }
+
+  .dia-btn.dia-pasado {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .dia-letra {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    line-height: 1;
+  }
+
+  .dia-btn.dia-seleccionado .dia-letra { color: rgba(0,0,0,0.6); }
+  .dia-btn.dia-pasado .dia-letra { color: rgba(255,255,255,0.3); }
+
+  .dia-num {
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    line-height: 1;
+  }
+
+  .dia-btn.dia-seleccionado .dia-num { color: var(--black); }
+  .dia-btn.dia-pasado .dia-num { color: rgba(255,255,255,0.4); }
+
+  .dia-hoy-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: none;
+  }
+
+  .dia-btn.dia-hoy .dia-hoy-dot { display: block; }
+  .dia-btn.dia-hoy.dia-seleccionado .dia-hoy-dot { background: var(--black); }
+
+  /* ── Section label horarios ── */
+  .section-label {
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 9px;
   }
 
   /* ── Leyenda ── */
   .leyenda {
     display: flex;
-    gap: 14px;
-    margin-bottom: 14px;
+    gap: 12px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
   }
 
   .leyenda-item {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.68rem;
-    color: rgba(255,255,255,0.4);
+    gap: 5px;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.38);
   }
 
   .leyenda-dot {
-    width: 8px; height: 8px;
+    width: 7px; height: 7px;
     border-radius: 50%;
     flex-shrink: 0;
   }
 
-  .leyenda-dot.libre    { background: rgba(255,255,255,0.25); }
+  .leyenda-dot.libre    { background: rgba(255,255,255,0.22); }
   .leyenda-dot.ocupado  { background: var(--red2); }
   .leyenda-dot.almuerzo { background: rgba(255,255,255,0.1); }
 
   /* ── Grid horas ── */
   #contenedorHoras {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 22px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    margin-bottom: 20px;
   }
 
   .hora-btn {
-    padding: 14px 10px 12px;
+    padding: 12px 6px 10px;
     border: 1.5px solid rgba(255,255,255,0.07);
-    border-radius: 12px;
+    border-radius: 11px;
     text-align: center;
-    font-size: 0.87rem;
+    font-size: 0.82rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.18s cubic-bezier(.4,0,.2,1);
     background: rgba(255,255,255,0.03);
     color: rgba(255,255,255,0.72);
     user-select: none;
-    animation: fadeUp 0.25s ease both;
+    animation: fadeUp 0.22s ease both;
+    min-width: 0;
+    overflow: hidden;
   }
 
   @keyframes fadeUp {
-    from { opacity:0; transform:translateY(5px); }
+    from { opacity:0; transform:translateY(4px); }
     to   { opacity:1; transform:translateY(0); }
   }
 
@@ -294,17 +344,16 @@
     color: var(--black);
     border-color: transparent;
     font-weight: 700;
-    box-shadow: 0 4px 18px rgba(201,168,76,0.38);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.38);
     transform: translateY(-1px);
   }
 
   /* OCUPADO — rojo llamativo */
   .hora-btn.ocupado {
-    background: rgba(192,57,43,0.18);
-    border-color: rgba(231,76,60,0.5);
-    color: rgba(231,76,60,0.9);
+    background: rgba(192,57,43,0.16);
+    border-color: rgba(231,76,60,0.45);
+    color: rgba(231,76,60,0.85);
     cursor: not-allowed;
-    box-shadow: 0 0 10px rgba(192,57,43,0.15);
     position: relative;
     overflow: hidden;
   }
@@ -319,23 +368,22 @@
 
   .hora-btn.ocupado .hora-text {
     text-decoration: line-through;
-    text-decoration-color: rgba(231,76,60,0.6);
+    text-decoration-color: rgba(231,76,60,0.5);
   }
 
   .hora-btn.ocupado .tag {
     display: block;
-    font-size: 0.58rem;
-    letter-spacing: 1px;
+    font-size: 0.55rem;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
-    color: rgba(231,76,60,0.7);
-    margin-top: 3px;
+    color: rgba(231,76,60,0.65);
+    margin-top: 2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
   }
 
-  /* ALMUERZO — gris neutro */
+  /* ALMUERZO */
   .hora-btn.almuerzo {
     background: rgba(255,255,255,0.02);
     border-color: rgba(255,255,255,0.04);
@@ -344,20 +392,20 @@
   }
 
   .hora-btn.almuerzo .hora-text { text-decoration: none; }
-  .hora-btn.almuerzo .tag { color: rgba(255,255,255,0.18); }
+  .hora-btn.almuerzo .tag { color: rgba(255,255,255,0.15); }
 
   .cargando {
-    grid-column: span 2;
+    grid-column: span 3;
     text-align: center;
     color: rgba(255,255,255,0.28);
-    font-size: 0.87rem;
-    padding: 24px 0;
+    font-size: 0.85rem;
+    padding: 22px 0;
   }
 
   /* ── Botón confirmar ── */
   #btnReservar {
     width: 100%;
-    padding: 15px;
+    padding: 14px;
     background: linear-gradient(135deg, var(--gold), var(--gold2));
     color: var(--black);
     border: none;
@@ -387,7 +435,7 @@
   #btnWhatsapp {
     display: none;
     width: 100%;
-    padding: 15px;
+    padding: 14px;
     background: linear-gradient(135deg, var(--wa), var(--wa2));
     color: var(--white);
     border: none;
@@ -412,16 +460,16 @@
 
   /* ── Mensaje estado ── */
   #msgEstado {
-    margin-top: 13px;
-    min-height: 16px;
-    font-size: 0.86rem;
+    margin-top: 12px;
+    min-height: 14px;
+    font-size: 0.84rem;
     text-align: center;
     border-radius: 10px;
     transition: all 0.25s;
     padding: 0;
   }
 
-  #msgEstado.visible { padding: 11px 14px; }
+  #msgEstado.visible { padding: 10px 14px; }
   #msgEstado.ok    { background: rgba(39,174,96,0.1);  color: #2ecc71; border: 1px solid rgba(39,174,96,0.2); }
   #msgEstado.error { background: rgba(192,57,43,0.12); color: #e74c3c; border: 1px solid rgba(192,57,43,0.25); }
   #msgEstado.info  { background: rgba(201,168,76,0.08); color: var(--gold); border: 1px solid rgba(201,168,76,0.15); }
@@ -440,10 +488,10 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .footer {
-    margin-top: 20px;
+    margin-top: 18px;
     text-align: center;
-    font-size: 0.68rem;
-    color: rgba(255,255,255,0.15);
+    font-size: 0.63rem;
+    color: rgba(255,255,255,0.13);
     letter-spacing: 1.5px;
     text-transform: uppercase;
   }
@@ -455,7 +503,7 @@
     border-radius: 24px;
     width: 100%;
     max-width: 440px;
-    margin-top: 16px;
+    margin-top: 14px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0,0,0,0.4);
     position: relative;
@@ -470,7 +518,7 @@
   }
 
   .citas-header {
-    padding: 18px 24px 14px;
+    padding: 16px 20px 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -478,7 +526,7 @@
   }
 
   .citas-titulo {
-    font-size: 0.68rem;
+    font-size: 0.63rem;
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -488,7 +536,7 @@
   .citas-badge {
     background: rgba(201,168,76,0.12);
     color: var(--gold);
-    font-size: 0.65rem;
+    font-size: 0.63rem;
     font-weight: 700;
     letter-spacing: 1px;
     padding: 3px 9px;
@@ -498,8 +546,8 @@
 
   .citas-lista {
     list-style: none;
-    padding: 8px 0;
-    max-height: 320px;
+    padding: 6px 0;
+    max-height: 300px;
     overflow-y: auto;
   }
 
@@ -510,8 +558,8 @@
   .cita-item {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 11px 24px;
+    gap: 12px;
+    padding: 10px 20px;
     border-bottom: 1px solid rgba(255,255,255,0.04);
     animation: fadeUp 0.3s ease both;
     transition: background 0.15s;
@@ -520,52 +568,35 @@
   .cita-item:last-child { border-bottom: none; }
   .cita-item:hover { background: rgba(255,255,255,0.02); }
 
-  .cita-num { font-size: 0.65rem; font-weight: 700; color: rgba(201,168,76,0.4); width: 18px; text-align: center; flex-shrink: 0; }
+  .cita-num { font-size: 0.62rem; font-weight: 700; color: rgba(201,168,76,0.38); width: 16px; text-align: center; flex-shrink: 0; }
 
   .cita-hora {
     background: rgba(201,168,76,0.1);
     color: var(--gold);
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 8px;
+    padding: 3px 9px;
+    border-radius: 7px;
     border: 1px solid rgba(201,168,76,0.18);
     flex-shrink: 0;
-    min-width: 54px;
+    min-width: 52px;
     text-align: center;
   }
 
-  .cita-nombre { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cita-nombre { font-size: 0.88rem; font-weight: 500; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .citas-vacio { padding: 28px 24px; text-align: center; color: rgba(255,255,255,0.2); font-size: 0.85rem; font-style: italic; }
-  .citas-cargando { padding: 28px 24px; text-align: center; color: rgba(255,255,255,0.25); font-size: 0.85rem; }
+  .citas-vacio { padding: 26px 20px; text-align: center; color: rgba(255,255,255,0.2); font-size: 0.83rem; font-style: italic; }
+  .citas-cargando { padding: 26px 20px; text-align: center; color: rgba(255,255,255,0.25); font-size: 0.83rem; }
 
   .spinner-gold {
     display: inline-block;
-    width: 12px; height: 12px;
+    width: 11px; height: 11px;
     border: 2px solid rgba(201,168,76,0.2);
     border-top-color: var(--gold);
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
     vertical-align: middle;
     margin-right: 7px;
-  }
-
-  /* Debug panel (oculto por defecto) */
-  #debugPanel {
-    display: none;
-    background: rgba(0,0,0,0.8);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 12px 16px;
-    margin-top: 12px;
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.5);
-    font-family: monospace;
-    max-height: 200px;
-    overflow-y: auto;
-    width: 100%;
-    max-width: 440px;
   }
 </style>
 </head>
@@ -595,21 +626,18 @@
 
     <!-- Nombre -->
     <div class="input-wrap">
-      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#c9a84c" stroke-width="2">
+      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#c9a84c" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
       </svg>
       <input type="text" id="nombreCliente" class="input-field" placeholder="Tu nombre y apellido" maxlength="60" autocomplete="off">
     </div>
 
-    <!-- Fecha -->
-    <div class="fecha-wrap">
-      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#c9a84c" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-      </svg>
-      <input type="date" id="fechaSeleccionada" class="input-field" style="padding-left:42px;">
-    </div>
+    <!-- Selector días Lun-Vie -->
+    <div class="dias-label">Selecciona el día</div>
+    <div class="dias-grid" id="diasGrid"></div>
 
-    <div class="section-label" id="labelHorarios">Horarios disponibles — hoy</div>
+    <!-- Horarios -->
+    <div class="section-label" id="labelHorarios">Horarios disponibles</div>
 
     <div class="leyenda">
       <div class="leyenda-item"><span class="leyenda-dot libre"></span>Disponible</div>
@@ -624,7 +652,7 @@
     <button id="btnReservar" onclick="enviarDatos()" disabled>Confirmar Turno</button>
 
     <a id="btnWhatsapp" href="#" target="_blank">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="white">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
       </svg>
       Enviar cita por WhatsApp
@@ -648,107 +676,175 @@
   </div>
 </div>
 
-<!-- Panel debug oculto — activar con ?debug=1 en la URL -->
-<div id="debugPanel"></div>
-
 <script>
   const URL_SCRIPT = "https://script.google.com/macros/s/AKfycby9MV6DAPhWpax-uPzvCfutxJ01Mg3MZjTnVYaEbIhKyFebkaeYseURZJnLugxOGTGI/exec";
   const CSV_URL    = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?gid=0&single=true&output=csv";
   const WA_NUMERO  = "584246783781";
-  const TZ_OFFSET  = -4; // GMT-4 Venezuela
 
   let horaSeleccionada = "";
   let horasOcupadas    = new Set();
   let fechaActiva      = "";   // "YYYY-MM-DD"
-  let todasLasCitas    = [];   // cache del CSV
+  let todasLasCitas    = [];
 
-  const DEBUG = new URLSearchParams(location.search).get('debug') === '1';
+  // ─────────────────────────────────────────────
+  // FECHA EN VENEZUELA (GMT-4) — SIN ambigüedad UTC
+  // Nunca usamos new Date("YYYY-MM-DD") porque lo
+  // interpreta en UTC y da un día menos en GMT-4.
+  // ─────────────────────────────────────────────
 
-  function log(msg) {
-    if (!DEBUG) return;
-    const p = document.getElementById('debugPanel');
-    p.style.display = 'block';
-    p.innerHTML += `<div>${msg}</div>`;
-  }
-
-  // ── Fecha hoy en GMT-4 → "YYYY-MM-DD" ──
-  function fechaHoyLocal() {
+  // Devuelve el objeto Date actual en hora Venezuela
+  function ahoraVE() {
+    // Obtiene el offset real del dispositivo y lo ajusta a GMT-4
     const ahora = new Date();
-    const ms    = ahora.getTime() + (TZ_OFFSET * 60 - ahora.getTimezoneOffset()) * 60000;
-    return new Date(ms).toISOString().slice(0, 10);
+    const utcMs = ahora.getTime() + ahora.getTimezoneOffset() * 60000;
+    return new Date(utcMs + (-4 * 3600000)); // GMT-4 Venezuela
   }
 
-  // ── Convierte cualquier string de fecha a "YYYY-MM-DD" en GMT-4 ──
+  // "YYYY-MM-DD" del día actual en Venezuela
+  function hoyVE() {
+    const d = ahoraVE();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${dd}`;
+  }
+
+  // Construye Date a medianoche Venezuela para un "YYYY-MM-DD"
+  // sin riesgo de conversión UTC
+  function fechaVEdesdeStr(str) {
+    const [y, m, d] = str.split('-').map(Number);
+    // Crear en hora local del dispositivo no importa; usamos solo año/mes/día
+    return { y, m, d };
+  }
+
+  // ─────────────────────────────────────────────
+  // Normaliza cualquier string de fecha a "YYYY-MM-DD" Venezuela
+  // ─────────────────────────────────────────────
   function normalizarFecha(str) {
     if (!str || !str.trim()) return null;
     str = str.trim();
 
-    // Intento 1: parsear directo (ISO, RFC, etc.)
-    let d = new Date(str);
-
-    // Intento 2: formato "M/D/YYYY" o "M/D/YYYY H:MM:SS" (formato Google Sheets en inglés)
-    if (isNaN(d)) {
-      const m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-      if (m) d = new Date(`${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}T00:00:00`);
+    // Formato Google Sheets exportado en inglés: "M/D/YYYY H:MM:SS" o "M/D/YYYY"
+    const matchUS = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (matchUS) {
+      const mes = String(matchUS[1]).padStart(2, '0');
+      const dia = String(matchUS[2]).padStart(2, '0');
+      const ano = matchUS[3];
+      // Construir fecha en UTC noon para evitar problemas de zona
+      const d = new Date(`${ano}-${mes}-${dia}T12:00:00Z`);
+      if (!isNaN(d)) {
+        // Convertir ese timestamp UTC a hora Venezuela para obtener la fecha correcta
+        const ve = new Date(d.getTime() - 4 * 3600000); // UTC-4
+        return `${ve.getUTCFullYear()}-${String(ve.getUTCMonth()+1).padStart(2,'0')}-${String(ve.getUTCDate()).padStart(2,'0')}`;
+      }
     }
 
-    // Intento 3: formato "D/M/YYYY" (europeo)
-    if (isNaN(d)) {
-      const m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-      if (m) d = new Date(`${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}T00:00:00`);
+    // Formato ISO "YYYY-MM-DDTHH:MM:SSZ" o similar
+    if (str.match(/^\d{4}-\d{2}-\d{2}/)) {
+      // Tomar solo la parte de fecha y asumir Venezuela
+      return str.slice(0, 10);
     }
 
-    if (isNaN(d)) {
-      log(`⚠️ No se pudo parsear fecha: "${str}"`);
-      return null;
-    }
-
-    // Ajustar a GMT-4
-    const ms = d.getTime() + (TZ_OFFSET * 60 - d.getTimezoneOffset()) * 60000;
-    return new Date(ms).toISOString().slice(0, 10);
+    return null;
   }
 
-  // ── Inicializar selector de fecha ──
-  function initFecha() {
-    const hoy = fechaHoyLocal();
-    fechaActiva = hoy;
+  // ─────────────────────────────────────────────
+  // SELECTOR DE DÍAS: Lun-Vie de la semana actual
+  // ─────────────────────────────────────────────
+  function initDias() {
+    const grid = document.getElementById('diasGrid');
+    const hoy  = ahoraVE();
+    const hoyStr = hoyVE();
 
-    const input = document.getElementById('fechaSeleccionada');
-    input.value = hoy;
-    input.min   = hoy; // no permitir días pasados
+    // Encontrar el lunes de esta semana
+    const diaSemana = hoy.getDay(); // 0=Dom, 1=Lun ... 6=Sab
+    // Diferencia para llegar al lunes (si hoy es domingo = 0, lunes fue hace 6 días)
+    const diffLunes = diaSemana === 0 ? -6 : 1 - diaSemana;
 
-    input.addEventListener('change', () => {
-      fechaActiva = input.value;
-      horaSeleccionada = "";
-      document.getElementById('btnReservar').disabled = true;
-      setMsg("", "");
-      actualizarLabelHorarios();
-      renderHorariosConFecha();
-      renderCitasDelDia();
-    });
+    const DIAS_NOMBRE = ['Lun','Mar','Mié','Jue','Vie'];
 
+    // Generar Lun a Vie
+    for (let i = 0; i < 5; i++) {
+      const diff = diffLunes + i;
+      const fecha = new Date(hoy);
+      fecha.setDate(hoy.getDate() + diff);
+
+      const y  = fecha.getFullYear();
+      const m  = String(fecha.getMonth() + 1).padStart(2, '0');
+      const d  = String(fecha.getDate()).padStart(2, '0');
+      const fechaStr = `${y}-${m}-${d}`;
+
+      const esPasado  = fechaStr < hoyStr;
+      const esHoy     = fechaStr === hoyStr;
+
+      const btn = document.createElement('div');
+      btn.className = 'dia-btn' +
+        (esHoy     ? ' dia-hoy'       : '') +
+        (esPasado  ? ' dia-pasado'    : '');
+
+      btn.innerHTML = `
+        <span class="dia-letra">${DIAS_NOMBRE[i]}</span>
+        <span class="dia-num">${parseInt(d)}</span>
+        <span class="dia-hoy-dot"></span>
+      `;
+
+      if (!esPasado) {
+        btn.addEventListener('click', () => seleccionarDia(fechaStr, btn));
+      }
+
+      btn.dataset.fecha = fechaStr;
+      grid.appendChild(btn);
+    }
+
+    // Seleccionar hoy por defecto (o el primer día hábil si hoy es fin de semana)
+    let diaDefault = hoyStr;
+    if (hoy.getDay() === 6) { // sábado → seleccionar viernes
+      const v = new Date(hoy); v.setDate(hoy.getDate() - 1);
+      diaDefault = `${v.getFullYear()}-${String(v.getMonth()+1).padStart(2,'0')}-${String(v.getDate()).padStart(2,'0')}`;
+    } else if (hoy.getDay() === 0) { // domingo → seleccionar lunes
+      const lu = new Date(hoy); lu.setDate(hoy.getDate() + 1);
+      diaDefault = `${lu.getFullYear()}-${String(lu.getMonth()+1).padStart(2,'0')}-${String(lu.getDate()).padStart(2,'0')}`;
+    }
+
+    // Activar el botón del día por defecto
+    const btnDefault = grid.querySelector(`[data-fecha="${diaDefault}"]`);
+    if (btnDefault) seleccionarDia(diaDefault, btnDefault);
+  }
+
+  function seleccionarDia(fechaStr, btn) {
+    document.querySelectorAll('.dia-btn').forEach(b => b.classList.remove('dia-seleccionado'));
+    btn.classList.add('dia-seleccionado');
+    fechaActiva = fechaStr;
+    horaSeleccionada = "";
+    document.getElementById('btnReservar').disabled = true;
+    document.getElementById('btnWhatsapp').classList.remove('visible');
+    setMsg("", "");
     actualizarLabelHorarios();
+    renderHorariosConFecha();
+    renderCitasDelDia();
   }
 
   function actualizarLabelHorarios() {
-    const hoy = fechaHoyLocal();
-    const label = document.getElementById('labelHorarios');
-    if (fechaActiva === hoy) {
-      label.textContent = "Horarios disponibles — hoy";
+    const hoyStr = hoyVE();
+    const label  = document.getElementById('labelHorarios');
+    const DIAS   = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+    const [y, m, d] = fechaActiva.split('-').map(Number);
+    // Obtener día de semana sin problema UTC: usar noon UTC
+    const fecha = new Date(`${fechaActiva}T12:00:00Z`);
+    const nombreDia = DIAS[fecha.getUTCDay()];
+
+    if (fechaActiva === hoyStr) {
+      label.textContent = `Horarios disponibles — hoy`;
     } else {
-      const [y, m, d] = fechaActiva.split('-');
-      const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-      const fecha = new Date(`${fechaActiva}T12:00:00`);
-      label.textContent = `Horarios — ${dias[fecha.getDay()]} ${d}/${m}/${y}`;
+      label.textContent = `Horarios — ${nombreDia} ${d}/${m}/${y}`;
     }
   }
 
-  // ── JSONP: carga horarios del día desde el Apps Script ──
+  // ── JSONP: horarios de hoy desde Apps Script ──
   function respuestaGoogle(data) {
     actualizarBanner(data.atendiendoAhora);
-    // Si la fecha activa es hoy, usar datos del script
-    const hoy = fechaHoyLocal();
-    if (fechaActiva === hoy) {
+    const hoyStr = hoyVE();
+    if (fechaActiva === hoyStr) {
       renderHorariosDesdeAgenda(data.agenda);
     }
   }
@@ -768,7 +864,7 @@
     }
   }
 
-  // ── Armar agenda vacía de 11 AM a 11 PM ──
+  // ── Agenda vacía 11 AM → 11 PM ──
   function agendaVacia() {
     const agenda = {};
     for (let h = 11; h <= 23; h++) {
@@ -782,7 +878,6 @@
     return agenda;
   }
 
-  // ── Render desde respuesta del Apps Script (hoy) ──
   function renderHorariosDesdeAgenda(agenda) {
     horasOcupadas.clear();
     for (let hora in agenda) {
@@ -793,24 +888,20 @@
     renderGrid(agenda);
   }
 
-  // ── Render calculado desde CSV (cualquier fecha) ──
   function renderHorariosConFecha() {
     const agenda = agendaVacia();
-
     for (const cita of todasLasCitas) {
       if (cita.fecha === fechaActiva && agenda[cita.hora] !== undefined) {
         agenda[cita.hora].ocupado = true;
         agenda[cita.hora].nombre  = cita.nombre;
       }
     }
-
     horasOcupadas.clear();
     for (let hora in agenda) {
       if (agenda[hora].ocupado && agenda[hora].motivo !== "almuerzo") {
         horasOcupadas.add(hora);
       }
     }
-
     renderGrid(agenda);
   }
 
@@ -818,13 +909,12 @@
     const box = document.getElementById('contenedorHoras');
     box.innerHTML = "";
     let delay = 0;
-
     for (let hora in agenda) {
       const info       = agenda[hora];
       const esAlmuerzo = info.motivo === "almuerzo";
       const div        = document.createElement('div');
       div.style.animationDelay = delay + "ms";
-      delay += 30;
+      delay += 25;
 
       if (info.ocupado) {
         div.className = "hora-btn ocupado" + (esAlmuerzo ? " almuerzo" : "");
@@ -849,57 +939,39 @@
     setMsg("", "");
   }
 
-  // ── Cargar JSONP (hoy) ──
+  // ── JSONP loader ──
   function cargarScriptHoy() {
     const s = document.createElement('script');
     s.src = URL_SCRIPT + "?callback=respuestaGoogle&t=" + Date.now();
     document.body.appendChild(s);
   }
 
-  // ── Cargar CSV completo ──
+  // ── CSV completo ──
   async function cargarCSV() {
     try {
       const res  = await fetch(CSV_URL + "&t=" + Date.now());
       const text = await res.text();
-      log("CSV crudo (primeras 500 chars):\n" + text.slice(0, 500));
-
       const filas = parsearCSV(text);
-      log(`Total filas CSV: ${filas.length}`);
-
       todasLasCitas = [];
 
       for (let i = 1; i < filas.length; i++) {
         const fila = filas[i];
         if (!fila || fila.length < 3) continue;
-
         const horaRaw   = fila[0] ? fila[0].trim() : "";
         const nombreRaw = fila[1] ? fila[1].trim() : "";
         const fechaRaw  = fila[2] ? fila[2].trim() : "";
-
         if (!horaRaw || !nombreRaw || !fechaRaw) continue;
-
         const fechaNorm = normalizarFecha(fechaRaw);
-        log(`Fila ${i}: hora="${horaRaw}" nombre="${nombreRaw}" fecha_raw="${fechaRaw}" → normalizada="${fechaNorm}"`);
-
-        if (fechaNorm) {
-          todasLasCitas.push({ hora: horaRaw, nombre: nombreRaw, fecha: fechaNorm });
-        }
+        if (fechaNorm) todasLasCitas.push({ hora: horaRaw, nombre: nombreRaw, fecha: fechaNorm });
       }
 
-      log(`Citas cargadas: ${todasLasCitas.length}`);
-      log(`Fecha activa: ${fechaActiva}`);
-      log(`Citas para hoy: ${todasLasCitas.filter(c => c.fecha === fechaActiva).length}`);
-
-      // Si la fecha activa NO es hoy, renderizar desde CSV
-      const hoy = fechaHoyLocal();
-      if (fechaActiva !== hoy) {
-        renderHorariosConFecha();
-      }
-
+      // Para hoy, el JSONP ya habrá renderizado horarios; solo actualizar lista
+      // Para otros días seleccionados, actualizar horarios también
+      const hoyStr = hoyVE();
+      if (fechaActiva !== hoyStr) renderHorariosConFecha();
       renderCitasDelDia();
 
     } catch (err) {
-      log("Error CSV: " + err.toString());
       document.getElementById('contenedorCitas').innerHTML =
         '<div class="citas-vacio">No se pudo cargar la lista.</div>';
     }
@@ -924,11 +996,11 @@
   }
 
   function horaANumero(hora) {
-    const partes = hora.trim().split(' ');
-    let h = parseInt(partes[0]);
-    const ampm = (partes[1] || '').toUpperCase();
-    if (ampm === 'PM' && h !== 12) h += 12;
-    if (ampm === 'AM' && h === 12) h = 0;
+    const p = hora.trim().split(' ');
+    let h = parseInt(p[0]);
+    const ap = (p[1] || '').toUpperCase();
+    if (ap === 'PM' && h !== 12) h += 12;
+    if (ap === 'AM' && h === 12) h = 0;
     return h;
   }
 
@@ -954,7 +1026,7 @@
     citasHoy.forEach((c, i) => {
       const li = document.createElement('li');
       li.className = 'cita-item';
-      li.style.animationDelay = (i * 40) + 'ms';
+      li.style.animationDelay = (i * 35) + 'ms';
       li.innerHTML = `
         <span class="cita-num">${i + 1}</span>
         <span class="cita-hora">${c.hora}</span>
@@ -974,7 +1046,6 @@
     if (!horaSeleccionada) { setMsg("⚠️ Selecciona un horario.", "error"); return; }
     if (!fechaActiva)      { setMsg("⚠️ Selecciona una fecha.", "error"); return; }
 
-    // Validación frontend: hora ya ocupada
     if (horasOcupadas.has(horaSeleccionada)) {
       setMsg("⚠️ Ese horario ya está reservado. Elige otro.", "error");
       setTimeout(() => location.reload(), 1800);
@@ -995,12 +1066,10 @@
       });
 
       horasOcupadas.add(horaSeleccionada);
-      // Actualizar caché local
       todasLasCitas.push({ hora: horaSeleccionada, nombre: nombre, fecha: fechaActiva });
 
       setMsg("✅ ¡Turno registrado exitosamente!", "ok");
       btn.innerHTML = "✅ Turno confirmado";
-
       mostrarBotonWhatsapp(nombre, horaSeleccionada, fechaActiva);
       renderCitasDelDia();
 
@@ -1030,9 +1099,9 @@
 
   // ── Init ──
   window.onload = () => {
-    initFecha();
-    cargarScriptHoy();   // carga horarios de hoy vía JSONP
-    cargarCSV();         // carga todo el CSV para la lista y fechas futuras
+    initDias();        // construye Lun-Vie y selecciona hoy
+    cargarScriptHoy(); // horarios de hoy vía JSONP
+    cargarCSV();       // citas completas del CSV
   };
 </script>
 
