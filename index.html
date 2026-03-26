@@ -97,13 +97,7 @@
 
   .banner-texto { display: flex; flex-direction: column; gap: 1px; }
 
-  .banner-label {
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
+  .banner-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
   .disponible .banner-label { color: var(--green); }
   .atendiendo .banner-label { color: var(--gold); }
 
@@ -153,7 +147,8 @@
 
   .body { padding: 0 32px; }
 
-  .input-wrap { position: relative; margin-bottom: 22px; }
+  /* ── Input nombre ── */
+  .input-wrap { position: relative; margin-bottom: 16px; }
 
   .input-wrap svg {
     position: absolute;
@@ -162,7 +157,7 @@
     opacity: 0.35;
   }
 
-  #nombreCliente {
+  .input-field {
     width: 100%;
     padding: 13px 14px 13px 42px;
     background: rgba(255,255,255,0.05);
@@ -175,8 +170,54 @@
     transition: border-color 0.2s, background 0.2s;
   }
 
-  #nombreCliente::placeholder { color: rgba(255,255,255,0.28); }
-  #nombreCliente:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+  .input-field::placeholder { color: rgba(255,255,255,0.28); }
+  .input-field:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+
+  /* ── Selector de fecha ── */
+  .fecha-wrap {
+    position: relative;
+    margin-bottom: 22px;
+  }
+
+  .fecha-wrap svg {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  #fechaSeleccionada {
+    width: 100%;
+    padding: 13px 14px 13px 42px;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: var(--white);
+    font-size: 0.93rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+    /* Fix color picker en navegadores oscuros */
+    color-scheme: dark;
+  }
+
+  #fechaSeleccionada:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+
+  .fecha-badge {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 20px;
+    padding: 3px 10px;
+  }
 
   .section-label {
     font-size: 0.68rem;
@@ -187,6 +228,33 @@
     margin-bottom: 11px;
   }
 
+  /* ── Leyenda ── */
+  .leyenda {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .leyenda-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .leyenda-dot.libre    { background: rgba(255,255,255,0.25); }
+  .leyenda-dot.ocupado  { background: var(--red2); }
+  .leyenda-dot.almuerzo { background: rgba(255,255,255,0.1); }
+
+  /* ── Grid horas ── */
   #contenedorHoras {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -230,13 +298,23 @@
     transform: translateY(-1px);
   }
 
-  /* ── OCUPADO: rojo vivo y llamativo ── */
+  /* OCUPADO — rojo llamativo */
   .hora-btn.ocupado {
     background: rgba(192,57,43,0.18);
     border-color: rgba(231,76,60,0.5);
     color: rgba(231,76,60,0.9);
     cursor: not-allowed;
     box-shadow: 0 0 10px rgba(192,57,43,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hora-btn.ocupado::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), var(--red2));
   }
 
   .hora-btn.ocupado .hora-text {
@@ -246,24 +324,18 @@
 
   .hora-btn.ocupado .tag {
     display: block;
-    font-size: 0.6rem;
-    letter-spacing: 1.5px;
+    font-size: 0.58rem;
+    letter-spacing: 1px;
     text-transform: uppercase;
     color: rgba(231,76,60,0.7);
     margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
 
-  /* ── Barra roja al tope del botón ocupado ── */
-  .hora-btn.ocupado::before {
-    content: '';
-    display: block;
-    height: 3px;
-    background: linear-gradient(90deg, var(--red), var(--red2));
-    border-radius: 2px 2px 0 0;
-    margin: -14px -10px 8px;
-  }
-
-  /* Almuerzo = gris neutro */
+  /* ALMUERZO — gris neutro */
   .hora-btn.almuerzo {
     background: rgba(255,255,255,0.02);
     border-color: rgba(255,255,255,0.04);
@@ -281,33 +353,6 @@
     font-size: 0.87rem;
     padding: 24px 0;
   }
-
-  /* ── Leyenda de colores ── */
-  .leyenda {
-    display: flex;
-    gap: 14px;
-    margin-bottom: 18px;
-    flex-wrap: wrap;
-  }
-
-  .leyenda-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.68rem;
-    color: rgba(255,255,255,0.4);
-    letter-spacing: 0.5px;
-  }
-
-  .leyenda-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .leyenda-dot.libre    { background: rgba(255,255,255,0.25); }
-  .leyenda-dot.ocupado  { background: var(--red2); }
-  .leyenda-dot.almuerzo { background: rgba(255,255,255,0.1); }
 
   /* ── Botón confirmar ── */
   #btnReservar {
@@ -362,17 +407,8 @@
     text-align: center;
   }
 
-  #btnWhatsapp.visible {
-    display: flex;
-    animation: fadeUp 0.35s ease both;
-  }
-
-  #btnWhatsapp:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(37,211,102,0.42);
-  }
-
-  #btnWhatsapp svg { flex-shrink: 0; }
+  #btnWhatsapp.visible { display: flex; animation: fadeUp 0.35s ease both; }
+  #btnWhatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,0.42); }
 
   /* ── Mensaje estado ── */
   #msgEstado {
@@ -484,14 +520,7 @@
   .cita-item:last-child { border-bottom: none; }
   .cita-item:hover { background: rgba(255,255,255,0.02); }
 
-  .cita-num {
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: rgba(201,168,76,0.4);
-    width: 18px;
-    text-align: center;
-    flex-shrink: 0;
-  }
+  .cita-num { font-size: 0.65rem; font-weight: 700; color: rgba(201,168,76,0.4); width: 18px; text-align: center; flex-shrink: 0; }
 
   .cita-hora {
     background: rgba(201,168,76,0.1);
@@ -504,32 +533,12 @@
     flex-shrink: 0;
     min-width: 54px;
     text-align: center;
-    letter-spacing: 0.3px;
   }
 
-  .cita-nombre {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.85);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .cita-nombre { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .citas-vacio {
-    padding: 28px 24px;
-    text-align: center;
-    color: rgba(255,255,255,0.2);
-    font-size: 0.85rem;
-    font-style: italic;
-  }
-
-  .citas-cargando {
-    padding: 28px 24px;
-    text-align: center;
-    color: rgba(255,255,255,0.25);
-    font-size: 0.85rem;
-  }
+  .citas-vacio { padding: 28px 24px; text-align: center; color: rgba(255,255,255,0.2); font-size: 0.85rem; font-style: italic; }
+  .citas-cargando { padding: 28px 24px; text-align: center; color: rgba(255,255,255,0.25); font-size: 0.85rem; }
 
   .spinner-gold {
     display: inline-block;
@@ -540,6 +549,23 @@
     animation: spin 0.7s linear infinite;
     vertical-align: middle;
     margin-right: 7px;
+  }
+
+  /* Debug panel (oculto por defecto) */
+  #debugPanel {
+    display: none;
+    background: rgba(0,0,0,0.8);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.5);
+    font-family: monospace;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 440px;
   }
 </style>
 </head>
@@ -567,16 +593,24 @@
 
   <div class="body">
 
+    <!-- Nombre -->
     <div class="input-wrap">
       <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#c9a84c" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
       </svg>
-      <input type="text" id="nombreCliente" placeholder="Tu nombre y apellido" maxlength="60" autocomplete="off">
+      <input type="text" id="nombreCliente" class="input-field" placeholder="Tu nombre y apellido" maxlength="60" autocomplete="off">
     </div>
 
-    <div class="section-label">Horarios disponibles — hoy</div>
+    <!-- Fecha -->
+    <div class="fecha-wrap">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#c9a84c" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+      </svg>
+      <input type="date" id="fechaSeleccionada" class="input-field" style="padding-left:42px;">
+    </div>
 
-    <!-- Leyenda -->
+    <div class="section-label" id="labelHorarios">Horarios disponibles — hoy</div>
+
     <div class="leyenda">
       <div class="leyenda-item"><span class="leyenda-dot libre"></span>Disponible</div>
       <div class="leyenda-item"><span class="leyenda-dot ocupado"></span>Ocupado</div>
@@ -589,7 +623,6 @@
 
     <button id="btnReservar" onclick="enviarDatos()" disabled>Confirmar Turno</button>
 
-    <!-- Botón WhatsApp (aparece tras confirmar) -->
     <a id="btnWhatsapp" href="#" target="_blank">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -615,19 +648,109 @@
   </div>
 </div>
 
+<!-- Panel debug oculto — activar con ?debug=1 en la URL -->
+<div id="debugPanel"></div>
+
 <script>
-  const URL_SCRIPT  = "https://script.google.com/macros/s/AKfycby9MV6DAPhWpax-uPzvCfutxJ01Mg3MZjTnVYaEbIhKyFebkaeYseURZJnLugxOGTGI/exec";
-  const CSV_URL     = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?output=csv";
-  const WA_NUMERO   = "584246783781";
+  const URL_SCRIPT = "https://script.google.com/macros/s/AKfycby9MV6DAPhWpax-uPzvCfutxJ01Mg3MZjTnVYaEbIhKyFebkaeYseURZJnLugxOGTGI/exec";
+  const CSV_URL    = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQQX9jO8I1qUAJ3PXGOr1_GeUmLhd3cGiYfMjXC5ZFjo1-qkZPcElNBNsNMGnCYcWhTkCjSZWHN6Ngw/pub?gid=0&single=true&output=csv";
+  const WA_NUMERO  = "584246783781";
+  const TZ_OFFSET  = -4; // GMT-4 Venezuela
 
   let horaSeleccionada = "";
-  // Guardamos aquí las horas ocupadas al cargar, para validación frontend
-  let horasOcupadas = new Set();
+  let horasOcupadas    = new Set();
+  let fechaActiva      = "";   // "YYYY-MM-DD"
+  let todasLasCitas    = [];   // cache del CSV
 
-  // ── Callback JSONP ──
+  const DEBUG = new URLSearchParams(location.search).get('debug') === '1';
+
+  function log(msg) {
+    if (!DEBUG) return;
+    const p = document.getElementById('debugPanel');
+    p.style.display = 'block';
+    p.innerHTML += `<div>${msg}</div>`;
+  }
+
+  // ── Fecha hoy en GMT-4 → "YYYY-MM-DD" ──
+  function fechaHoyLocal() {
+    const ahora = new Date();
+    const ms    = ahora.getTime() + (TZ_OFFSET * 60 - ahora.getTimezoneOffset()) * 60000;
+    return new Date(ms).toISOString().slice(0, 10);
+  }
+
+  // ── Convierte cualquier string de fecha a "YYYY-MM-DD" en GMT-4 ──
+  function normalizarFecha(str) {
+    if (!str || !str.trim()) return null;
+    str = str.trim();
+
+    // Intento 1: parsear directo (ISO, RFC, etc.)
+    let d = new Date(str);
+
+    // Intento 2: formato "M/D/YYYY" o "M/D/YYYY H:MM:SS" (formato Google Sheets en inglés)
+    if (isNaN(d)) {
+      const m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      if (m) d = new Date(`${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}T00:00:00`);
+    }
+
+    // Intento 3: formato "D/M/YYYY" (europeo)
+    if (isNaN(d)) {
+      const m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      if (m) d = new Date(`${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}T00:00:00`);
+    }
+
+    if (isNaN(d)) {
+      log(`⚠️ No se pudo parsear fecha: "${str}"`);
+      return null;
+    }
+
+    // Ajustar a GMT-4
+    const ms = d.getTime() + (TZ_OFFSET * 60 - d.getTimezoneOffset()) * 60000;
+    return new Date(ms).toISOString().slice(0, 10);
+  }
+
+  // ── Inicializar selector de fecha ──
+  function initFecha() {
+    const hoy = fechaHoyLocal();
+    fechaActiva = hoy;
+
+    const input = document.getElementById('fechaSeleccionada');
+    input.value = hoy;
+    input.min   = hoy; // no permitir días pasados
+
+    input.addEventListener('change', () => {
+      fechaActiva = input.value;
+      horaSeleccionada = "";
+      document.getElementById('btnReservar').disabled = true;
+      setMsg("", "");
+      actualizarLabelHorarios();
+      renderHorariosConFecha();
+      renderCitasDelDia();
+    });
+
+    actualizarLabelHorarios();
+  }
+
+  function actualizarLabelHorarios() {
+    const hoy = fechaHoyLocal();
+    const label = document.getElementById('labelHorarios');
+    if (fechaActiva === hoy) {
+      label.textContent = "Horarios disponibles — hoy";
+    } else {
+      const [y, m, d] = fechaActiva.split('-');
+      const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+      const fecha = new Date(`${fechaActiva}T12:00:00`);
+      label.textContent = `Horarios — ${dias[fecha.getDay()]} ${d}/${m}/${y}`;
+    }
+  }
+
+  // ── JSONP: carga horarios del día desde el Apps Script ──
   function respuestaGoogle(data) {
     actualizarBanner(data.atendiendoAhora);
-    renderHorarios(data.agenda);
+    // Si la fecha activa es hoy, usar datos del script
+    const hoy = fechaHoyLocal();
+    if (fechaActiva === hoy) {
+      renderHorariosDesdeAgenda(data.agenda);
+    }
   }
 
   function actualizarBanner(nombreActual) {
@@ -645,12 +768,57 @@
     }
   }
 
-  function renderHorarios(agenda) {
+  // ── Armar agenda vacía de 11 AM a 11 PM ──
+  function agendaVacia() {
+    const agenda = {};
+    for (let h = 11; h <= 23; h++) {
+      let label;
+      if (h < 12)        label = h + " AM";
+      else if (h === 12) label = "12 PM";
+      else               label = (h - 12) + " PM";
+      agenda[label] = { ocupado: false, nombre: "" };
+    }
+    agenda["2 PM"] = { ocupado: true, motivo: "almuerzo", nombre: "" };
+    return agenda;
+  }
+
+  // ── Render desde respuesta del Apps Script (hoy) ──
+  function renderHorariosDesdeAgenda(agenda) {
+    horasOcupadas.clear();
+    for (let hora in agenda) {
+      if (agenda[hora].ocupado && agenda[hora].motivo !== "almuerzo") {
+        horasOcupadas.add(hora);
+      }
+    }
+    renderGrid(agenda);
+  }
+
+  // ── Render calculado desde CSV (cualquier fecha) ──
+  function renderHorariosConFecha() {
+    const agenda = agendaVacia();
+
+    for (const cita of todasLasCitas) {
+      if (cita.fecha === fechaActiva && agenda[cita.hora] !== undefined) {
+        agenda[cita.hora].ocupado = true;
+        agenda[cita.hora].nombre  = cita.nombre;
+      }
+    }
+
+    horasOcupadas.clear();
+    for (let hora in agenda) {
+      if (agenda[hora].ocupado && agenda[hora].motivo !== "almuerzo") {
+        horasOcupadas.add(hora);
+      }
+    }
+
+    renderGrid(agenda);
+  }
+
+  function renderGrid(agenda) {
     const box = document.getElementById('contenedorHoras');
     box.innerHTML = "";
-    horasOcupadas.clear();
-
     let delay = 0;
+
     for (let hora in agenda) {
       const info       = agenda[hora];
       const esAlmuerzo = info.motivo === "almuerzo";
@@ -659,7 +827,6 @@
       delay += 30;
 
       if (info.ocupado) {
-        horasOcupadas.add(hora); // registrar para validación frontend
         div.className = "hora-btn ocupado" + (esAlmuerzo ? " almuerzo" : "");
         div.innerHTML = `
           <span class="hora-text">${hora}</span>
@@ -682,34 +849,57 @@
     setMsg("", "");
   }
 
-  function cargar() {
+  // ── Cargar JSONP (hoy) ──
+  function cargarScriptHoy() {
     const s = document.createElement('script');
     s.src = URL_SCRIPT + "?callback=respuestaGoogle&t=" + Date.now();
     document.body.appendChild(s);
   }
 
-  // ── Carga lista de citas desde CSV ──
-  async function cargarCitasDelDia() {
+  // ── Cargar CSV completo ──
+  async function cargarCSV() {
     try {
       const res  = await fetch(CSV_URL + "&t=" + Date.now());
       const text = await res.text();
-      const filas = parsearCSV(text);
-      const hoy   = fechaHoy();
+      log("CSV crudo (primeras 500 chars):\n" + text.slice(0, 500));
 
-      const citasHoy = [];
+      const filas = parsearCSV(text);
+      log(`Total filas CSV: ${filas.length}`);
+
+      todasLasCitas = [];
+
       for (let i = 1; i < filas.length; i++) {
         const fila = filas[i];
-        if (fila.length < 3) continue;
-        const hora   = fila[0].trim();
-        const nombre = fila[1].trim();
-        const fecha  = fila[2].trim();
-        if (!hora || !nombre || !fecha) continue;
-        if (extraerFecha(fecha) === hoy) citasHoy.push({ hora, nombre });
+        if (!fila || fila.length < 3) continue;
+
+        const horaRaw   = fila[0] ? fila[0].trim() : "";
+        const nombreRaw = fila[1] ? fila[1].trim() : "";
+        const fechaRaw  = fila[2] ? fila[2].trim() : "";
+
+        if (!horaRaw || !nombreRaw || !fechaRaw) continue;
+
+        const fechaNorm = normalizarFecha(fechaRaw);
+        log(`Fila ${i}: hora="${horaRaw}" nombre="${nombreRaw}" fecha_raw="${fechaRaw}" → normalizada="${fechaNorm}"`);
+
+        if (fechaNorm) {
+          todasLasCitas.push({ hora: horaRaw, nombre: nombreRaw, fecha: fechaNorm });
+        }
       }
 
-      citasHoy.sort((a, b) => horaANumero(a.hora) - horaANumero(b.hora));
-      renderCitas(citasHoy);
+      log(`Citas cargadas: ${todasLasCitas.length}`);
+      log(`Fecha activa: ${fechaActiva}`);
+      log(`Citas para hoy: ${todasLasCitas.filter(c => c.fecha === fechaActiva).length}`);
+
+      // Si la fecha activa NO es hoy, renderizar desde CSV
+      const hoy = fechaHoyLocal();
+      if (fechaActiva !== hoy) {
+        renderHorariosConFecha();
+      }
+
+      renderCitasDelDia();
+
     } catch (err) {
+      log("Error CSV: " + err.toString());
       document.getElementById('contenedorCitas').innerHTML =
         '<div class="citas-vacio">No se pudo cargar la lista.</div>';
     }
@@ -733,21 +923,6 @@
     return filas;
   }
 
-  function fechaHoy() {
-    const ahora = new Date();
-    const local = new Date(ahora.getTime() + (-4 * 60 - ahora.getTimezoneOffset()) * 60000);
-    return local.toISOString().slice(0, 10);
-  }
-
-  function extraerFecha(str) {
-    const d = new Date(str);
-    if (!isNaN(d)) {
-      const local = new Date(d.getTime() + (-4 * 60 - d.getTimezoneOffset()) * 60000);
-      return local.toISOString().slice(0, 10);
-    }
-    return str.slice(0, 10);
-  }
-
   function horaANumero(hora) {
     const partes = hora.trim().split(' ');
     let h = parseInt(partes[0]);
@@ -757,22 +932,26 @@
     return h;
   }
 
-  function renderCitas(citas) {
+  function renderCitasDelDia() {
     const contenedor = document.getElementById('contenedorCitas');
     const badge      = document.getElementById('citasBadge');
 
-    badge.textContent = citas.length > 0
-      ? citas.length + " turno" + (citas.length !== 1 ? "s" : "")
+    const citasHoy = todasLasCitas
+      .filter(c => c.fecha === fechaActiva)
+      .sort((a, b) => horaANumero(a.hora) - horaANumero(b.hora));
+
+    badge.textContent = citasHoy.length > 0
+      ? citasHoy.length + " turno" + (citasHoy.length !== 1 ? "s" : "")
       : "Sin turnos";
 
-    if (citas.length === 0) {
-      contenedor.innerHTML = '<div class="citas-vacio">No hay citas registradas para hoy.</div>';
+    if (citasHoy.length === 0) {
+      contenedor.innerHTML = '<div class="citas-vacio">No hay citas registradas para este día.</div>';
       return;
     }
 
     const ul = document.createElement('ul');
     ul.className = 'citas-lista';
-    citas.forEach((c, i) => {
+    citasHoy.forEach((c, i) => {
       const li = document.createElement('li');
       li.className = 'cita-item';
       li.style.animationDelay = (i * 40) + 'ms';
@@ -793,12 +972,12 @@
     const nombre = document.getElementById('nombreCliente').value.trim();
     if (!nombre)           { setMsg("⚠️ Por favor ingresa tu nombre.", "error"); return; }
     if (!horaSeleccionada) { setMsg("⚠️ Selecciona un horario.", "error"); return; }
+    if (!fechaActiva)      { setMsg("⚠️ Selecciona una fecha.", "error"); return; }
 
-    // Validación frontend: verificar que la hora sigue libre
+    // Validación frontend: hora ya ocupada
     if (horasOcupadas.has(horaSeleccionada)) {
-      setMsg("⚠️ Ese horario ya fue reservado. Elige otro.", "error");
-      // Recargar para reflejar el estado actual
-      setTimeout(() => window.location.reload(), 1800);
+      setMsg("⚠️ Ese horario ya está reservado. Elige otro.", "error");
+      setTimeout(() => location.reload(), 1800);
       return;
     }
 
@@ -812,17 +991,18 @@
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hora: horaSeleccionada, nombre: nombre })
+        body: JSON.stringify({ hora: horaSeleccionada, nombre: nombre, fecha: fechaActiva })
       });
 
-      // Marcar como ocupada en el frontend de inmediato
       horasOcupadas.add(horaSeleccionada);
+      // Actualizar caché local
+      todasLasCitas.push({ hora: horaSeleccionada, nombre: nombre, fecha: fechaActiva });
 
       setMsg("✅ ¡Turno registrado exitosamente!", "ok");
       btn.innerHTML = "✅ Turno confirmado";
 
-      // Mostrar botón WhatsApp
-      mostrarBotonWhatsapp(nombre, horaSeleccionada);
+      mostrarBotonWhatsapp(nombre, horaSeleccionada, fechaActiva);
+      renderCitasDelDia();
 
     } catch (err) {
       setMsg("❌ Error de conexión. Intenta nuevamente.", "error");
@@ -831,14 +1011,15 @@
     }
   }
 
-  function mostrarBotonWhatsapp(nombre, hora) {
+  function mostrarBotonWhatsapp(nombre, hora, fecha) {
+    const [y, m, d] = fecha.split('-');
+    const fechaTexto = `${d}/${m}/${y}`;
     const mensaje = encodeURIComponent(
-      `¡Hola Chichi Barber! 💈 Acabo de reservar mi turno:\n\n👤 Nombre: ${nombre}\n🕐 Hora: ${hora}\n📅 Fecha: hoy\n\n¡Allí estaré!`
+      `¡Hola Chichi Barber! 💈 Acabo de reservar mi turno:\n\n👤 Nombre: ${nombre}\n📅 Fecha: ${fechaTexto}\n🕐 Hora: ${hora}\n\n¡Allí estaré!`
     );
-    const url = `https://wa.me/${WA_NUMERO}?text=${mensaje}`;
-    const btn = document.getElementById('btnWhatsapp');
-    btn.href = url;
-    btn.classList.add('visible');
+    const btnWa = document.getElementById('btnWhatsapp');
+    btnWa.href = `https://wa.me/${WA_NUMERO}?text=${mensaje}`;
+    btnWa.classList.add('visible');
   }
 
   function setMsg(texto, tipo) {
@@ -847,9 +1028,11 @@
     el.innerText = texto;
   }
 
+  // ── Init ──
   window.onload = () => {
-    cargar();
-    cargarCitasDelDia();
+    initFecha();
+    cargarScriptHoy();   // carga horarios de hoy vía JSONP
+    cargarCSV();         // carga todo el CSV para la lista y fechas futuras
   };
 </script>
 
