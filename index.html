@@ -288,6 +288,7 @@
     cursor: not-allowed;
   }
 
+  .hora-btn.almuerzo .hora-text { text-decoration: none; }
   .hora-btn.almuerzo .tag { color: rgba(255,255,255,0.18); }
 
   .cargando {
@@ -459,7 +460,7 @@
         div.className = "hora-btn ocupado" + (esAlmuerzo ? " almuerzo" : "");
         div.innerHTML = `
           <span class="hora-text">${hora}</span>
-          <span class="tag">${esAlmuerzo ? "Almuerzo" : "Reservado"}</span>
+          <span class="tag">${esAlmuerzo ? "Almuerzo" : (info.nombre || "Reservado")}</span>
         `;
       } else {
         div.className = "hora-btn";
