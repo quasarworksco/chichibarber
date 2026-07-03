@@ -1028,7 +1028,8 @@ async function reservar(){
 
 function abrirExito(nombre, svc){
   const s = semana.find(x => x.fecha === fSel);
-  $('successDet').innerHTML = `👤 ${nombre}<br>📅 <em>${s.dow} ${s.num} ${s.mes}</em> · 🕐 <em>${hSel}</em><br>💈 ${svc.nombre} — <em>$${svc.precio}</em>`;
+  const seguro = document.createElement('div'); seguro.textContent = nombre;
+  $('successDet').innerHTML = `👤 ${seguro.innerHTML}<br>📅 <em>${s.dow} ${s.num} ${s.mes}</em> · 🕐 <em>${hSel}</em><br>💈 ${svc.nombre} — <em>$${svc.precio}</em>`;
   const [y,m,d] = fSel.split('-');
   const msg = `¡Hola Chichi Barber! 💈 Reservé mi turno:\n\n👤 ${nombre}\n📅 ${d}/${m}/${y}\n🕐 ${hSel}\n✂️ ${svc.nombre} ($${svc.precio})\n\nAdjunto comprobante de Pago Móvil.`;
   $('btnWaComprobante').href = `https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`;
