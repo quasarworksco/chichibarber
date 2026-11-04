@@ -53,9 +53,29 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<script>document.documentElement.classList.add("js");</script>
+<!-- Precarga las librerías de animación para que lleguen cuanto antes -->
+<link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
+<link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js">
+<link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.14/lenis.min.js">
+<link rel="preload" as="image" href="https://lh3.googleusercontent.com/d/1rEX0ro11q-fupkjjklZrRHa53MEv4oYQ" fetchpriority="high">
+<script>
+document.documentElement.classList.add("js");
+/* Red de seguridad: la pantalla de carga nunca queda atascada,
+   aunque el CDN de animaciones falle o tarde demasiado. */
+setTimeout(function(){
+  var p=document.querySelector(".preloader");
+  if(!p) return; // la intro ya terminó: todo bien
+  try{ document.body.classList.remove("is-loading"); }catch(e){}
+  document.querySelectorAll('[data-hero]').forEach(function(el){el.style.opacity='1';el.style.transform='none';el.style.visibility='visible';});
+  document.querySelectorAll('.hero__title .line__in').forEach(function(el){el.style.transform='none';});
+  p.style.transition="opacity .4s"; p.style.opacity="0";
+  setTimeout(function(){ if(p.parentNode) p.parentNode.removeChild(p); },420);
+}, 4500);
+</script>
 </head>
 <body>
 

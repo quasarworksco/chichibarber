@@ -24,7 +24,7 @@
 
   /* ---------- Scroll suave ---------- */
   let lenis = null;
-  if (motion && window.Lenis) {
+  if (motion && window.Lenis && finePointer) {
     lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
@@ -124,16 +124,16 @@
 
     let seen = false;
     try { seen = !!sessionStorage.getItem("cb-intro"); sessionStorage.setItem("cb-intro", "1"); } catch (e) {}
-    const t = seen ? 0 : 0.9;
+    const t = seen ? 0 : 0.62;
 
     const intro = gsap.timeline({ paused: true });
     if (pre) {
-      if (seen) intro.to(pre, { autoAlpha: 0, duration: 0.4, ease: "power2.out" }, 0);
+      if (seen) intro.to(pre, { autoAlpha: 0, duration: 0.35, ease: "power2.out" }, 0);
       else intro
-        .to(counter, { v: 100, duration: 0.9, ease: "power2.inOut", onUpdate: () => num && (num.textContent = Math.round(counter.v)) }, 0)
-        .to(".preloader__line", { scaleX: 1, duration: 0.9, ease: "power2.inOut" }, 0)
-        .to(".preloader__center, .preloader__top, .preloader__bottom", { autoAlpha: 0, y: -30, duration: 0.3, stagger: 0.03, ease: "power2.in" }, 0.82)
-        .to(pre, { yPercent: -100, duration: 0.8, ease: "expo.inOut" }, 0.9);
+        .to(counter, { v: 100, duration: 0.6, ease: "power2.inOut", onUpdate: () => num && (num.textContent = Math.round(counter.v)) }, 0)
+        .to(".preloader__line", { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 0)
+        .to(".preloader__center, .preloader__top, .preloader__bottom", { autoAlpha: 0, y: -30, duration: 0.28, stagger: 0.03, ease: "power2.in" }, 0.55)
+        .to(pre, { yPercent: -100, duration: 0.7, ease: "expo.inOut" }, 0.62);
     }
     intro
       .to(".hero__media img", { scale: 1, duration: 2.2, ease: expo }, t + 0.05)
@@ -147,7 +147,7 @@
     let started = false;
     const play = () => { if (!started) { started = true; intro.play(); } };
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(play);
-    setTimeout(play, 900);
+    setTimeout(play, 450);
 
     /* Hero parallax */
     gsap.to(".hero__media", { yPercent: 20, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
